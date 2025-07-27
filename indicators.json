@@ -1,0 +1,11 @@
+{
+  "indicators": [
+    {
+      "id": "selic-mensal",
+      "name": "🏦 Taxa SELIC Mensal (%)",
+      "filename": "selic-mensal.json",
+      "description": "Taxa básica de juros da economia brasileira definida pelo Banco Central"
+    }
+  ],
+  "defaultIndicator": "selic-mensal"
+}
