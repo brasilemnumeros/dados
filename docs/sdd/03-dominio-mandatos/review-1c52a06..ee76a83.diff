@@ -1,0 +1,138 @@
+# Review package: 1c52a06..ee76a83
+
+## Commits
+ee76a83 feat(governos): modelo federal versionado, sem cor de partido
+
+## Files changed
+ governos/federal.json | 92 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ governos/index.json   | 23 +++++++++++++
+ 2 files changed, 115 insertions(+)
+
+## Diff
+diff --git a/governos/federal.json b/governos/federal.json
+new file mode 100644
+index 0000000..6e012a6
+--- /dev/null
++++ b/governos/federal.json
+@@ -0,0 +1,92 @@
++{
++  "schema": 1,
++  "esfera": "federal",
++  "entidade": { "codigo": "BR", "nome": "Brasil" },
++  "cargo": "presidente",
++  "mandatos": [
++    {
++      "id": "federal-1995-fhc",
++      "titular": "Fernando Henrique Cardoso",
++      "rotulo": "FHC I",
++      "partido": "PSDB",
++      "tipo": "eleito",
++      "inicio": "1995-01-01",
++      "fim": "1998-12-31"
++    },
++    {
++      "id": "federal-1999-fhc",
++      "titular": "Fernando Henrique Cardoso",
++      "rotulo": "FHC II",
++      "partido": "PSDB",
++      "tipo": "eleito",
++      "inicio": "1999-01-01",
++      "fim": "2002-12-31"
++    },
++    {
++      "id": "federal-2003-lula",
++      "titular": "Luiz Inácio Lula da Silva",
++      "rotulo": "Lula I",
++      "partido": "PT",
++      "tipo": "eleito",
++      "inicio": "2003-01-01",
++      "fim": "2006-12-31"
++    },
++    {
++      "id": "federal-2007-lula",
++      "titular": "Luiz Inácio Lula da Silva",
++      "rotulo": "Lula II",
++      "partido": "PT",
++      "tipo": "eleito",
++      "inicio": "2007-01-01",
++      "fim": "2010-12-31"
++    },
++    {
++      "id": "federal-2011-dilma",
++      "titular": "Dilma Vana Rousseff",
++      "rotulo": "Dilma I",
++      "partido": "PT",
++      "tipo": "eleito",
++      "inicio": "2011-01-01",
++      "fim": "2014-12-31"
++    },
++    {
++      "id": "federal-2015-dilma",
++      "titular": "Dilma Vana Rousseff",
++      "rotulo": "Dilma II",
++      "partido": "PT",
++      "tipo": "eleito",
++      "inicio": "2015-01-01",
++      "fim": "2016-08-31",
++      "mandatoDe": { "inicio": "2015-01-01", "fim": "2018-12-31" }
++    },
++    {
++      "id": "federal-2016-temer",
++      "titular": "Michel Miguel Elias Temer Lulia",
++      "rotulo": "Temer",
++      "partido": "MDB",
++      "tipo": "sucessor",
++      "inicio": "2016-05-12",
++      "fim": "2018-12-31",
++      "mandatoDe": { "inicio": "2015-01-01", "fim": "2018-12-31" }
++    },
++    {
++      "id": "federal-2019-bolsonaro",
++      "titular": "Jair Messias Bolsonaro",
++      "rotulo": "Bolsonaro",
++      "partido": "PL",
++      "tipo": "eleito",
++      "inicio": "2019-01-01",
++      "fim": "2022-12-31"
++    },
++    {
++      "id": "federal-2023-lula",
++      "titular": "Luiz Inácio Lula da Silva",
++      "rotulo": "Lula III",
++      "partido": "PT",
++      "tipo": "eleito",
++      "inicio": "2023-01-01",
++      "fim": null,
++      "emCurso": true
++    }
++  ]
++}
+diff --git a/governos/index.json b/governos/index.json
+new file mode 100644
+index 0000000..8f6400d
+--- /dev/null
++++ b/governos/index.json
+@@ -0,0 +1,23 @@
++{
++  "schema": 1,
++  "esferas": [
++    {
++      "id": "federal",
++      "nome": "Federal",
++      "cargo": "presidente",
++      "entidades": [{ "codigo": "BR", "nome": "Brasil", "arquivo": "federal.json" }]
++    },
++    {
++      "id": "estadual",
++      "nome": "Estadual",
++      "cargo": "governador",
++      "entidades": []
++    },
++    {
++      "id": "municipal",
++      "nome": "Municipal",
++      "cargo": "prefeito",
++      "entidades": []
++    }
++  ]
++}
