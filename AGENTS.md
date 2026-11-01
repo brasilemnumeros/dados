@@ -30,12 +30,29 @@ documento vale e a divergência é defeito a corrigir no mesmo commit.
 ## Editar ou regenerar dados
 
 - **Nunca altere valores ao mudar a forma.** Correção de fórmula é revisão histórica: registre definição, fonte e impacto em `docs/metodologia.md` e peça aval antes.
-- O IPCA é o piloto já migrado: `indicadores/ipca/IPCA.ipynb` busca a SGS 13522 e escreve `{date, value}` diretamente. Ao migrar os demais, o notebook tem de escrever o **formato inteiro** (`versao`, `id`, `unidade`, `eixo`, `medida`, `granularidade`, `fonte`, `dados`) — `rate` e campos de apresentação não entram.
-- Os demais notebooks ainda estão no formato antigo e escrevem em `/content`; ao rodá-los fora do Colab, copie o resultado de volta.
+- Os notebooks escrevem o **formato inteiro** (`versao`, `id`, `unidade`, `eixo`, `medida`, `granularidade`, `fonte`, `urlFonte`, `dados`) direto em `indicadores/<familia>/` — `rate` e campos de apresentação não entram. Cada um aceita uma variável de ambiente (`IPCA_SAIDA`, `IGPM_SAIDA`, `SELIC_SAIDA`, `PIB_SAIDA`, `MVGR_SAIDA`, `CAGED_SAIDA`, `POPULACAO_SAIDA`, `HOMICIDIOS_SAIDA`) para gravar num diretório de ensaio em vez do arquivo publicado.
 - Toda execução deve recalcular a série inteira; não há modo incremental.
 - `python3 scripts/validar.py` valida o contrato de todas as séries. Não corrige nem calcula nada.
 - Dependências fixadas em `requirements.txt`.
 - O conversor antigo (`converter-schema-canonico.py`) foi removido: ele reintroduziria `rate` no IPCA.
+
+## API do BCB (SGS): o que já mordeu
+
+Quase toda série é lida da API de Dados Abertos do BCB. Ela tem três comportamentos que
+custaram execução perdida e não aparecem na documentação:
+
+- **Série diária exige `dataInicial` e aceita no máximo 10 anos por requisição.** Sem isso
+  devolve **406** com um JSON de erro explicando a sintaxe. Só a Selic (SGS 11 e 432) é
+  diária; o notebook fatia a consulta em décadas e remonta por data. Série mensal/anual não
+  tem esse limite — pode pedir tudo de uma vez.
+- **Falha intermitente, sem relação com o tamanho da janela.** Já vimos `502`, `ReadTimeout`
+  em 60 s e, pior, **200 com HTML** (`Requisição inválida!`) no lugar do JSON — inclusive em
+  janelas que funcionaram minutos antes. Os notebooks repetem com espera crescente, mas só em
+  erro HTTP: um 200-com-HTML ainda estoura `JSONDecodeError` e derruba a célula. Se acontecer,
+  é só rodar de novo — o resultado é determinístico.
+- **Consequência:** os notebooks que buscam na fonte precisam de rede para rodar, e reexecutar
+  não deve mudar valor nenhum. Se mudar, é revisão da fonte: registre em `docs/metodologia.md`
+  antes de publicar.
 
 ## `governos/` saiu daqui (2026-11-01)
 
