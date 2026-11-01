@@ -6,7 +6,7 @@ Arquivos públicos de dados (`*.json`) do **brasilemnumeros**, consumidos pelo a
 
 ## Contrato das séries
 
-**Fonte de verdade:** `../sitio/docs/contrato-de-indicadores.md` (repo irmão `sitio`; schema **1**, regras `C1…C14`).
+**Fonte de verdade:** `../sitio/docs/contrato-de-indicadores.md` (repo irmão `sitio`; `versao` **1**, regras `C1…C14`).
 Este repositório só o **implementa e referencia** — se a prosa e o código divergirem, o
 documento vale e a divergência é defeito a corrigir no mesmo commit.
 
