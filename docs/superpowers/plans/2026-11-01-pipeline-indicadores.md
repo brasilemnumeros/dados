@@ -393,20 +393,18 @@ git commit -m "refactor(dados): migra pib para o pipeline auditavel"
 Run: `grep -c "indicatorName" ipca/IPCA.ipynb`
 Expected: valor maior que `0`.
 
-- [ ] **Step 2: Aplicar a decisão metodológica**
+- [ ] **Step 2: Aplicar a decisão metodológica aprovada**
 
-Se `docs/metodologia.md` mandar corrigir a acumulação, implemente a composição:
+A decisão registrada em `docs/metodologia.md` é **usar a SGS 13522 diretamente**, sem recalcular a composição a partir da SGS 433.
 
-```python
-serie_12m = (1 + serie_mensal / 100).rolling(12).apply(lambda x: x.prod(), raw=True) - 1
-serie_12m = serie_12m * 100
-```
-
-Se o veredito for `manter`, preserve a fórmula atual. Registre no markdown do notebook qual foi a decisão e a evidência.
+- Busque SGS 13522 (IPCA acumulado em 12 meses, série oficial) desde `1995-01-01`.
+- Não use a SGS 433 para gerar os valores publicados.
+- Documente no markdown do notebook que o cálculo é definido pela fonte e que o notebook apenas busca, filtra e formata.
+- Registre que a série passa a começar em `1995-01-01`, adicionando os 11 pontos anteriores a `1995-12`.
 
 - [ ] **Step 3: Migrar o pipeline**
 
-- Busque SGS 433 desde `1995-01-01`.
+- A fonte do notebook passa a ser a SGS 13522; remova a lógica de `rolling(12).sum()` e a dependência da SGS 433 para o resultado.
 - Exclua o mês corrente.
 - Preserve a convenção de data existente.
 - Escreva `ipca/ipca-acum-12m.json` com `{date, value}`, sem `rate`.
@@ -423,7 +421,7 @@ Expected: exit `0`.
 - [ ] **Step 5: Comparar com o publicado**
 
 Run: `git diff -- ipca/ipca-acum-12m.json`
-Expected: remoção de `rate`; se a fórmula foi corrigida, mudanças de valor são esperadas e devem corresponder ao impacto documentado. Qualquer outra mudança deve ser investigada.
+Expected: remoção de `rate`; valores passam a ser os oficiais da SGS 13522; entram os 11 pontos de `1995-01` a `1995-11`; meses fechados novos podem ser adicionados. Qualquer outro tipo de mudança deve ser investigado.
 
 - [ ] **Step 6: Commit**
 
