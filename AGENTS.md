@@ -20,12 +20,12 @@ Arquivos públicos de dados (`*.json`) do **brasilemnumeros**, consumidos por ou
 - Adicionar uma série exige uma entrada na tabela `META` do script (`unit`, `granularity`, `source`); caso contrário, o conversor imprime `PULADO (sem metadados)` e não a altera.
 - Os notebooks salvam em `/content` (`output_dir = "/content"`), então rodá-los fora do Colab não atualiza este repositório; copie os resultados de volta. As dependências (`python-bcb`, `ipeadatapy`, pandas, matplotlib/seaborn/plotly) são instaladas nas células; não há lockfile nem ambiente local.
 
-## `governos/` (schema diferente)
+## `governos/` saiu daqui (2026-11-01)
 
-- `governos/index.json` lista as esferas; só a `federal` tem entidades no momento.
-- Os mandatos em `governos/federal.json` usam intervalos de **exercício efetivo** e não podem se sobrepor (ex.: Dilma II termina em `2016-05-11`, Temer começa em `2016-05-12`).
-- `mandatoDe` registra o mandato formal quando um sucessor o conclui antecipadamente. O mandato em curso usa `"fim": null` e `"emCurso": true`.
-- `tipo` é `eleito` ou `sucessor`.
+O registro de mandatos (índice + `federal.json`) mora agora no repo `sitio`, em
+`app/src/data/governos/`, e é embutido no bundle do app. Este repositório guarda só as
+séries. O schema de lá é o mesmo que estava aqui (exercício efetivo, sem sobreposição,
+`mandatoDe`, `emCurso`).
 
 ## Antes de commitar
 
