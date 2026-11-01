@@ -383,12 +383,22 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
 
 ## Pendentes
 
-Revisão concluída para as 12 séries em 2026-11-01. O que segue em aberto não é revisão
-pendente, e sim decisão de produto registrada nos blocos acima:
+Revisão concluída para as 12 séries em 2026-11-01. **Não há pendência de dado nem de forma.**
 
-- o produto não comunica que `mvgr-real` está em reais de mar/2004;
-- `populacao-*` publica população conciliada (≈3,9% acima do Censo 2022) e a `descricao` do
-  catálogo precisa dizer isso;
-- o denominador de `AVIOL12_VIOLPOP` em 2022–2023 é interpolação do IPEA;
-- as séries anuais carimbam `AAAA-01-01` mesmo quando o valor é de 1º de julho — convenção de
-  contrato, não desta série.
+As decisões de apresentação que estavam abertas foram fechadas no catálogo do `sitio`
+(`app/src/data/indicadores.json`), que é o que a ficha do app exibe:
+
+- `mvgr-real` chama-se "Valor mediano do imóvel em garantia (R$ de mar/2004)" e a descrição diz
+  que são reais constantes de março de 2004 — o número não é preço de hoje;
+- `populacao-*` diz que é projeção de 2024 do IBGE, população conciliada ao Censo 2022, com
+  referência em 1º de julho;
+- o carimbo `AAAA-01-01` nas séries anuais é convenção de C9 (início do período) e foi mantido.
+
+Duas **condições de revisão** ficam registradas — não são pendências, são gatilhos:
+
+- **Homicídios:** o denominador de 2022–2023 é interpolação do IPEA, com erro limitado a 0,9%
+  (ver o bloco de `homicidios-anual`). Refazer quando IPEA/IBGE publicarem população consolidada
+  para esses anos.
+- **Séries anuais:** se o instante da medida (1º de julho, no caso da população) passar a
+  importar mais que o alinhamento entre séries anuais, muda-se C9 para as seis séries anuais no
+  mesmo commit — não série a série.
