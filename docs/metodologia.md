@@ -10,35 +10,35 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
 ## ipca-acum-12m
 
 - **Definição:** variação percentual do IPCA acumulada nos últimos 12 meses
-  (taxa efetiva do período, composta por encadeamento), unidade `percentage`
-  (`%`, 2 casas decimais), granularidade `monthly`.
-- **Fonte e código:** IBGE, lida pela API de Dados Abertos do Banco Central
-  (SGS). Série de trabalho: **433** (IPCA, variação mensal, % a.m.). Série de
-  conferência: **13522** (IPCA, variação acumulada em 12 meses, %).
-  Endpoint: `https://api.bcb.gov.br/dados/serie/bcdata.sgs.433/dados?formato=json`.
-- **Fórmula atual:** `df['IPCA (%)'].rolling(12).sum()` — soma aritmética das
-  12 variações mensais.
-- **Fórmula proposta:** composição (encadeamento) das 12 variações mensais:
-  `(∏(1 + r_i/100) − 1) × 100`, com `i` de `t−11` a `t`.
-  Equivalentemente, ler direto a série oficial 13522.
+  (taxa efetiva do período), unidade `percentage` (`%`, 2 casas decimais),
+  granularidade `monthly`.
+- **Fonte e código:** IBGE, via API de Dados Abertos do Banco Central (SGS),
+  série **13522** (IPCA, variação acumulada em 12 meses, %). É a série primária
+  e única usada para o dado publicado. Endpoint:
+  `https://api.bcb.gov.br/dados/serie/bcdata.sgs.13522/dados?formato=json`.
+  A série 433 (variação mensal) **não** é usada para gerar a saída.
+- **Fórmula atual:** `df['IPCA (%)'].rolling(12).sum()` sobre a série 433 —
+  soma aritmética das 12 variações mensais; incorreta porque soma taxas em vez
+  de usar a série acumulada oficial.
+- **Fórmula proposta:** nenhuma. A série é lida direto da 13522 e publicada tal
+  qual o BCB/IBGE a divulga. O notebook só busca, filtra os meses fechados e
+  formata — o cálculo fica definido pela fonte, o que é intencional.
 - **Evidência:**
-  - Definição matemática: inflação acumulada em um período é o produto dos
-    fatores mensais `(1 + r_i/100)`, não a soma das taxas. O IBGE, na página
-    “Inflação” (`ibge.gov.br/explica/inflacao.php`), descreve o IPCA como
-    índice mensal cujo acumulado é obtido por encadeamento.
-  - Conferência numérica contra a série oficial 13522 (SGS, janela jul/2024 a
-    jun/2025): a soma das variações mensais dá **5,23%** (valor publicado),
-    a composição dá **5,35%** e a série 13522 registra **5,35%** para 2025-06.
-  - Mesma conferência em períodos de inflação alta: dez/2002 — soma publicada
-    **11,90%** vs. 13522 **12,53%**; fev/2003 — soma publicada **14,84%** vs.
-    13522 **15,85%**.
+  - A 13522 é a série oficial do SGS para “IPCA — variação acumulada em 12
+    meses”; publicá-la direto elimina qualquer erro de acumulação local.
+  - Conferência numérica (janela jul/2024 a jun/2025): a soma das variações
+    mensais da 433 dá **5,23%** (valor publicado hoje), enquanto a 13522
+    registra **5,35%** para 2025-06 — a soma diverge do oficial.
+  - Mesma conferência em inflação alta: dez/2002 — soma **11,90%** vs. 13522
+    **12,53%**; fev/2003 — soma **14,84%** vs. 13522 **15,85%**.
+  - A 13522 já tem valores desde antes de 1995 (pré-Plano Real); o pipeline
+    coleta desde **1995-01-01**, então a série publicada começa em 1995-01-01.
 - **Veredito:** corrigir.
-- **Impacto esperado:** a série publicada subestima a inflação acumulada em
-  todos os pontos, porque `composto > soma` para taxas positivas. A diferença
-  cresce com o nível da inflação: ~0,1 p.p. ao redor de 5% a.a. (diferença
-  relativa ~2%) e ~0,6–1,0 p.p. em 2002–2003 (12–16% a.a.). A correção altera
-  todos os valores já publicados — é revisão histórica, não atualização.
-- **Decisão pendente:** sim.
+- **Impacto esperado:** os valores passam a ser os da série oficial 13522
+  (mudam de `soma` para `oficial` em todos os pontos). Como a coleta começa em
+  1995-01-01, a série publicada ganha os 11 pontos de 1995-01 a 1995-11 antes
+  do atual início em 1995-12, e passa a se estender até o último mês fechado.
+- **Decisão pendente:** não — aprovada pelo usuário; implementação na Task 4.
 
 ## Pendentes
 
