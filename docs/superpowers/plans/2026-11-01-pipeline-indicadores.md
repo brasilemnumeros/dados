@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Fazer cada notebook ser a explicação executável e o único motor de coleta/cálculo dos indicadores, com publicação via PR, validação automática e detecção explícita de revisões históricas.
+**Goal:** Fazer cada notebook ser a explicação executável e o único motor de coleta/cálculo dos indicadores, com publicação via PR, validação automática e revisões históricas visíveis no diff.
 
-**Architecture:** Toda execução recalcula a série inteira desde `1995-01-01`, publica apenas períodos encerrados e escreve o JSON canônico diretamente. O GitHub Actions executa os notebooks, valida os arquivos, classifica o diff e abre/atualiza um PR. `scripts/` contém somente validação e classificação de diff, nunca lógica de indicador.
+**Architecture:** Toda execução recalcula a série inteira desde `1995-01-01`, publica apenas períodos encerrados e escreve o JSON canônico diretamente. O GitHub Actions executa os notebooks, valida os arquivos e abre/atualiza um PR quando `git diff` acusa mudança. `scripts/` contém somente validação, nunca lógica de indicador nem classificação de diff.
 
 **Tech Stack:** Python 3.12, Jupyter/nbconvert, pandas, `python-bcb`, `ipeadatapy`, requests, pytest, GitHub Actions.
 
@@ -32,8 +32,7 @@
 - Série mensal cujo último ponto é o mês corrente: deve ser excluído, não publicado.
 - Série anual cujo último ponto é o ano corrente: deve ser excluído, não publicado.
 - Série acumulada de 12 meses: o primeiro ponto só existe após 12 meses de aquecimento, sem `NaN`.
-- Arquivo novo, ainda ausente no `HEAD`: o diff deve classificá-lo como `novo`, não quebrar.
-- Revisão de metadado (`source`, `unit`, `granularity`, `schema`) ou remoção de ponto: deve virar `revisao`, nunca `acrescimo`.
+- Revisão de valor já publicado: deve aparecer como linha removida/alterada no diff e exigir revisão humana.
 - Série derivada: deve ser recalculada da fonte bruta, sem ler o JSON publicado de outra pasta.
 
 ---
@@ -43,9 +42,7 @@
 - `requirements.txt`: dependências fixadas do CI e do ambiente local.
 - `scripts/__init__.py`: permite importar os scripts nos testes.
 - `scripts/validar.py`: contrato do JSON publicado; não corrige nada.
-- `scripts/diff_series.py`: compara `HEAD` com a árvore e classifica o diff.
 - `tests/test_validar.py`: testes do validador.
-- `tests/test_diff_series.py`: testes da classificação.
 - `.github/workflows/atualizar-dados.yml`: execução diária, validação e PR.
 - `<pasta>/*.ipynb`: notebooks migrados, um por pasta, publicando N JSONs.
 - `<pasta>/*.json`: dados publicados.
@@ -220,150 +217,7 @@ git commit -m "feat(dados): adiciona validador do contrato das séries"
 
 ---
 
-### Task 2: Classificador de diff
-
-**Files:**
-- Create: `scripts/diff_series.py`
-- Test: `tests/test_diff_series.py`
-
-**Interfaces:**
-- Consumes: schema das séries da Task 1.
-- Produces: `comparar(antes: dict | None, depois: dict | None) -> dict`
-- Produces: `classificar(antes: dict | None, depois: dict | None) -> str`
-- Produces: `comparar_raiz(raiz: Path) -> dict`
-- Produces CLI: `python3 scripts/diff_series.py [--json | --markdown]`
-
-`comparar` retorna exatamente:
-
-```python
-{
-    "classificacao": "novo" | "acrescimo" | "revisao" | "sem_mudanca",
-    "adicionadas": ["YYYY-MM-DD"],
-    "alteradas": ["YYYY-MM-DD"],
-    "removidas": ["YYYY-MM-DD"],
-    "metadados_alterados": ["source", "unit"],
-}
-```
-
-`comparar_raiz` retorna exatamente:
-
-```python
-{
-    "series": [{"caminho": "ipca/ipca-acum-12m.json", **resultado_de_comparar}],
-    "tem_mudanca": True,
-    "tem_revisao": False,
-}
-```
-
-- [ ] **Step 1: Escrever os testes do classificador**
-
-Crie `tests/test_diff_series.py`:
-
-```python
-from scripts.diff_series import classificar, comparar
-
-META = {
-    "schema": 1,
-    "id": "serie",
-    "unit": {"type": "percentage", "symbol": "%", "decimals": 2},
-    "granularity": "monthly",
-    "source": "IBGE",
-}
-
-
-def serie(*pontos, **over):
-    base = {**META, "data": [{"date": d, "rate": v, "value": v} for d, v in pontos]}
-    base.update(over)
-    return base
-
-
-def test_arquivo_novo():
-    assert classificar(None, serie(("2026-09-01", 5.0))) == "novo"
-
-
-def test_acrescimo():
-    antes = serie(("2026-08-01", 4.0))
-    depois = serie(("2026-08-01", 4.0), ("2026-09-01", 5.0))
-    assert classificar(antes, depois) == "acrescimo"
-
-
-def test_revisao_de_valor():
-    antes = serie(("2026-08-01", 4.0))
-    depois = serie(("2026-08-01", 4.1))
-    assert classificar(antes, depois) == "revisao"
-
-
-def test_revisao_de_metadado():
-    antes = serie(("2026-08-01", 4.0))
-    depois = serie(("2026-08-01", 4.0), source="FGV")
-    assert classificar(antes, depois) == "revisao"
-
-
-def test_remocao_de_ponto():
-    antes = serie(("2026-08-01", 4.0), ("2026-09-01", 5.0))
-    depois = serie(("2026-09-01", 5.0))
-    assert classificar(antes, depois) == "revisao"
-
-
-def test_sem_mudanca():
-    antes = serie(("2026-08-01", 4.0))
-    assert classificar(antes, serie(("2026-08-01", 4.0))) == "sem_mudanca"
-
-
-def test_detalhe_do_diff():
-    antes = serie(("2026-08-01", 4.0), ("2026-09-01", 5.0))
-    depois = serie(("2026-08-01", 4.1), ("2026-10-01", 6.0))
-    r = comparar(antes, depois)
-    assert r["alteradas"] == ["2026-08-01"]
-    assert r["removidas"] == ["2026-09-01"]
-    assert r["adicionadas"] == ["2026-10-01"]
-```
-
-- [ ] **Step 2: Rodar os testes e confirmar que falham**
-
-Run: `python3 -m pytest tests/test_diff_series.py -q`
-Expected: FAIL com `ModuleNotFoundError: No module named 'scripts.diff_series'`.
-
-- [ ] **Step 3: Implementar `scripts/diff_series.py`**
-
-Regras de classificação:
-
-- `antes is None` e `depois` presente: `novo`.
-- `depois is None`: `revisao`.
-- Metadados comparados: `schema`, `id`, `unit`, `granularity`, `source`; qualquer diferença: `revisao`.
-- Ponto comparado pelo par `(rate, value)` na mesma data.
-- Data removida ou valor alterado: `revisao`.
-- Só datas novas: `acrescimo`.
-- Nada mudou: `sem_mudanca`.
-
-`comparar_raiz`:
-
-- Lê os arquivos atuais de `raiz.glob("*/*.json")`, ignorando `governos`.
-- Lê a versão de `HEAD` com `git show HEAD:<caminho-relativo>`; arquivo ausente vira `None`.
-- Inclui também arquivos que existiam no `HEAD` e desapareceram.
-- `--json` imprime o resumo; `--markdown` imprime um corpo de PR com uma seção por série; sem flag, imprime resumo legível.
-- Exit `0` mesmo sem mudanças; exit `2` apenas para erro de Git ou JSON.
-
-- [ ] **Step 4: Rodar os testes e confirmar que passam**
-
-Run: `python3 -m pytest tests/test_diff_series.py -q`
-Expected: PASS.
-
-- [ ] **Step 5: Conferir o diff real do repositório**
-
-Run: `python3 scripts/diff_series.py --json`
-Expected: todas as séries como `sem_mudanca`, `tem_mudanca: false`.
-
-- [ ] **Step 6: Commit**
-
-```bash
-git add scripts/diff_series.py tests/test_diff_series.py
-git commit -m "feat(dados): classifica acrescimos e revisoes historicas"
-```
-
----
-
-### Task 3: Normalizar datas de homicídios por armas de fogo
+### Task 2: Normalizar datas de homicídios por armas de fogo
 
 **Files:**
 - Modify: `homicidios/homicidios-armas-fogo-anual.json`
@@ -419,7 +273,7 @@ git commit -m "fix(dados): normaliza datas anuais para o dia 01"
 
 ---
 
-### Task 4: Migrar o notebook piloto do IPCA
+### Task 3: Migrar o notebook piloto do IPCA
 
 **Files:**
 - Modify: `ipca/IPCA.ipynb`
@@ -427,7 +281,7 @@ git commit -m "fix(dados): normaliza datas anuais para o dia 01"
 
 **Interfaces:**
 - Consumes: contrato de migração de notebook deste plano.
-- Produces: primeiro notebook no contrato; serve de referência para as Tasks 5–11.
+- Produces: primeiro notebook no contrato; serve de referência para as Tasks 4–10.
 - Produces: `ipca/ipca-acum-12m.json` canônico, mensal, `unit.type = percentage`, `symbol = %`, `decimals = 2`, `source = IBGE`.
 
 - [ ] **Step 1: Confirmar que o notebook ainda está no formato antigo**
@@ -539,14 +393,14 @@ git commit -m "refactor(dados): migra ipca para o pipeline auditavel"
 
 ---
 
-### Task 5: Migrar o notebook da Selic
+### Task 4: Migrar o notebook da Selic
 
 **Files:**
 - Modify: `selic/Selic.ipynb`
 - Modify: `selic/selic-meta-acum-12m.json`, `selic/selic-over-acum-12m.json` (somente acréscimos legítimos)
 
 **Interfaces:**
-- Consumes: contrato de migração de notebook e padrão da Task 4.
+- Consumes: contrato de migração de notebook e padrão da Task 3.
 - Produces: `selic-meta-acum-12m.json` e `selic-over-acum-12m.json` canônicos, mensais, `percentage`, `%`, `decimals = 2`, `source = Banco Central do Brasil`.
 
 - [ ] **Step 1: Confirmar o legado**
@@ -571,7 +425,7 @@ Expected: `ok: notebook legado`.
 - Busque SGS 432 (meta diária) e SGS 11 (over diário) desde `1995-01-01`.
 - Preserve as fórmulas existentes: meta = média mensal da série diária; over = produto mensal dos fatores diários e produto rolante de 12 meses, convertido para porcentagem.
 - Exclua o mês corrente.
-- Escreva os dois JSONs canônicos com o padrão da Task 4.
+- Escreva os dois JSONs canônicos com o padrão da Task 3.
 
 - [ ] **Step 3: Executar o notebook**
 
@@ -600,14 +454,14 @@ git commit -m "refactor(dados): migra selic para o pipeline auditavel"
 
 ---
 
-### Task 6: Migrar o notebook do IGP-M
+### Task 5: Migrar o notebook do IGP-M
 
 **Files:**
 - Modify: `igp-m/IGP-M.ipynb`
 - Modify: `igp-m/igpm-acum-12m.json` (esperado: acréscimo de pontos anteriores a 1996-07)
 
 **Interfaces:**
-- Consumes: contrato de migração de notebook e padrão da Task 4.
+- Consumes: contrato de migração de notebook e padrão da Task 3.
 - Produces: `igp-m/igpm-acum-12m.json` canônico, mensal, `percentage`, `%`, `decimals = 2`, `source = FGV`.
 
 - [ ] **Step 1: Confirmar a janela móvel**
@@ -649,14 +503,14 @@ git commit -m "refactor(dados): migra igp-m para o pipeline auditavel"
 
 ---
 
-### Task 7: Migrar o notebook do PIB
+### Task 6: Migrar o notebook do PIB
 
 **Files:**
 - Modify: `pib/PIB.ipynb`
 - Modify: `pib/pib-real-anual.json` (somente acréscimos legítimos)
 
 **Interfaces:**
-- Consumes: contrato de migração de notebook e padrão da Task 4.
+- Consumes: contrato de migração de notebook e padrão da Task 3.
 - Produces: `pib/pib-real-anual.json` canônico, anual, `percentage`, `%`, `decimals = 2`, `source = IBGE`.
 
 - [ ] **Step 1: Confirmar o legado**
@@ -694,14 +548,14 @@ git commit -m "refactor(dados): migra pib para o pipeline auditavel"
 
 ---
 
-### Task 8: Migrar o notebook do CAGED
+### Task 7: Migrar o notebook do CAGED
 
 **Files:**
 - Modify: `caged/CAGED.ipynb`
 - Modify: `caged/caged-total-mensal.json` (somente acréscimos legítimos)
 
 **Interfaces:**
-- Consumes: contrato de migração de notebook e padrão da Task 4.
+- Consumes: contrato de migração de notebook e padrão da Task 3.
 - Produces: `caged/caged-total-mensal.json` canônico, mensal, `number`, `vínculos`, `decimals = 0`, `source = Ministério do Trabalho`.
 
 - [ ] **Step 1: Confirmar o legado**
@@ -739,14 +593,14 @@ git commit -m "refactor(dados): migra caged para o pipeline auditavel"
 
 ---
 
-### Task 9: Migrar o notebook do MVG-R
+### Task 8: Migrar o notebook do MVG-R
 
 **Files:**
 - Modify: `mvgr/MVG-R.ipynb`
 - Modify: `mvgr/mvgr-nominal.json`, `mvgr/mvgr-real.json` (somente acréscimos legítimos)
 
 **Interfaces:**
-- Consumes: contrato de migração de notebook e padrão da Task 4.
+- Consumes: contrato de migração de notebook e padrão da Task 3.
 - Produces: `mvgr/mvgr-nominal.json` e `mvgr/mvgr-real.json` canônicos, mensais, `currency`, `R$`, `decimals = 2`, `source = Banco Central do Brasil`.
 
 - [ ] **Step 1: Confirmar o legado**
@@ -770,7 +624,7 @@ Expected: `ok: notebook legado`.
 - Busque SGS 25419 (MVG-R nominal) e SGS 433 (IPCA) desde `1995-01-01`.
 - Preserve a fórmula de MVG-R real: fator de IPCA, índice acumulado, normalização pela primeira data válida do MVG-R e divisão do nominal pelo índice normalizado.
 - Exclua o mês corrente dos dois JSONs.
-- Escreva os dois JSONs canônicos no padrão da Task 4.
+- Escreva os dois JSONs canônicos no padrão da Task 3.
 
 - [ ] **Step 3: Executar e validar**
 
@@ -795,14 +649,14 @@ git commit -m "refactor(dados): migra mvg-r para o pipeline auditavel"
 
 ---
 
-### Task 10: Migrar o notebook da População
+### Task 9: Migrar o notebook da População
 
 **Files:**
 - Modify: `populacao/População.ipynb`
 - Modify: `populacao/populacao-total-anual.json`, `populacao/populacao-variacao-anual.json` (somente acréscimos legítimos)
 
 **Interfaces:**
-- Consumes: contrato de migração de notebook e padrão da Task 4.
+- Consumes: contrato de migração de notebook e padrão da Task 3.
 - Produces: os dois JSONs canônicos, anuais; total com `number`, `hab.`, `decimals = 0`; variação com `percentage`, `%`, `decimals = 2`; `source = IBGE`.
 
 - [ ] **Step 1: Confirmar o legado**
@@ -841,14 +695,14 @@ git commit -m "refactor(dados): migra populacao para o pipeline auditavel"
 
 ---
 
-### Task 11: Migrar o notebook de Homicídios
+### Task 10: Migrar o notebook de Homicídios
 
 **Files:**
 - Modify: `homicidios/Homicidios.ipynb`
 - Modify: `homicidios/homicidios-anual.json`, `homicidios/homicidios-armas-fogo-anual.json`, `homicidios/proporcao-homicidios-armas-fogo-anual.json` (somente acréscimos legítimos)
 
 **Interfaces:**
-- Consumes: contrato de migração de notebook e padrão da Task 4.
+- Consumes: contrato de migração de notebook e padrão da Task 3.
 - Produces: os três JSONs canônicos, anuais, `number`/`por 100 mil` para as taxas e `percentage`/`%` para a proporção, `source = IPEA/Atlas da Violência`.
 
 - [ ] **Step 1: Confirmar o legado**
@@ -876,7 +730,7 @@ Expected: exit `0`.
 - [ ] **Step 4: Revisar o diff**
 
 Run: `git diff -- homicidios/`
-Expected: `homicidios-armas-fogo-anual.json` mantém as datas já normalizadas na Task 3; nenhum valor existente muda.
+Expected: `homicidios-armas-fogo-anual.json` mantém as datas já normalizadas na Task 2; nenhum valor existente muda.
 
 - [ ] **Step 5: Commit**
 
@@ -887,15 +741,15 @@ git commit -m "refactor(dados): migra homicidios para o pipeline auditavel"
 
 ---
 
-### Task 12: Workflow de atualização e PR
+### Task 11: Workflow de atualização e PR
 
 **Files:**
 - Create: `.github/workflows/atualizar-dados.yml`
 - Modify: `requirements.txt` (se faltar alguma dependência de CI)
 
 **Interfaces:**
-- Consumes: `scripts/validar.py` e `scripts/diff_series.py`.
-- Produces: execução diária e manual que abre/atualiza o PR `dados/atualizacao`.
+- Consumes: `scripts/validar.py`.
+- Produces: execução diária e manual que abre/atualiza o PR `dados/atualizacao` quando `git diff` acusa mudança.
 
 - [ ] **Step 1: Validar o YAML antes de escrever**
 
@@ -908,40 +762,57 @@ Estrutura obrigatória:
 - `permissions: contents: write` e `pull-requests: write`
 - `concurrency: group: atualizar-dados, cancel-in-progress: false`
 - job `atualizar` em `ubuntu-latest`, `timeout-minutes: 30`
-- steps: checkout, setup-python 3.12 com cache pip, `pip install -r requirements.txt`, `pytest -q`, loop de `jupyter nbconvert --execute` para `*/*.ipynb`, `python3 scripts/validar.py`, `python3 scripts/diff_series.py --json`, upload de artifact de `/tmp/nbexec`, criação do PR.
+- steps: checkout, setup-python 3.12 com cache pip, `pip install -r requirements.txt`, `pytest -q`, loop de `jupyter nbconvert --execute` para `*/*.ipynb`, `python3 scripts/validar.py`, detecção de diff, upload de artifact de `/tmp/nbexec`, criação do PR.
 
 - [ ] **Step 2: Implementar o workflow**
 
 Regras:
 
-- Se `tem_mudanca` for `false`, encerrar sem commit.
+- Detectar mudança com um step com `id: diff`:
+  ```bash
+  if git diff --quiet; then
+    echo "mudou=false" >> "$GITHUB_OUTPUT"
+  else
+    echo "mudou=true" >> "$GITHUB_OUTPUT"
+  fi
+  ```
+- Todos os steps de publicação usam `if: steps.diff.outputs.mudou == 'true'`.
 - Configurar `user.name` e `user.email` do bot.
 - `git checkout -B dados/atualizacao`.
 - Adicionar apenas séries: `git add -- '*/*.json' ':!governos/*'`.
-- Commit com `dados: atualizacao` ou `dados: revisao historica` conforme `tem_revisao`.
+- Commit fixo: `dados: atualizacao`.
 - `git push --force origin dados/atualizacao`.
-- Gerar o corpo com `python3 scripts/diff_series.py --markdown > /tmp/pr.md`.
-- Criar labels se não existirem:
+- Gerar o corpo do PR com:
   ```bash
-  gh label create atualizacao-rotina --color 0E8A16 || true
-  gh label create revisao-historica --color B60205 || true
+  {
+    echo "## Alterações"
+    echo
+    echo "O diff é a fonte de verdade. Revise antes de mergear."
+    echo
+    echo "- [ ] Nenhum valor de data já publicada foi alterado (apenas acréscimos)."
+    echo "- [ ] Se houver valor antigo alterado, a mudança foi conferida na fonte."
+    echo
+    echo '```text'
+    git diff --stat
+    echo '```'
+  } > /tmp/pr.md
   ```
 - Se o PR existir, `gh pr edit`; senão, `gh pr create --base main --head dados/atualizacao`.
-- Remover as duas labels antes de aplicar a correta.
 - Usar `GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}`.
 - `actions/upload-artifact@v4` com `if: always()` e `path: /tmp/nbexec`.
 - Não usar `pull_request_target`.
 - Não fazer merge automático.
+- Não criar labels nem classificar o diff.
 
 - [ ] **Step 3: Verificar o workflow localmente**
 
 Run:
 ```bash
 python3 -c "import yaml; yaml.safe_load(open('.github/workflows/atualizar-dados.yml'))"
-python3 scripts/diff_series.py --json
 python3 scripts/validar.py
+git diff --quiet; echo "git-diff-exit=$?"
 ```
-Expected: YAML carrega, diff `tem_mudanca: false` e validador exit `0`.
+Expected: YAML carrega, validador exit `0`, `git-diff-exit=0` (sem mudanças).
 
 - [ ] **Step 4: Commit**
 
@@ -952,7 +823,7 @@ git commit -m "ci(dados): executa notebooks e abre pr de atualizacao"
 
 ---
 
-### Task 13: Aposentar o conversor e validar o ciclo completo
+### Task 12: Aposentar o conversor e validar o ciclo completo
 
 **Files:**
 - Delete: `converter-schema-canonico.py`
@@ -1008,9 +879,9 @@ Remova a menção ao `converter-schema-canonico.py` e documente:
 
 ```text
 - `python3 scripts/validar.py` valida o contrato de todas as séries.
-- `python3 scripts/diff_series.py` classifica o diff em novo, acrescimo, revisao ou sem_mudanca.
 - Toda execução recalcula a série inteira; não há modo incremental.
 - Notebooks publicam apenas períodos encerrados e escrevem o schema canônico diretamente.
+- Revisões históricas aparecem no diff do PR e exigem revisão humana.
 ```
 
 - [ ] **Step 7: Commit**
@@ -1024,6 +895,6 @@ git commit -m "chore(dados): aposenta o conversor de schema"
 
 ## Self-Review
 
-- **Cobertura do spec:** validador (Task 1), diff (Task 2), normalização de datas (Task 3), contrato de notebook (Task 4), todas as pastas de série (Tasks 4–11), workflow/PR (Task 12), aposentadoria do conversor e documentação (Task 13).
-- **Tipos e nomes:** `validar_serie`, `validar_arquivo`, `validar_todos`, `comparar`, `classificar`, `comparar_raiz` são usados com as mesmas assinaturas nas tasks seguintes.
-- **Proporção:** as tasks de migração referenciam o contrato e o padrão da Task 4 em vez de repetir o código.
+- **Cobertura do spec:** validador (Task 1), normalização de datas (Task 2), contrato de notebook (Task 3), todas as pastas de série (Tasks 3–10), workflow/PR (Task 11), aposentadoria do conversor e documentação (Task 12).
+- **Tipos e nomes:** `validar_serie`, `validar_arquivo` e `validar_todos` são usados com as mesmas assinaturas nas tasks seguintes.
+- **Proporção:** as tasks de migração referenciam o contrato e o padrão da Task 3 em vez de repetir o código.

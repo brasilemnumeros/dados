@@ -19,7 +19,7 @@ O notebook é o único artefato de lógica. Não existe uma biblioteca paralela 
 - Expor claramente fonte, código da série, janela, transformação e validações dentro do notebook.
 - Permitir que qualquer pessoa leia e rode o notebook no Colab.
 - Rodar de graça e com poucos recursos no GitHub Actions, com PR como ato de publicação.
-- Detectar revisões históricas da fonte e tratá-las como caso de revisão, não como atualização rotineira.
+- Tornar revisões históricas da fonte visíveis no diff do PR, para revisão humana sob demanda.
 
 ## Não objetivos
 
@@ -50,9 +50,9 @@ O notebook é o único artefato de lógica. Não existe uma biblioteca paralela 
 
 ### 1. Recalcular tudo e publicar só o delta (escolhida)
 
-O notebook busca a série completa, calcula e escreve o JSON proposto. O CI compara com o arquivo publicado e propõe apenas o delta; se o arquivo não existe, propõe o arquivo inteiro. Alterações em datas já publicadas viram revisão histórica explícita.
+O notebook busca a série completa, calcula e escreve o JSON proposto. O CI compara com o arquivo publicado e propõe apenas o delta; se o arquivo não existe, propõe o arquivo inteiro. Alterações em datas já publicadas aparecem como linhas removidas/alteradas no diff e exigem revisão humana.
 
-**Não existem modos `update` e `rebuild`, nem parâmetro de modo.** Toda execução, agendada ou manual, recalcula a série inteira a partir da fonte. “Atualizar” e “revisar” são apenas classificações do diff resultante, não caminhos de código diferentes.
+**Não existem modos `update` e `rebuild`, nem parâmetro de modo.** Toda execução, agendada ou manual, recalcula a série inteira a partir da fonte. “Atualizar” e “revisar” descrevem o diff resultante, não caminhos de código diferentes.
 
 Por que foi escolhida: um único caminho de código, sem cache velho, com indicadores derivados sempre corretos e com qualquer revisão da fonte visível no diff. O custo é refazer requisições pequenas, aceitável para 13 séries.
 
@@ -75,7 +75,6 @@ Buscar apenas depois da última data. Descartada porque quebra indicadores acumu
 <indicador>/<id>.json    # id == nome do arquivo sem .json
 scripts/
   validar.py             # valida schema e contrato; não calcula indicador
-  diff_series.py         # classifica diff em acréscimo vs revisão histórica
 requirements.txt         # dependências fixadas para CI
 .github/workflows/
   atualizar-dados.yml
@@ -139,13 +138,7 @@ O notebook escreve o schema canônico diretamente:
 
 Falha com mensagem apontando arquivo, data e regra violada. Não corrige nada.
 
-`scripts/diff_series.py` compara `HEAD` com a árvore de trabalho e classifica cada série em:
-
-- `novo`: arquivo não existia;
-- `acrescimo`: só datas novas, com metadados inalterados;
-- `revisao`: alguma data existente mudou ou desapareceu, ou algum metadado (`unit`, `granularity`, `source`, `schema`) mudou.
-
-A classificação alimenta o corpo e as labels do PR.
+Não há classificação automática de diff. O workflow usa `git diff --quiet` para decidir se há qualquer mudança, e o PR mostra o diff completo para revisão humana. Alterações em valores já publicados aparecem como linhas removidas/adicionadas no diff.
 
 ### Workflow
 
@@ -164,12 +157,9 @@ A classificação alimenta o corpo e as labels do PR.
 ### Política de PR
 
 - Branch fixa `dados/atualizacao`, atualizada por force-push a cada execução; não se acumulam PRs duplicados.
-- Título indica o tipo: `dados: atualização` ou `dados: revisão histórica`.
-- Corpo lista, por série, a classificação e os pontos adicionados/alterados.
-- `acrescimo` recebe label `atualizacao-rotina`.
-- `revisao` recebe label `revisao-historica` e exige revisão humana explícita; nunca é mergeada automaticamente.
-- Se qualquer série for `revisao`, o PR inteiro vira “revisão histórica”, mesmo que outras séries tenham apenas acréscimos. Não se separam os dois casos nesta fase.
-- O merge é o ato de publicar.
+- Título fixo: `dados: atualização`.
+- Corpo gerado com `git diff --stat` e uma checklist que pergunta explicitamente se algum valor de data já publicada foi alterado.
+- O merge é o ato de publicar; não há merge automático.
 - Commits usam Conventional Commits em português com escopo `dados`, explicando o impacto.
 
 ### Auditoria
@@ -185,7 +175,7 @@ Permanece manual. Não é coletado por notebook nem validado como série. Suas r
 
 ## Migração
 
-1. Adicionar `requirements.txt`, `scripts/validar.py`, `scripts/diff_series.py` e o workflow.
+1. Adicionar `requirements.txt`, `scripts/validar.py` e o workflow.
 2. Migrar um notebook piloto (IPCA 12M) para o contrato completo e confirmar que o JSON gerado é idêntico ao publicado.
 3. Migrar os demais notebooks um a um, comparando o resultado com o arquivo atual. Qualquer diferença de valor deve ser investigada antes de seguir.
 4. Substituir a janela móvel de 30 anos do IGP-M por uma data inicial fixa em `1995-01-01` e confirmar que o histórico publicado é preservado.
@@ -203,18 +193,17 @@ Permanece manual. Não é coletado por notebook nem validado como série. Suas r
 - Apenas períodos encerrados são publicados; o período em curso fica de fora.
 - A unidade de execução é o notebook, que pode publicar vários JSONs.
 - Séries derivadas são calculadas dentro do próprio notebook, a partir das fontes brutas.
-- Mudança de metadado conta como `revisao`.
-- Um PR com qualquer `revisao` é tratado inteiro como revisão histórica.
+- Não há classificação automática de diff; revisões históricas aparecem no diff do PR e exigem revisão humana.
 - Datas de todas as séries normalizadas para o dia 01.
 - `converter-schema-canonico.py` sai de cena após a migração.
-- `scripts/` pode conter validação e diff, mas não lógica de indicador.
+- `scripts/` pode conter validação, mas não lógica de indicador.
 
 ## Riscos e mitigações
 
 - **Desativação do `schedule` após 60 dias sem atividade:** as séries combinadas devem gerar commits com frequência; monitorar e usar `workflow_dispatch` se necessário.
 - **Atraso do cron:** não prometer horário exato; o PR é a evidência, não o relógio.
 - **Fonte fora do ar:** o workflow falha visivelmente e não publica nada parcial.
-- **Mudança silenciosa de metodologia da fonte:** aparece como `revisao` no diff e exige revisão.
+- **Mudança silenciosa de metodologia da fonte:** aparece como valor alterado no diff e exige revisão.
 - **Notebook pesado ou instável no CI:** dependências fixadas, kernel novo, timeout e execução top-to-bottom.
 - **Rate limit por recalcular tudo:** volume atual é pequeno; se necessário, adicionar cache bruto depois sem mudar o contrato do notebook.
 
@@ -222,6 +211,6 @@ Permanece manual. Não é coletado por notebook nem validado como série. Suas r
 
 - Nomes exatos dos arquivos, funções e mensagens.
 - Estrutura das células dos notebooks e ordem da migração.
-- Formato exato do corpo do PR e das labels.
+- Formato exato do corpo do PR.
 - Estratégia de pinagem das dependências.
 - Detalhes de `nbconvert`, cache do pip e timeout.
