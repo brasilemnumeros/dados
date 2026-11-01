@@ -9,7 +9,8 @@
   "eixo": "por-100-mil",
   "medida": "nivel",
   "granularidade": "anual",
-  "fonte": "IPEA/Atlas da Violência",
+  "fonte": "IPEA/Atlas da Violência (SIM/DATASUS)",
+  "urlFonte": "https://www.ipea.gov.br/atlasviolencia/dados-series/328/",
   "dados": [
     {
       "data": "1995-01-01",
@@ -33,7 +34,7 @@
     },
     {
       "data": "2000-01-01",
-      "valor": 27.35
+      "valor": 26.76
     },
     {
       "data": "2001-01-01",
@@ -45,43 +46,43 @@
     },
     {
       "data": "2003-01-01",
-      "valor": 29.14
+      "valor": 28.53
     },
     {
       "data": "2004-01-01",
-      "valor": 26.94
+      "valor": 26.74
     },
     {
       "data": "2005-01-01",
-      "valor": 26.13
+      "valor": 26.0
     },
     {
       "data": "2006-01-01",
-      "valor": 26.61
+      "valor": 26.53
     },
     {
       "data": "2007-01-01",
-      "valor": 26.2
+      "valor": 25.45
     },
     {
       "data": "2008-01-01",
-      "valor": 26.72
+      "valor": 26.45
     },
     {
       "data": "2009-01-01",
-      "valor": 27.18
+      "valor": 26.89
     },
     {
       "data": "2010-01-01",
-      "valor": 27.8
+      "valor": 27.12
     },
     {
       "data": "2011-01-01",
-      "valor": 27.45
+      "valor": 26.75
     },
     {
       "data": "2012-01-01",
-      "valor": 29.41
+      "valor": 28.63
     },
     {
       "data": "2013-01-01",
@@ -93,7 +94,7 @@
     },
     {
       "data": "2015-01-01",
-      "valor": 28.89
+      "valor": 28.9
     },
     {
       "data": "2016-01-01",
@@ -101,7 +102,7 @@
     },
     {
       "data": "2017-01-01",
-      "valor": 31.59
+      "valor": 31.72
     },
     {
       "data": "2018-01-01",
@@ -113,19 +114,23 @@
     },
     {
       "data": "2020-01-01",
-      "valor": 23.54
+      "valor": 23.55
     },
     {
       "data": "2021-01-01",
-      "valor": 22.42
+      "valor": 22.43
     },
     {
       "data": "2022-01-01",
-      "valor": 21.67
+      "valor": 21.81
     },
     {
       "data": "2023-01-01",
-      "valor": 21.218263281416682
+      "valor": 21.52
+    },
+    {
+      "data": "2024-01-01",
+      "valor": 20.04
     }
   ]
 }
