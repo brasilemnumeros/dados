@@ -8,6 +8,9 @@ Arquivos públicos de dados (`*.json`) do **brasilemnumeros**, consumidos pelo a
 
 - **Diagnóstico sem solução não vale.** Todo problema apontado vem com **a** solução recomendada
   (uma, com o porquê e o custo), não com um menu de alternativas.
+- Questão técnica tem resposta certa: decida e explique o critério, não ofereça caminhos. Só
+  pergunte quando a dúvida for sobre **o que o produto deve comunicar** — e então pergunte
+  sobre a intenção, nunca sobre a implementação.
 - Quando a correção muda valor publicado, a recomendação vem separada em "o que eu faria" e
   "o que depende de aval" — e o aval é pedido antes de aplicar.
 - Preferir consertar rótulo a mexer em número: se o dado está certo e a descrição engana, o
