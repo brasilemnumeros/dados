@@ -1,127 +1,127 @@
 {
-  "schema": 1,
+  "versao": 1,
   "id": "homicidios-armas-fogo-anual",
-  "unit": {
-    "type": "number",
-    "symbol": "por 100 mil",
-    "decimals": 2
+  "unidade": {
+    "tipo": "numero",
+    "simbolo": "por 100 mil",
+    "casas": 2
   },
   "eixo": "por-100-mil",
   "medida": "nivel",
-  "granularity": "annual",
-  "source": "IPEA/Atlas da Violência",
-  "data": [
+  "granularidade": "anual",
+  "fonte": "IPEA/Atlas da Violência",
+  "dados": [
     {
-      "date": "1995-01-15",
-      "value": 14.32
+      "data": "1995-01-15",
+      "valor": 14.32
     },
     {
-      "date": "1996-01-15",
-      "value": 14.63
+      "data": "1996-01-15",
+      "valor": 14.63
     },
     {
-      "date": "1997-01-15",
-      "value": 15.31
+      "data": "1997-01-15",
+      "valor": 15.31
     },
     {
-      "date": "1998-01-15",
-      "value": 15.87
+      "data": "1998-01-15",
+      "valor": 15.87
     },
     {
-      "date": "1999-01-15",
-      "value": 16.41
+      "data": "1999-01-15",
+      "valor": 16.41
     },
     {
-      "date": "2000-01-15",
-      "value": 18.58
+      "data": "2000-01-15",
+      "valor": 18.58
     },
     {
-      "date": "2001-01-15",
-      "value": 19.38
+      "data": "2001-01-15",
+      "valor": 19.38
     },
     {
-      "date": "2002-01-15",
-      "value": 19.56
+      "data": "2002-01-15",
+      "valor": 19.56
     },
     {
-      "date": "2003-01-15",
-      "value": 20.42
+      "data": "2003-01-15",
+      "valor": 20.42
     },
     {
-      "date": "2004-01-15",
-      "value": 18.83
+      "data": "2004-01-15",
+      "valor": 18.83
     },
     {
-      "date": "2005-01-15",
-      "value": 18.14
+      "data": "2005-01-15",
+      "valor": 18.14
     },
     {
-      "date": "2006-01-15",
-      "value": 18.7
+      "data": "2006-01-15",
+      "valor": 18.7
     },
     {
-      "date": "2007-01-15",
-      "value": 18.56
+      "data": "2007-01-15",
+      "valor": 18.56
     },
     {
-      "date": "2008-01-15",
-      "value": 18.82
+      "data": "2008-01-15",
+      "valor": 18.82
     },
     {
-      "date": "2009-01-15",
-      "value": 19.12
+      "data": "2009-01-15",
+      "valor": 19.12
     },
     {
-      "date": "2010-01-15",
-      "value": 19.29
+      "data": "2010-01-15",
+      "valor": 19.29
     },
     {
-      "date": "2011-01-15",
-      "value": 19.1
+      "data": "2011-01-15",
+      "valor": 19.1
     },
     {
-      "date": "2012-01-15",
-      "value": 20.66
+      "data": "2012-01-15",
+      "valor": 20.66
     },
     {
-      "date": "2013-01-15",
-      "value": 20.08
+      "data": "2013-01-15",
+      "valor": 20.08
     },
     {
-      "date": "2014-01-15",
-      "value": 21.08
+      "data": "2014-01-15",
+      "valor": 21.08
     },
     {
-      "date": "2015-01-15",
-      "value": 20.45
+      "data": "2015-01-15",
+      "valor": 20.45
     },
     {
-      "date": "2016-01-15",
-      "value": 21.58
+      "data": "2016-01-15",
+      "valor": 21.58
     },
     {
-      "date": "2017-01-15",
-      "value": 22.88
+      "data": "2017-01-15",
+      "valor": 22.88
     },
     {
-      "date": "2018-01-15",
-      "value": 19.75
+      "data": "2018-01-15",
+      "valor": 19.75
     },
     {
-      "date": "2019-01-15",
-      "value": 14.67
+      "data": "2019-01-15",
+      "valor": 14.67
     },
     {
-      "date": "2020-01-15",
-      "value": 16.05
+      "data": "2020-01-15",
+      "valor": 16.05
     },
     {
-      "date": "2021-01-15",
-      "value": 15.48
+      "data": "2021-01-15",
+      "valor": 15.48
     },
     {
-      "date": "2022-01-15",
-      "value": 15.68
+      "data": "2022-01-15",
+      "valor": 15.68
     }
   ]
 }

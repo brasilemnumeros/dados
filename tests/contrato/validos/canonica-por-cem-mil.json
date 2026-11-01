@@ -1,23 +1,23 @@
 {
-  "schema": 1,
+  "versao": 1,
   "id": "canonica-por-cem-mil",
-  "unit": {
-    "type": "number",
-    "symbol": "por 100 mil",
-    "decimals": 2
+  "unidade": {
+    "tipo": "numero",
+    "simbolo": "por 100 mil",
+    "casas": 2
   },
   "eixo": "por-100-mil",
   "medida": "nivel",
-  "granularity": "annual",
-  "source": "Instituto de Teste",
-  "data": [
+  "granularidade": "anual",
+  "fonte": "Instituto de Teste",
+  "dados": [
     {
-      "date": "2019-01-01",
-      "value": 30.1
+      "data": "2019-01-01",
+      "valor": 30.1
     },
     {
-      "date": "2020-01-01",
-      "value": 28.4
+      "data": "2020-01-01",
+      "valor": 28.4
     }
   ]
 }

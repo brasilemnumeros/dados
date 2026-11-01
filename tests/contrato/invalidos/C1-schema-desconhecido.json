@@ -1,19 +1,19 @@
 {
-  "schema": 2,
+  "versao": 2,
   "id": "caso-invalido",
-  "unit": {
-    "type": "percentage",
-    "symbol": "%",
-    "decimals": 2
+  "unidade": {
+    "tipo": "percentual",
+    "simbolo": "%",
+    "casas": 2
   },
   "eixo": "percentual",
   "medida": "acumulado-12m",
-  "granularity": "monthly",
-  "source": "Instituto de Teste",
-  "data": [
+  "granularidade": "mensal",
+  "fonte": "Instituto de Teste",
+  "dados": [
     {
-      "date": "2019-01-01",
-      "value": 1.5
+      "data": "2019-01-01",
+      "valor": 1.5
     }
   ]
 }

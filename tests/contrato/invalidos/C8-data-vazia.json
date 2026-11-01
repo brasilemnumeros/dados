@@ -1,14 +1,14 @@
 {
-  "schema": 1,
+  "versao": 1,
   "id": "caso-invalido",
-  "unit": {
-    "type": "percentage",
-    "symbol": "%",
-    "decimals": 2
+  "unidade": {
+    "tipo": "percentual",
+    "simbolo": "%",
+    "casas": 2
   },
   "eixo": "percentual",
   "medida": "acumulado-12m",
-  "granularity": "monthly",
-  "source": "Instituto de Teste",
-  "data": []
+  "granularidade": "mensal",
+  "fonte": "Instituto de Teste",
+  "dados": []
 }

@@ -9,14 +9,14 @@ CONTRATO = Path(__file__).parent / "contrato"
 
 def serie(**over):
     base = {
-        "schema": 1,
+        "versao": 1,
         "id": "ipca-acum-12m",
-        "unit": {"type": "percentage", "symbol": "%", "decimals": 2},
+        "unidade": {"tipo": "percentual", "simbolo": "%", "casas": 2},
         "eixo": "percentual",
         "medida": "acumulado-12m",
-        "granularity": "monthly",
-        "source": "IBGE",
-        "data": [{"date": "2026-09-01", "value": 5.0}],
+        "granularidade": "mensal",
+        "fonte": "IBGE",
+        "dados": [{"data": "2026-09-01", "valor": 5.0}],
     }
     base.update(over)
     return base
@@ -31,17 +31,17 @@ def test_serie_valida():
 
 
 def test_recusa_rate_no_ponto():
-    s = serie(data=[{"date": "2026-09-01", "rate": 5.0, "value": 5.0}])
+    s = serie(dados=[{"data": "2026-09-01", "rate": 5.0, "valor": 5.0}])
     assert any(e.split(": ")[1] == "C8.1" for e in erros(s))
 
 
-def test_recusa_ponto_sem_value():
-    s = serie(data=[{"date": "2026-09-01"}])
+def test_recusa_ponto_sem_valor():
+    s = serie(dados=[{"data": "2026-09-01"}])
     assert any(e.split(": ")[1] == "C10" for e in erros(s))
 
 
-def test_recusa_schema_desconhecido():
-    assert any(e.split(": ")[1] == "C1" for e in erros(serie(schema=2)))
+def test_recusa_versao_desconhecida():
+    assert any(e.split(": ")[1] == "C1" for e in erros(serie(versao=2)))
 
 
 def test_recusa_id_divergente():
@@ -49,28 +49,31 @@ def test_recusa_id_divergente():
 
 
 def test_recusa_tipo_de_unidade():
-    s = serie(unit={"type": "peso", "symbol": "kg", "decimals": 1})
+    s = serie(unidade={"tipo": "peso", "simbolo": "kg", "casas": 1})
     assert any(e.split(": ")[1] == "C3" for e in erros(s))
 
 
 def test_recusa_simbolo_vazio():
-    s = serie(unit={"type": "number", "symbol": "", "decimals": 0})
+    s = serie(unidade={"tipo": "numero", "simbolo": "", "casas": 0})
     assert any(e.split(": ")[1] == "C3" for e in erros(s))
 
 
-def test_recusa_decimals_fracionario():
-    s = serie(unit={"type": "percentage", "symbol": "%", "decimals": 2.5})
+def test_recusa_casas_fracionarias():
+    s = serie(unidade={"tipo": "percentual", "simbolo": "%", "casas": 2.5})
     assert any(e.split(": ")[1] == "C3" for e in erros(s))
 
 
-def test_aceita_decimals_float_integral():
-    s = serie(unit={"type": "percentage", "symbol": "%", "decimals": 2.0})
+def test_aceita_casas_float_integral():
+    s = serie(unidade={"tipo": "percentual", "simbolo": "%", "casas": 2.0})
     assert erros(s) == []
 
 
-def test_recusa_locale_fora_do_padrao():
-    s = serie(unit={"type": "currency", "symbol": "R$", "decimals": 0, "locale": "portugues"},
-              eixo="reais", medida="nivel")
+def test_recusa_idioma_fora_do_padrao():
+    s = serie(
+        unidade={"tipo": "moeda", "simbolo": "R$", "casas": 0, "idioma": "portugues"},
+        eixo="reais",
+        medida="nivel",
+    )
     assert any(e.split(": ")[1] == "C3.1" for e in erros(s))
 
 
@@ -83,66 +86,66 @@ def test_recusa_medida_desconhecida():
 
 
 def test_recusa_granularidade():
-    assert any(e.split(": ")[1] == "C6" for e in erros(serie(granularity="semanal")))
+    assert any(e.split(": ")[1] == "C6" for e in erros(serie(granularidade="semanal")))
 
 
-def test_recusa_source_vazio():
-    assert any(e.split(": ")[1] == "C7" for e in erros(serie(source="")))
+def test_recusa_fonte_vazia():
+    assert any(e.split(": ")[1] == "C7" for e in erros(serie(fonte="")))
 
 
-def test_recusa_source_url_invalida():
-    assert any(e.split(": ")[1] == "C7.1" for e in erros(serie(sourceUrl="ftp://x")))
+def test_recusa_url_da_fonte_invalida():
+    assert any(e.split(": ")[1] == "C7.1" for e in erros(serie(urlFonte="ftp://x")))
 
 
-def test_recusa_data_vazia():
-    assert any(e.split(": ")[1] == "C8" for e in erros(serie(data=[])))
+def test_recusa_dados_vazios():
+    assert any(e.split(": ")[1] == "C8" for e in erros(serie(dados=[])))
 
 
 def test_recusa_data_fora_do_calendario():
-    s = serie(data=[{"date": "2026-02-31", "value": 1.0}])
+    s = serie(dados=[{"data": "2026-02-31", "valor": 1.0}])
     assert any(e.split(": ")[1] == "C9" for e in erros(s))
 
 
 def test_recusa_valor_nao_finito():
-    s = serie(data=[{"date": "2026-09-01", "value": float("nan")}])
+    s = serie(dados=[{"data": "2026-09-01", "valor": float("nan")}])
     assert any(e.split(": ")[1] == "C10" for e in erros(s))
 
 
 def test_recusa_valor_inteiro_gigante():
-    s = serie(data=[{"date": "2026-09-01", "value": 10**400}])
+    s = serie(dados=[{"data": "2026-09-01", "valor": 10**400}])
     assert any(e.split(": ")[1] == "C10" for e in erros(s))
 
 
 def test_recusa_mes_repetido():
-    s = serie(data=[
-        {"date": "2026-08-01", "value": 5.0},
-        {"date": "2026-08-31", "value": 6.0},
+    s = serie(dados=[
+        {"data": "2026-08-01", "valor": 5.0},
+        {"data": "2026-08-31", "valor": 6.0},
     ])
     assert any(e.split(": ")[1] == "C11" for e in erros(s))
 
 
 def test_recusa_fora_de_ordem():
-    s = serie(data=[
-        {"date": "2026-09-01", "value": 5.0},
-        {"date": "2026-08-01", "value": 4.0},
+    s = serie(dados=[
+        {"data": "2026-09-01", "valor": 5.0},
+        {"data": "2026-08-01", "valor": 4.0},
     ])
     assert any(e.split(": ")[1] == "C12" for e in erros(s))
 
 
 def test_aceita_periodo_aberto_e_dia_15():
-    s = serie(granularity="annual", data=[{"date": "2026-12-15", "value": 5.0}])
+    s = serie(granularidade="anual", dados=[{"data": "2026-12-15", "valor": 5.0}])
     assert erros(s) == []
 
 
 def test_recusa_data_com_quebra_de_linha():
-    s = serie(data=[{"date": "2026-09-01\n", "value": 5.0}])
+    s = serie(dados=[{"data": "2026-09-01\n", "valor": 5.0}])
     assert any(e.split(": ")[1] == "C9" for e in erros(s))
 
 
-def test_recusa_dois_pontos_no_mesmo_dia_daily():
-    s = serie(granularity="daily", data=[
-        {"date": "2026-08-01", "value": 5.0},
-        {"date": "2026-08-01", "value": 6.0},
+def test_recusa_dois_pontos_no_mesmo_dia_diaria():
+    s = serie(granularidade="diaria", dados=[
+        {"data": "2026-08-01", "valor": 5.0},
+        {"data": "2026-08-01", "valor": 6.0},
     ])
     assert any(e.split(": ")[1] == "C11" for e in erros(s))
 
