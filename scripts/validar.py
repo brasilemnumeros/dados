@@ -2,7 +2,9 @@
 
 Contrato (sitio/app/src/data/validate.js): o aplicativo lê apenas ``value``
 e tolera campos extras como ``rate``. Não são impostos ordem das datas,
-dia 01 nem período fechado.
+dia 01 nem período fechado. Datas são ``YYYY-MM-DD`` só com dígitos ASCII
+(fullmatch, sem quebra de linha). Duplicata por ``YYYY-MM`` em granularidade
+mensal/anual e por ``YYYY-MM-DD`` em ``daily``.
 """
 
 from __future__ import annotations
@@ -16,7 +18,7 @@ from pathlib import Path
 TIPOS_UNIDADE = ("percentage", "number", "currency")
 GRANULARIDADES = ("daily", "monthly", "annual")
 PASTAS_IGNORADAS = ("governos",)
-FORMATO_DATA = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+FORMATO_DATA = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
 
 
 def validar_serie(serie: dict, caminho: Path) -> list[str]:
@@ -70,7 +72,7 @@ def validar_serie(serie: dict, caminho: Path) -> list[str]:
         erros.append(f"{rotulo}: data precisa ser lista não vazia")
         return erros
 
-    meses: dict[str, int] = {}
+    vistos: dict[str, int] = {}
     for indice, ponto in enumerate(dados):
         if not isinstance(ponto, dict):
             erros.append(f"{rotulo}: ponto {indice}: não é um objeto")
@@ -79,7 +81,7 @@ def validar_serie(serie: dict, caminho: Path) -> list[str]:
         data = ponto.get("date")
         if "date" not in ponto:
             erros.append(f"{rotulo}: ponto {indice}: sem campo date")
-        elif not isinstance(data, str) or not FORMATO_DATA.match(data):
+        elif not isinstance(data, str) or not FORMATO_DATA.fullmatch(data):
             erros.append(
                 f"{rotulo}: ponto {indice}: date {data!r} fora do formato YYYY-MM-DD"
             )
@@ -93,15 +95,18 @@ def validar_serie(serie: dict, caminho: Path) -> list[str]:
             elif not math.isfinite(valor):
                 erros.append(f"{rotulo}: ponto {indice}: value não é finito")
 
-        if isinstance(data, str) and FORMATO_DATA.match(data):
-            mes = data[:7]
-            if mes in meses:
+        if isinstance(data, str) and FORMATO_DATA.fullmatch(data):
+            if granularidade == "daily":
+                chave, descricao = data, f"data {data} repetida"
+            else:
+                chave, descricao = data[:7], f"mês {data[:7]} repetido"
+            if chave in vistos:
                 erros.append(
-                    f"{rotulo}: ponto {indice}: mês {mes} repetido "
-                    f"(também no ponto {meses[mes]})"
+                    f"{rotulo}: ponto {indice}: {descricao} "
+                    f"(também no ponto {vistos[chave]})"
                 )
             else:
-                meses[mes] = indice
+                vistos[chave] = indice
 
     return erros
 
