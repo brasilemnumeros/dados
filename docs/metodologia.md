@@ -34,10 +34,13 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
     coleta desde **1995-01-01**, então a série publicada começa em 1995-01-01.
 - **Veredito:** corrigir.
 - **Impacto esperado:** os valores passam a ser os da série oficial 13522
-  (mudam de `soma` para `oficial` em todos os pontos). Como a coleta começa em
-  1995-01-01, a série publicada ganha os 11 pontos de 1995-01 a 1995-11 antes
-  do atual início em 1995-12, e passa a se estender até o último mês fechado.
-- **Decisão pendente:** não — aprovada pelo usuário; implementação na Task 4.
+  (mudam de `soma` para `oficial` em todos os pontos). O notebook já coletava
+  desde 1995-01-01, então a cobertura não mudou — a previsão de "ganhar os 11
+  pontos de 1995-01 a 1995-11" não se confirmou: a série já começava em 1995-01,
+  com 381 pontos, e continua com 381.
+- **Decisão pendente:** não — aprovada e publicada. O notebook foi migrado para o
+  contrato `versao`/`unidade`/`dados` em 2026-11-01 (antes ele ainda escrevia o
+  envelope antigo), e o arquivo ganhou `urlFonte`.
 
 ## igpm-acum-12m
 
