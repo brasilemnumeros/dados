@@ -72,7 +72,7 @@ séries. O schema de lá é o mesmo que estava aqui (exercício efetivo, sem sob
 
 ## Antes de commitar
 
-- Rode `python3 scripts/validar.py`.
+- Instale o hook uma vez por clone: `git config core.hooksPath .githooks`. Ele roda `scripts/validar.py` e `pytest` quando o commit toca `indicadores/`, `scripts/`, `tests/` ou `requirements.txt`. Foi assim que o IPCA voltou a escrever o formato antigo sem ninguém notar: o validador existia, mas não era executado.
 - Rode `python3 -m pytest -q`.
 - Valide o parse de todos os arquivos: `python3 -c "import json,glob; [json.load(open(f)) for f in glob.glob('indicadores/*/*.json')]"`.
 - Revise o `git diff` em busca de mudanças numéricas acidentais; alterações de data e ordenação se escondem facilmente em diffs grandes de JSON.

@@ -1,0 +1,26 @@
+#!/bin/sh
+# Roda os verificadores locais antes de commitar.
+#
+# Instalação (uma vez por clone):
+#   git config core.hooksPath .githooks
+#
+# O que pega: contrato quebrado em indicadores/*.json (o caso do IPCA, que voltou
+# a escrever o formato antigo sem ninguém notar) e regressão nos testes Python.
+set -e
+
+cd "$(git rev-parse --show-toplevel)"
+
+# Só vale a pena quando o commit toca dado, validador ou testes.
+if ! git diff --cached --name-only | grep -qE '^(indicadores/|scripts/|tests/|requirements\.txt)'; then
+  exit 0
+fi
+
+test -f scripts/validar.py || exit 0
+
+python3 scripts/validar.py
+
+if python3 -c "import pytest" >/dev/null 2>&1; then
+  python3 -m pytest -q
+else
+  echo "aviso: pytest não instalado; rode 'pip install -r requirements.txt'" >&2
+fi
