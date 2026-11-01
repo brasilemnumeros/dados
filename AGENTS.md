@@ -2,23 +2,30 @@
 
 ## Visão geral
 
-Arquivos públicos de dados (`*.json`) do **brasilemnumeros**, consumidos por outro app. Não há build, testes, lint nem CI aqui — o JSON é o produto. Cada pasta de indicador também contém o notebook Colab usado para extrair/atualizar aqueles dados.
+Arquivos públicos de dados (`*.json`) do **brasilemnumeros**, consumidos pelo app do repo `sitio`. O JSON é o produto. Cada pasta de indicador contém o notebook Colab usado para extrair, calcular e publicar aqueles dados. Há validador e testes em Python; ainda não há CI nem build.
 
 ## Contrato das séries
 
+Fonte de verdade: `sitio/app/src/data/validate.js` e `sitio/docs/plans/01-contrato-de-dados.md`.
+
 - São 13 séries em `<indicador>/<id>.json`; o `id` deve ser igual ao nome do arquivo sem `.json`.
-- Nível superior: `schema: 1`, `id`, `unit` (`type`, `symbol`, `decimals`), `granularity` (`monthly` | `annual`), `source`, `data`.
-- Cada ponto: `{ "date": "YYYY-MM-DD", "rate": ..., "value": ... }`. Na fase de convivência atual, `rate === value`; mantenha os dois em sincronia.
-- As datas são ordenadas de forma ascendente e, por convenção, carimbadas no dia 01 do mês/ano de referência (`YYYY-MM-01`). Exceção conhecida: `homicidios/homicidios-armas-fogo-anual.json` ainda usa o dia 15.
-- Um ponto por mês/ano; meses repetidos são um defeito.
+- Nível superior: `schema: 1`, `id`, `unit` (`type`, `symbol`, `decimals`), `granularity` (`daily` | `monthly` | `annual`), `source`, `data`.
+- `unit.type` em `percentage` | `number` | `currency`; `unit.symbol` não vazio; `unit.decimals` inteiro ≥ 0.
+- Cada ponto deve ter `{ "date": "YYYY-MM-DD", "value": número finito }`.
+- `rate` **não faz parte do contrato**. O IPCA já publica somente `value`; as outras 12 séries ainda carregam `rate` durante a transição. O validador tolera `rate` extra, mas não o exige.
+- `date` não precisa ser dia 01, mas cada série preserva sua convenção para evitar diffs desnecessários. `homicidios/homicidios-armas-fogo-anual.json` usa dia 15.
+- No máximo um ponto por mês/ano; meses repetidos são um defeito.
+- O contrato não exige ordem ascendente nem período fechado; o pipeline publica apenas períodos encerrados por decisão própria.
 
 ## Editar ou regenerar dados
 
-- **Nunca altere valores ao mudar a forma.** O invariante do conversor é só de forma: ele normaliza metadados, espelha `rate` em `value`, ordena e deduplica meses repetidos (mantendo a última leitura).
-- `python3 converter-schema-canonico.py` reescreve as 13 séries (UTF-8, `ensure_ascii=False`, indentação de 2 espaços). Rode após adicionar uma série ou corrigir metadados.
-- `python3 converter-schema-canonico.py --check` **não** compara a saída, apesar do que diz a docstring; ele apenas evita a escrita. Verifique as mudanças com `git diff`.
-- Adicionar uma série exige uma entrada na tabela `META` do script (`unit`, `granularity`, `source`); caso contrário, o conversor imprime `PULADO (sem metadados)` e não a altera.
-- Os notebooks salvam em `/content` (`output_dir = "/content"`), então rodá-los fora do Colab não atualiza este repositório; copie os resultados de volta. As dependências (`python-bcb`, `ipeadatapy`, pandas, matplotlib/seaborn/plotly) são instaladas nas células; não há lockfile nem ambiente local.
+- **Nunca altere valores ao mudar a forma.** Correção de fórmula é revisão histórica: registre definição, fonte e impacto em `docs/metodologia.md` e peça aval antes.
+- O IPCA é o piloto já migrado: `ipca/IPCA.ipynb` busca a SGS 13522 e escreve `{date, value}` diretamente.
+- Os demais notebooks ainda estão no formato antigo e escrevem em `/content`; ao rodá-los fora do Colab, copie o resultado de volta.
+- Toda execução deve recalcular a série inteira; não há modo incremental.
+- `python3 scripts/validar.py` valida o contrato de todas as séries. Não corrige nem calcula nada.
+- Dependências fixadas em `requirements.txt`.
+- O conversor antigo (`converter-schema-canonico.py`) foi removido: ele reintroduziria `rate` no IPCA.
 
 ## `governos/` saiu daqui (2026-11-01)
 
@@ -29,6 +36,8 @@ séries. O schema de lá é o mesmo que estava aqui (exercício efetivo, sem sob
 
 ## Antes de commitar
 
+- Rode `python3 scripts/validar.py`.
+- Rode `python3 -m pytest -q`.
 - Valide o parse de todos os arquivos: `python3 -c "import json,glob; [json.load(open(f)) for f in glob.glob('*/*.json')]"`.
 - Revise o `git diff` em busca de mudanças numéricas acidentais; alterações de data e ordenação se escondem facilmente em diffs grandes de JSON.
 - As mensagens de commit seguem Conventional Commits em português com escopo `dados` (ex.: `fix(dados): ...`), e o corpo explica o impacto nos dados.

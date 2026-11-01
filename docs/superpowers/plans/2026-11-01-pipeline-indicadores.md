@@ -841,24 +841,24 @@ git commit -m "ci(dados): executa notebooks e abre pr de atualizacao"
 
 ---
 
-### Task 12: Remover `rate`, aposentar o conversor e validar o ciclo
+### Task 12: Remover `rate` e validar o ciclo completo
 
 **Files:**
-- Delete: `converter-schema-canonico.py`
-- Modify: todos os 13 JSONs publicados (remoção de `rate`)
+- Modify: todos os JSONs publicados que ainda tiverem `rate` (o IPCA já está sem)
 - Modify: `AGENTS.md`
 
 **Interfaces:**
 - Consumes: todas as tasks anteriores.
-- Produces: repositório sem `rate`, sem o conversor, com validação e PR como únicas ferramentas de contrato.
+- Produces: repositório sem `rate`, com validação e PR como únicas ferramentas de contrato.
 
-- [ ] **Step 1: Confirmar que o conversor não é mais necessário**
+- [ ] **Step 1: Confirmar que o conversor já saiu**
 
 Run:
 ```bash
+test ! -e converter-schema-canonico.py && echo "ok: conversor ausente"
 grep -R "converter-schema-canonico" --exclude-dir=.git --exclude-dir=docs . || true
 ```
-Expected: nenhuma referência fora de `docs/` e do histórico.
+Expected: `ok: conversor ausente` e nenhuma referência fora de `docs/` e do histórico. O conversor foi removido no piloto do IPCA.
 
 - [ ] **Step 2: Remover `rate` dos JSONs que ainda tiverem**
 
@@ -869,8 +869,6 @@ import glob, json
 from pathlib import Path
 
 for caminho in sorted(glob.glob("*/*.json")):
-    if caminho.startswith("governos/"):
-        continue
     p = Path(caminho)
     d = json.loads(p.read_text(encoding="utf-8"))
     for ponto in d["data"]:
@@ -887,8 +885,6 @@ python3 - <<'PY'
 import glob, json, subprocess
 
 for caminho in sorted(glob.glob("*/*.json")):
-    if caminho.startswith("governos/"):
-        continue
     antes = json.loads(subprocess.check_output(["git", "show", f"HEAD:{caminho}"], text=True))
     depois = json.loads(open(caminho, encoding="utf-8").read())
     a = [(p["date"], p["value"]) for p in antes["data"]]
@@ -927,7 +923,7 @@ Expected: nenhum valor alterado além das correções metodológicas já aprovad
 
 - [ ] **Step 7: Atualizar `AGENTS.md`**
 
-Remova a menção ao `converter-schema-canonico.py` e ao espelhamento `rate == value`. Documente:
+Remova qualquer menção a `rate == value` e documente o estado final:
 
 ```text
 - O contrato de dados é o validado em `sitio/app/src/data/validate.js`.
@@ -936,28 +932,21 @@ Remova a menção ao `converter-schema-canonico.py` e ao espelhamento `rate == v
 - Toda execução recalcula a série inteira; não há modo incremental.
 - Notebooks publicam apenas períodos encerrados.
 - Revisões históricas e correções metodológicas aparecem no diff do PR e exigem revisão humana.
-- `governos/` é consumido pelo `sitio`; não remover sem antes mudar o consumidor.
 ```
 
-- [ ] **Step 8: Remover o conversor**
-
-```bash
-git rm converter-schema-canonico.py
-```
-
-- [ ] **Step 9: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
 git add AGENTS.md
-git add -- '*/*.json' ':!governos/*'
-git commit -m "chore(dados): publica somente value e aposenta o conversor"
+git add -- '*/*.json'
+git commit -m "chore(dados): publica somente value em todas as series"
 ```
 
 ---
 
 ## Self-Review
 
-- **Cobertura do spec:** contrato do `sitio` (Task 1), revisão metodológica (Task 2), piloto sem cálculo (Task 3), lógica e migração de cada pasta (Tasks 4–10), workflow/PR (Task 11), remoção de `rate`, aposentadoria do conversor e documentação (Task 12).
+- **Cobertura do spec:** contrato do `sitio` (Task 1), revisão metodológica (Task 2), piloto sem cálculo (Task 3), lógica e migração de cada pasta (Tasks 4–10), workflow/PR (Task 11), remoção de `rate` e documentação (Task 12). O conversor foi removido no piloto.
 - **Tipos e nomes:** `validar_serie`, `validar_arquivo` e `validar_todos` são usados com as mesmas assinaturas nas tasks seguintes.
 - **Contrato:** nenhum teste exige dia 01, ordem, período fechado ou `rate`; todos exigem `value`.
 - **Proporção:** as tasks de migração referenciam o contrato e a decisão metodológica em vez de repetir o código.
