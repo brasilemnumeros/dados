@@ -109,10 +109,9 @@ Buscar apenas depois da última data. Quebra indicadores acumulados de 12 meses,
 ### Estrutura do repositório
 
 ```
-<indicador>/
+indicadores/<indicador>/
   <Indicador>.ipynb      # fonte da verdade: coleta, cálculo, validação e escrita
-  <id>.json              # dado publicado
-<indicador>/<id>.json    # id == nome do arquivo sem .json
+  <id>.json              # dado publicado; id == nome do arquivo sem .json
 scripts/
   validar.py             # valida o contrato do JSON; não calcula indicador
 tests/
@@ -122,7 +121,7 @@ requirements.txt         # dependências fixadas para CI
   atualizar-dados.yml
 ```
 
-A unidade de execução é o **notebook**, não a série. Uma pasta pode ter um notebook que publica vários JSONs, como já ocorre em `selic/`, `mvgr/`, `populacao/` e `homicidios/`. O notebook é responsável por todas as séries que publica.
+A unidade de execução é o **notebook**, não a série. Uma pasta pode ter um notebook que publica vários JSONs, como já ocorre em `indicadores/selic/`, `indicadores/mvgr/`, `indicadores/populacao/` e `indicadores/homicidios/`. O notebook é responsável por todas as séries que publica.
 
 Séries derivadas são calculadas dentro do próprio notebook a partir das fontes brutas. Um notebook não lê o JSON publicado de outra pasta e não depende da ordem de execução dos demais.
 

@@ -2,7 +2,7 @@ from pathlib import Path
 
 from scripts.validar import validar_serie
 
-CAMINHO = Path("ipca/ipca-acum-12m.json")
+CAMINHO = Path("indicadores/ipca/ipca-acum-12m.json")
 
 
 def serie(**over):
