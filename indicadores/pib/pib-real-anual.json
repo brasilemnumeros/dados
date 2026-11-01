@@ -10,6 +10,7 @@
   "medida": "variacao-anual",
   "granularidade": "anual",
   "fonte": "IBGE",
+  "urlFonte": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.7326/dados?formato=json",
   "dados": [
     {
       "data": "1995-01-01",
@@ -85,7 +86,7 @@
     },
     {
       "data": "2013-01-01",
-      "valor": 3
+      "valor": 3.0
     },
     {
       "data": "2014-01-01",
@@ -129,7 +130,11 @@
     },
     {
       "data": "2024-01-01",
-      "valor": 3.4
+      "valor": 3.42
+    },
+    {
+      "data": "2025-01-01",
+      "valor": 2.29
     }
   ]
 }
