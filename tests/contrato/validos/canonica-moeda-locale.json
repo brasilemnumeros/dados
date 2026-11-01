@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "canonica-moeda-locale",
+  "unit": {
+    "type": "currency",
+    "symbol": "R$",
+    "decimals": 0,
+    "locale": "pt-BR"
+  },
+  "eixo": "reais",
+  "medida": "nivel",
+  "granularity": "monthly",
+  "source": "Instituto de Teste",
+  "data": [
+    {
+      "date": "2019-01-01",
+      "value": 1.5
+    },
+    {
+      "date": "2019-02-01",
+      "value": 2.5
+    }
+  ]
+}

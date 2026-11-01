@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "id": "canonica-anual-contagem",
+  "unit": {
+    "type": "number",
+    "symbol": "vínculos",
+    "decimals": 0
+  },
+  "eixo": "contagem",
+  "medida": "estoque",
+  "granularity": "annual",
+  "source": "Instituto de Teste",
+  "data": [
+    {
+      "date": "2019-01-01",
+      "value": 1000
+    },
+    {
+      "date": "2020-01-01",
+      "value": 1100
+    }
+  ]
+}

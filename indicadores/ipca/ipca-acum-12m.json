@@ -6,6 +6,8 @@
     "symbol": "%",
     "decimals": 2
   },
+  "eixo": "percentual",
+  "medida": "acumulado-12m",
   "granularity": "monthly",
   "source": "IBGE",
   "data": [
@@ -599,7 +601,7 @@
     },
     {
       "date": "2007-04-01",
-      "value": 3.0
+      "value": 3
     },
     {
       "date": "2007-05-01",
@@ -1087,7 +1089,7 @@
     },
     {
       "date": "2017-06-01",
-      "value": 3.0
+      "value": 3
     },
     {
       "date": "2017-07-01",

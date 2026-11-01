@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "id": "canonica-participacao",
+  "unit": {
+    "type": "percentage",
+    "symbol": "%",
+    "decimals": 2
+  },
+  "eixo": "percentual",
+  "medida": "participacao",
+  "granularity": "annual",
+  "source": "Instituto de Teste",
+  "data": [
+    {
+      "date": "2019-01-01",
+      "value": 70.2
+    },
+    {
+      "date": "2020-01-01",
+      "value": 68.9
+    }
+  ]
+}
