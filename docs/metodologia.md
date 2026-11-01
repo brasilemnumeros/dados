@@ -327,7 +327,11 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
   denominador que não existe em nenhuma série atual.
 - **Fórmula proposta:** `100.000 × homicídios ÷ população`, com o numerador do Atlas e a
   população `AVIOL12_VIOLPOP` do mesmo ano. Nenhuma taxa herdada. A série de população declara
-  que 2022 e 2023 são interpolações exponenciais entre 2021 e 2024 — limitação conhecida.
+  que 2022 e 2023 são interpolações exponenciais entre 2021 e 2024 — limitação conhecida e
+  **limitada**: a projeção 2024 do IBGE dá 210,9 mi para 2022 contra 212,8 mi da `VIOLPOP`, ou
+  seja, o erro do denominador é de 0,9% em dois anos, sem gerar degrau na série. Trocar a fonte
+  para resolver isso custaria mais: as Projeções 2024 começam em 2000, e usá-las truncaria
+  1995–1999 ou reintroduziria dois denominadores — o defeito que esta revisão eliminou.
 - **Evidência:** 2007 `48.219 ÷ 189.462.739 × 100.000 = 25,45` (o antigo 26,20 implica 184,0 mi);
   2012 `57.045 ÷ 199.239.473 = 28,63` (o antigo 29,41 implica 194,0 mi); 2020 23,55 contra 23,54
   (aqui a população já era a mesma). 2003 29,14 → 28,53; 2017 31,59 → 31,72; 2022 21,67 → 21,81;
