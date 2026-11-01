@@ -3,8 +3,8 @@
 Contrato (sitio/app/src/data/validate.js): o aplicativo lê apenas ``value``
 e tolera campos extras como ``rate``. Não são impostos ordem das datas,
 dia 01 nem período fechado. Datas são ``YYYY-MM-DD`` só com dígitos ASCII
-(fullmatch, sem quebra de linha). Duplicata por ``YYYY-MM`` em granularidade
-mensal/anual e por ``YYYY-MM-DD`` em ``daily``.
+(fullmatch, sem quebra de linha). Duplicata é sempre por ``YYYY-MM``,
+em qualquer granularidade (mesma regra do integracao.test.js do sitio).
 """
 
 from __future__ import annotations
@@ -19,6 +19,20 @@ TIPOS_UNIDADE = ("percentage", "number", "currency")
 GRANULARIDADES = ("daily", "monthly", "annual")
 PASTAS_IGNORADAS = ("governos",)
 FORMATO_DATA = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
+
+
+def _numero_finito(valor: object) -> bool:
+    """True para int/float não-booleano representável como float finito.
+
+    Inteiros grandes demais para ``float`` (ex.: ``10**400``) estouram
+    ``math.isfinite`` com ``OverflowError``; viram ``False`` em vez de exceção.
+    """
+    if isinstance(valor, bool) or not isinstance(valor, (int, float)):
+        return False
+    try:
+        return math.isfinite(valor)
+    except OverflowError:
+        return False
 
 
 def validar_serie(serie: dict, caminho: Path) -> list[str]:
@@ -53,7 +67,11 @@ def validar_serie(serie: dict, caminho: Path) -> list[str]:
     if not isinstance(simbolo, str) or not simbolo:
         erros.append(f"{rotulo}: unit.symbol precisa ser string não vazia")
     decimais = unidade.get("decimals")
-    if isinstance(decimais, bool) or not isinstance(decimais, int) or decimais < 0:
+    if (
+        not _numero_finito(decimais)
+        or decimais < 0
+        or decimais != int(decimais)
+    ):
         erros.append(f"{rotulo}: unit.decimals {decimais!r} inválido (inteiro >= 0)")
 
     granularidade = serie.get("granularity")
@@ -92,21 +110,18 @@ def validar_serie(serie: dict, caminho: Path) -> list[str]:
             valor = ponto["value"]
             if isinstance(valor, bool) or not isinstance(valor, (int, float)):
                 erros.append(f"{rotulo}: ponto {indice}: value {valor!r} não é numérico")
-            elif not math.isfinite(valor):
+            elif not _numero_finito(valor):
                 erros.append(f"{rotulo}: ponto {indice}: value não é finito")
 
         if isinstance(data, str) and FORMATO_DATA.fullmatch(data):
-            if granularidade == "daily":
-                chave, descricao = data, f"data {data} repetida"
-            else:
-                chave, descricao = data[:7], f"mês {data[:7]} repetido"
-            if chave in vistos:
+            mes = data[:7]
+            if mes in vistos:
                 erros.append(
-                    f"{rotulo}: ponto {indice}: {descricao} "
-                    f"(também no ponto {vistos[chave]})"
+                    f"{rotulo}: ponto {indice}: mês {mes} repetido "
+                    f"(também no ponto {vistos[mes]})"
                 )
             else:
-                vistos[chave] = indice
+                vistos[mes] = indice
 
     return erros
 

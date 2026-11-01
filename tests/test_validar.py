@@ -104,12 +104,12 @@ def test_recusa_data_com_quebra_de_linha():
     assert any("YYYY-MM-DD" in e for e in validar_serie(s, CAMINHO))
 
 
-def test_aceita_dias_diferentes_no_mesmo_mes_daily():
+def test_recusa_dias_diferentes_no_mesmo_mes_daily():
     s = serie(granularity="daily", data=[
         {"date": "2026-08-01", "value": 5.0},
         {"date": "2026-08-31", "value": 6.0},
     ])
-    assert validar_serie(s, CAMINHO) == []
+    assert any("repetido" in e for e in validar_serie(s, CAMINHO))
 
 
 def test_recusa_data_repetida_daily():
@@ -117,4 +117,19 @@ def test_recusa_data_repetida_daily():
         {"date": "2026-08-01", "value": 5.0},
         {"date": "2026-08-01", "value": 6.0},
     ])
-    assert any("repetida" in e for e in validar_serie(s, CAMINHO))
+    assert any("repetido" in e for e in validar_serie(s, CAMINHO))
+
+
+def test_aceita_decimals_float_integral():
+    s = serie(unit={"type": "percentage", "symbol": "%", "decimals": 2.0})
+    assert validar_serie(s, CAMINHO) == []
+
+
+def test_recusa_decimals_fracionario():
+    s = serie(unit={"type": "percentage", "symbol": "%", "decimals": 2.5})
+    assert any("decimals" in e for e in validar_serie(s, CAMINHO))
+
+
+def test_recusa_valor_inteiro_gigante():
+    s = serie(data=[{"date": "2026-09-30", "value": 10**400}])
+    assert any("finito" in e for e in validar_serie(s, CAMINHO))
