@@ -17,7 +17,6 @@ from pathlib import Path
 
 TIPOS_UNIDADE = ("percentage", "number", "currency")
 GRANULARIDADES = ("daily", "monthly", "annual")
-PASTAS_IGNORADAS = ("governos",)
 FORMATO_DATA = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
 
 
@@ -140,11 +139,7 @@ def validar_arquivo(caminho: Path) -> list[str]:
 
 
 def _series_da_raiz(raiz: Path) -> list[Path]:
-    return sorted(
-        caminho
-        for caminho in raiz.glob("*/*.json")
-        if caminho.parent.name not in PASTAS_IGNORADAS
-    )
+    return sorted(raiz.glob("indicadores/*/*.json"))
 
 
 def validar_todos(raiz: Path) -> dict[Path, list[str]]:

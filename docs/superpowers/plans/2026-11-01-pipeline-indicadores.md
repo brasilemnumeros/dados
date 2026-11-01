@@ -49,8 +49,8 @@
 - `tests/test_validar.py`: testes do validador.
 - `docs/metodologia.md`: revisão da definição e da fórmula de cada indicador.
 - `.github/workflows/atualizar-dados.yml`: execução diária, validação e PR.
-- `<pasta>/*.ipynb`: notebooks migrados, um por pasta, publicando N JSONs.
-- `<pasta>/*.json`: dados publicados.
+- `indicadores/<pasta>/*.ipynb`: notebooks migrados, um por pasta, publicando N JSONs.
+- `indicadores/<pasta>/*.json`: dados publicados.
 
 ### Contrato de migração de notebook
 
@@ -115,7 +115,7 @@ from pathlib import Path
 
 from scripts.validar import validar_serie
 
-CAMINHO = Path("ipca/ipca-acum-12m.json")
+CAMINHO = Path("indicadores/ipca/ipca-acum-12m.json")
 
 
 def serie(**over):
@@ -226,7 +226,7 @@ Implemente as três funções com as assinaturas acima. Regras:
 - `data` deve ser lista não vazia; cada ponto exige `date` ISO e `value` numérico finito. Campos extras, inclusive `rate`, são ignorados.
 - Duplicata é por `YYYY-MM`.
 - Não validar ordem, dia 01, período aberto, `rate` nem `rate == value`.
-- `validar_todos` percorre `raiz.glob("*/*.json")`, ignora a pasta `governos` e retorna um dict com chave `Path` e valor `list[str]` apenas para arquivos com erro.
+- `validar_todos` percorre `raiz.glob("indicadores/*/*.json")` e retorna um dict com chave `Path` e valor `list[str]` apenas para arquivos com erro.
 - Mensagens em português, incluindo caminho e, quando aplicável, o índice do ponto.
 
 Crie `scripts/__init__.py` vazio.
@@ -317,17 +317,17 @@ git commit -m "docs(dados): registra a revisao metodologica dos indicadores"
 ### Task 3: Migrar o notebook piloto do PIB
 
 **Files:**
-- Modify: `pib/PIB.ipynb`
-- Modify: `pib/pib-real-anual.json` (somente acréscimos legítimos)
+- Modify: `indicadores/pib/PIB.ipynb`
+- Modify: `indicadores/pib/pib-real-anual.json` (somente acréscimos legítimos)
 
 **Interfaces:**
 - Consumes: contrato de migração de notebook e decisão do PIB em `docs/metodologia.md`.
 - Produces: primeiro notebook no contrato, sem cálculo próprio; serve de referência para os demais.
-- Produces: `pib/pib-real-anual.json` com `unit` `percentage`/`%`/`2`, `granularity` `annual`, `source` `IBGE`.
+- Produces: `indicadores/pib/pib-real-anual.json` com `unit` `percentage`/`%`/`2`, `granularity` `annual`, `source` `IBGE`.
 
 - [ ] **Step 1: Confirmar o legado**
 
-Run: `grep -c "indicatorName" pib/PIB.ipynb`
+Run: `grep -c "indicatorName" indicadores/pib/PIB.ipynb`
 Expected: valor maior que `0`.
 
 - [ ] **Step 2: Migrar o notebook**
@@ -335,21 +335,21 @@ Expected: valor maior que `0`.
 - Busque SGS 7326 desde `1995-01-01`.
 - Exclua o ano corrente.
 - Preserve a convenção de data existente.
-- Escreva `pib/pib-real-anual.json` no contrato: `{date, value}`, sem `rate`.
+- Escreva `indicadores/pib/pib-real-anual.json` no contrato: `{date, value}`, sem `rate`.
 
 - [ ] **Step 3: Executar e validar**
 
 Run:
 ```bash
 mkdir -p /tmp/nbexec
-jupyter nbconvert --to notebook --execute --output-dir /tmp/nbexec pib/PIB.ipynb
-python3 scripts/validar.py pib/pib-real-anual.json
+jupyter nbconvert --to notebook --execute --output-dir /tmp/nbexec indicadores/pib/PIB.ipynb
+python3 scripts/validar.py indicadores/pib/pib-real-anual.json
 ```
 Expected: exit `0`.
 
 - [ ] **Step 4: Comparar com o publicado**
 
-Run: `git diff -- pib/pib-real-anual.json`
+Run: `git diff -- indicadores/pib/pib-real-anual.json`
 Expected: nenhuma alteração de valor; apenas remoção de `rate` e anos fechados novos, se houver. Se um valor existente mudar, pare e investigue.
 
 - [ ] **Step 5: Confirmar que o notebook não tem legado**
@@ -359,7 +359,7 @@ Run:
 python3 - <<'PY'
 import json
 from pathlib import Path
-nb = json.loads(Path("pib/PIB.ipynb").read_text(encoding="utf-8"))
+nb = json.loads(Path("indicadores/pib/PIB.ipynb").read_text(encoding="utf-8"))
 fonte = "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
 for proibido in ["/content", "indicatorName"]:
     assert proibido not in fonte, proibido
@@ -372,7 +372,7 @@ Expected: `ok: notebook migrado`.
 - [ ] **Step 6: Commit**
 
 ```bash
-git add pib/PIB.ipynb pib/pib-real-anual.json
+git add indicadores/pib/PIB.ipynb indicadores/pib/pib-real-anual.json
 git commit -m "refactor(dados): migra pib para o pipeline auditavel"
 ```
 
@@ -381,16 +381,16 @@ git commit -m "refactor(dados): migra pib para o pipeline auditavel"
 ### Task 4: Revisar e migrar o IPCA
 
 **Files:**
-- Modify: `ipca/IPCA.ipynb`
-- Modify: `ipca/ipca-acum-12m.json`
+- Modify: `indicadores/ipca/IPCA.ipynb`
+- Modify: `indicadores/ipca/ipca-acum-12m.json`
 
 **Interfaces:**
 - Consumes: contrato de migração e decisão do IPCA em `docs/metodologia.md`.
-- Produces: `ipca/ipca-acum-12m.json` no contrato, com `percentage`/`%`/`2`, `monthly`, `IBGE`.
+- Produces: `indicadores/ipca/ipca-acum-12m.json` no contrato, com `percentage`/`%`/`2`, `monthly`, `IBGE`.
 
 - [ ] **Step 1: Confirmar o legado**
 
-Run: `grep -c "indicatorName" ipca/IPCA.ipynb`
+Run: `grep -c "indicatorName" indicadores/ipca/IPCA.ipynb`
 Expected: valor maior que `0`.
 
 - [ ] **Step 2: Aplicar a decisão metodológica aprovada**
@@ -407,26 +407,26 @@ A decisão registrada em `docs/metodologia.md` é **usar a SGS 13522 diretamente
 - A fonte do notebook passa a ser a SGS 13522; remova a lógica de `rolling(12).sum()` e a dependência da SGS 433 para o resultado.
 - Exclua o mês corrente.
 - Preserve a convenção de data existente.
-- Escreva `ipca/ipca-acum-12m.json` com `{date, value}`, sem `rate`.
+- Escreva `indicadores/ipca/ipca-acum-12m.json` com `{date, value}`, sem `rate`.
 
 - [ ] **Step 4: Executar e validar**
 
 Run:
 ```bash
-jupyter nbconvert --to notebook --execute --output-dir /tmp/nbexec ipca/IPCA.ipynb
-python3 scripts/validar.py ipca/ipca-acum-12m.json
+jupyter nbconvert --to notebook --execute --output-dir /tmp/nbexec indicadores/ipca/IPCA.ipynb
+python3 scripts/validar.py indicadores/ipca/ipca-acum-12m.json
 ```
 Expected: exit `0`.
 
 - [ ] **Step 5: Comparar com o publicado**
 
-Run: `git diff -- ipca/ipca-acum-12m.json`
+Run: `git diff -- indicadores/ipca/ipca-acum-12m.json`
 Expected: remoção de `rate`; valores passam a ser os oficiais da SGS 13522; entram os 11 pontos de `1995-01` a `1995-11`; meses fechados novos podem ser adicionados. Qualquer outro tipo de mudança deve ser investigado.
 
 - [ ] **Step 6: Commit**
 
 ```bash
-git add ipca/IPCA.ipynb ipca/ipca-acum-12m.json
+git add indicadores/ipca/IPCA.ipynb indicadores/ipca/ipca-acum-12m.json
 git commit -m "refactor(dados): revisa e migra ipca para o pipeline auditavel"
 ```
 
@@ -435,8 +435,8 @@ git commit -m "refactor(dados): revisa e migra ipca para o pipeline auditavel"
 ### Task 5: Revisar e migrar a Selic
 
 **Files:**
-- Modify: `selic/Selic.ipynb`
-- Modify: `selic/selic-meta-acum-12m.json`, `selic/selic-over-acum-12m.json`
+- Modify: `indicadores/selic/Selic.ipynb`
+- Modify: `indicadores/selic/selic-meta-acum-12m.json`, `indicadores/selic/selic-over-acum-12m.json`
 
 **Interfaces:**
 - Consumes: contrato de migração e decisões de Selic em `docs/metodologia.md`.
@@ -449,7 +449,7 @@ Run:
 python3 - <<'PY'
 import json
 from pathlib import Path
-nb = json.loads(Path("selic/Selic.ipynb").read_text(encoding="utf-8"))
+nb = json.loads(Path("indicadores/selic/Selic.ipynb").read_text(encoding="utf-8"))
 fonte = "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
 assert "indicatorName" in fonte
 assert "last_indicator_date" in fonte
@@ -475,20 +475,20 @@ Expected: `ok: notebook legado`.
 
 Run:
 ```bash
-jupyter nbconvert --to notebook --execute --output-dir /tmp/nbexec selic/Selic.ipynb
-python3 scripts/validar.py selic/selic-meta-acum-12m.json selic/selic-over-acum-12m.json
+jupyter nbconvert --to notebook --execute --output-dir /tmp/nbexec indicadores/selic/Selic.ipynb
+python3 scripts/validar.py indicadores/selic/selic-meta-acum-12m.json indicadores/selic/selic-over-acum-12m.json
 ```
 Expected: exit `0`.
 
 - [ ] **Step 5: Comparar com o publicado**
 
-Run: `git diff -- selic/`
+Run: `git diff -- indicadores/selic/`
 Expected: remoção de `rate`; mudanças de valor apenas se a revisão metodológica tiver aprovado. Investigue qualquer outra.
 
 - [ ] **Step 6: Commit**
 
 ```bash
-git add selic/Selic.ipynb selic/selic-meta-acum-12m.json selic/selic-over-acum-12m.json
+git add indicadores/selic/Selic.ipynb indicadores/selic/selic-meta-acum-12m.json indicadores/selic/selic-over-acum-12m.json
 git commit -m "refactor(dados): revisa e migra selic para o pipeline auditavel"
 ```
 
@@ -497,19 +497,19 @@ git commit -m "refactor(dados): revisa e migra selic para o pipeline auditavel"
 ### Task 6: Revisar e migrar o IGP-M
 
 **Files:**
-- Modify: `igp-m/IGP-M.ipynb`
-- Modify: `igp-m/igpm-acum-12m.json`
+- Modify: `indicadores/igp-m/IGP-M.ipynb`
+- Modify: `indicadores/igp-m/igpm-acum-12m.json`
 
 **Interfaces:**
 - Consumes: contrato de migração e decisão do IGP-M em `docs/metodologia.md`.
-- Produces: `igp-m/igpm-acum-12m.json` no contrato, `percentage`/`%`/`2`, `monthly`, `FGV`.
+- Produces: `indicadores/igp-m/igpm-acum-12m.json` no contrato, `percentage`/`%`/`2`, `monthly`, `FGV`.
 
 - [ ] **Step 1: Confirmar a janela móvel e o legado**
 
 Run:
 ```bash
-grep -c "30 \* 365" igp-m/IGP-M.ipynb
-grep -c "indicatorName" igp-m/IGP-M.ipynb
+grep -c "30 \* 365" indicadores/igp-m/IGP-M.ipynb
+grep -c "indicatorName" indicadores/igp-m/IGP-M.ipynb
 ```
 Expected: ambos maiores que `0`.
 
@@ -524,26 +524,26 @@ Expected: ambos maiores que `0`.
 - Busque SGS 189 desde `1995-01-01`.
 - Exclua o mês corrente.
 - Preserve a convenção de data existente.
-- Escreva `igp-m/igpm-acum-12m.json` com `{date, value}`, sem `rate`.
+- Escreva `indicadores/igp-m/igpm-acum-12m.json` com `{date, value}`, sem `rate`.
 
 - [ ] **Step 4: Executar e validar**
 
 Run:
 ```bash
-jupyter nbconvert --to notebook --execute --output-dir /tmp/nbexec igp-m/IGP-M.ipynb
-python3 scripts/validar.py igp-m/igpm-acum-12m.json
+jupyter nbconvert --to notebook --execute --output-dir /tmp/nbexec indicadores/igp-m/IGP-M.ipynb
+python3 scripts/validar.py indicadores/igp-m/igpm-acum-12m.json
 ```
 Expected: exit `0`.
 
 - [ ] **Step 5: Comparar com o publicado**
 
-Run: `git diff -- igp-m/igpm-acum-12m.json`
+Run: `git diff -- indicadores/igp-m/igpm-acum-12m.json`
 Expected: remoção de `rate`; pontos anteriores ao início atual podem ser adicionados; mudanças de valor apenas se a revisão tiver aprovado.
 
 - [ ] **Step 6: Commit**
 
 ```bash
-git add igp-m/IGP-M.ipynb igp-m/igpm-acum-12m.json
+git add indicadores/igp-m/IGP-M.ipynb indicadores/igp-m/igpm-acum-12m.json
 git commit -m "refactor(dados): revisa e migra igp-m para o pipeline auditavel"
 ```
 
@@ -552,16 +552,16 @@ git commit -m "refactor(dados): revisa e migra igp-m para o pipeline auditavel"
 ### Task 7: Migrar o CAGED
 
 **Files:**
-- Modify: `caged/CAGED.ipynb`
-- Modify: `caged/caged-total-mensal.json`
+- Modify: `indicadores/caged/CAGED.ipynb`
+- Modify: `indicadores/caged/caged-total-mensal.json`
 
 **Interfaces:**
 - Consumes: contrato de migração e decisão do CAGED em `docs/metodologia.md`.
-- Produces: `caged/caged-total-mensal.json` no contrato, `number`/`vínculos`/`0`, `monthly`, `Ministério do Trabalho`.
+- Produces: `indicadores/caged/caged-total-mensal.json` no contrato, `number`/`vínculos`/`0`, `monthly`, `Ministério do Trabalho`.
 
 - [ ] **Step 1: Confirmar o legado**
 
-Run: `grep -c "indicatorName" caged/CAGED.ipynb`
+Run: `grep -c "indicatorName" indicadores/caged/CAGED.ipynb`
 Expected: valor maior que `0`.
 
 - [ ] **Step 2: Revisar e migrar**
@@ -576,20 +576,20 @@ Expected: valor maior que `0`.
 
 Run:
 ```bash
-jupyter nbconvert --to notebook --execute --output-dir /tmp/nbexec caged/CAGED.ipynb
-python3 scripts/validar.py caged/caged-total-mensal.json
+jupyter nbconvert --to notebook --execute --output-dir /tmp/nbexec indicadores/caged/CAGED.ipynb
+python3 scripts/validar.py indicadores/caged/caged-total-mensal.json
 ```
 Expected: exit `0`.
 
 - [ ] **Step 4: Comparar com o publicado**
 
-Run: `git diff -- caged/caged-total-mensal.json`
+Run: `git diff -- indicadores/caged/caged-total-mensal.json`
 Expected: remoção de `rate`; nenhuma alteração de valor existente; apenas meses fechados novos, se houver.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add caged/CAGED.ipynb caged/caged-total-mensal.json
+git add indicadores/caged/CAGED.ipynb indicadores/caged/caged-total-mensal.json
 git commit -m "refactor(dados): migra caged para o pipeline auditavel"
 ```
 
@@ -598,8 +598,8 @@ git commit -m "refactor(dados): migra caged para o pipeline auditavel"
 ### Task 8: Revisar e migrar o MVG-R
 
 **Files:**
-- Modify: `mvgr/MVG-R.ipynb`
-- Modify: `mvgr/mvgr-nominal.json`, `mvgr/mvgr-real.json`
+- Modify: `indicadores/mvgr/MVG-R.ipynb`
+- Modify: `indicadores/mvgr/mvgr-nominal.json`, `indicadores/mvgr/mvgr-real.json`
 
 **Interfaces:**
 - Consumes: contrato de migração e decisões de MVG-R em `docs/metodologia.md`.
@@ -612,7 +612,7 @@ Run:
 python3 - <<'PY'
 import json
 from pathlib import Path
-nb = json.loads(Path("mvgr/MVG-R.ipynb").read_text(encoding="utf-8"))
+nb = json.loads(Path("indicadores/mvgr/MVG-R.ipynb").read_text(encoding="utf-8"))
 fonte = "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
 assert "indicatorName" in fonte
 assert "start_date_ipca = datetime(2004, 3, 1)" in fonte
@@ -638,20 +638,20 @@ Expected: `ok: notebook legado`.
 
 Run:
 ```bash
-jupyter nbconvert --to notebook --execute --output-dir /tmp/nbexec mvgr/MVG-R.ipynb
-python3 scripts/validar.py mvgr/mvgr-nominal.json mvgr/mvgr-real.json
+jupyter nbconvert --to notebook --execute --output-dir /tmp/nbexec indicadores/mvgr/MVG-R.ipynb
+python3 scripts/validar.py indicadores/mvgr/mvgr-nominal.json indicadores/mvgr/mvgr-real.json
 ```
 Expected: exit `0`.
 
 - [ ] **Step 5: Comparar com o publicado**
 
-Run: `git diff -- mvgr/`
+Run: `git diff -- indicadores/mvgr/`
 Expected: remoção de `rate`; mudanças de valor apenas se a revisão tiver aprovado. O primeiro ponto continua sendo a primeira data válida da fonte.
 
 - [ ] **Step 6: Commit**
 
 ```bash
-git add mvgr/MVG-R.ipynb mvgr/mvgr-nominal.json mvgr/mvgr-real.json
+git add indicadores/mvgr/MVG-R.ipynb indicadores/mvgr/mvgr-nominal.json indicadores/mvgr/mvgr-real.json
 git commit -m "refactor(dados): revisa e migra mvg-r para o pipeline auditavel"
 ```
 
@@ -660,8 +660,8 @@ git commit -m "refactor(dados): revisa e migra mvg-r para o pipeline auditavel"
 ### Task 9: Revisar e migrar a População
 
 **Files:**
-- Modify: `populacao/População.ipynb`
-- Modify: `populacao/populacao-total-anual.json`, `populacao/populacao-variacao-anual.json`
+- Modify: `indicadores/populacao/População.ipynb`
+- Modify: `indicadores/populacao/populacao-total-anual.json`, `indicadores/populacao/populacao-variacao-anual.json`
 
 **Interfaces:**
 - Consumes: contrato de migração e decisão de População em `docs/metodologia.md`.
@@ -669,7 +669,7 @@ git commit -m "refactor(dados): revisa e migra mvg-r para o pipeline auditavel"
 
 - [ ] **Step 1: Confirmar o legado**
 
-Run: `grep -c "output_dir = \"/content\"" populacao/População.ipynb`
+Run: `grep -c "output_dir = \"/content\"" indicadores/populacao/População.ipynb`
 Expected: valor maior que `0`.
 
 - [ ] **Step 2: Aplicar a decisão metodológica**
@@ -689,20 +689,20 @@ Expected: valor maior que `0`.
 
 Run:
 ```bash
-jupyter nbconvert --to notebook --execute --output-dir /tmp/nbexec "populacao/População.ipynb"
-python3 scripts/validar.py populacao/populacao-total-anual.json populacao/populacao-variacao-anual.json
+jupyter nbconvert --to notebook --execute --output-dir /tmp/nbexec "indicadores/populacao/População.ipynb"
+python3 scripts/validar.py indicadores/populacao/populacao-total-anual.json indicadores/populacao/populacao-variacao-anual.json
 ```
 Expected: exit `0`.
 
 - [ ] **Step 5: Comparar com o publicado**
 
-Run: `git diff -- populacao/`
+Run: `git diff -- indicadores/populacao/`
 Expected: remoção de `rate`; mudanças de valor apenas se a revisão tiver aprovado.
 
 - [ ] **Step 6: Commit**
 
 ```bash
-git add "populacao/População.ipynb" populacao/populacao-total-anual.json populacao/populacao-variacao-anual.json
+git add "indicadores/populacao/População.ipynb" indicadores/populacao/populacao-total-anual.json indicadores/populacao/populacao-variacao-anual.json
 git commit -m "refactor(dados): revisa e migra populacao para o pipeline auditavel"
 ```
 
@@ -711,8 +711,8 @@ git commit -m "refactor(dados): revisa e migra populacao para o pipeline auditav
 ### Task 10: Revisar e migrar os Homicídios
 
 **Files:**
-- Modify: `homicidios/Homicidios.ipynb`
-- Modify: `homicidios/homicidios-anual.json`, `homicidios/homicidios-armas-fogo-anual.json`, `homicidios/proporcao-homicidios-armas-fogo-anual.json`
+- Modify: `indicadores/homicidios/Homicidios.ipynb`
+- Modify: `indicadores/homicidios/homicidios-anual.json`, `indicadores/homicidios/homicidios-armas-fogo-anual.json`, `indicadores/homicidios/proporcao-homicidios-armas-fogo-anual.json`
 
 **Interfaces:**
 - Consumes: contrato de migração e decisões de Homicídios em `docs/metodologia.md`.
@@ -720,7 +720,7 @@ git commit -m "refactor(dados): revisa e migra populacao para o pipeline auditav
 
 - [ ] **Step 1: Confirmar o legado**
 
-Run: `grep -c "output_dir = \"/content\"" homicidios/Homicidios.ipynb`
+Run: `grep -c "output_dir = \"/content\"" indicadores/homicidios/Homicidios.ipynb`
 Expected: valor maior que `0`.
 
 - [ ] **Step 2: Aplicar as decisões metodológicas**
@@ -740,20 +740,20 @@ Expected: valor maior que `0`.
 
 Run:
 ```bash
-jupyter nbconvert --to notebook --execute --output-dir /tmp/nbexec homicidios/Homicidios.ipynb
-python3 scripts/validar.py homicidios/homicidios-anual.json homicidios/homicidios-armas-fogo-anual.json homicidios/proporcao-homicidios-armas-fogo-anual.json
+jupyter nbconvert --to notebook --execute --output-dir /tmp/nbexec indicadores/homicidios/Homicidios.ipynb
+python3 scripts/validar.py indicadores/homicidios/homicidios-anual.json indicadores/homicidios/homicidios-armas-fogo-anual.json indicadores/homicidios/proporcao-homicidios-armas-fogo-anual.json
 ```
 Expected: exit `0`.
 
 - [ ] **Step 5: Comparar com o publicado**
 
-Run: `git diff -- homicidios/`
+Run: `git diff -- indicadores/homicidios/`
 Expected: remoção de `rate`; datas preservadas; mudanças de valor apenas se a revisão tiver aprovado.
 
 - [ ] **Step 6: Commit**
 
 ```bash
-git add homicidios/Homicidios.ipynb homicidios/homicidios-anual.json homicidios/homicidios-armas-fogo-anual.json homicidios/proporcao-homicidios-armas-fogo-anual.json
+git add indicadores/homicidios/Homicidios.ipynb indicadores/homicidios/homicidios-anual.json indicadores/homicidios/homicidios-armas-fogo-anual.json indicadores/homicidios/proporcao-homicidios-armas-fogo-anual.json
 git commit -m "refactor(dados): revisa e migra homicidios para o pipeline auditavel"
 ```
 
@@ -780,7 +780,7 @@ Estrutura obrigatória:
 - `permissions: contents: write` e `pull-requests: write`
 - `concurrency: group: atualizar-dados, cancel-in-progress: false`
 - job `atualizar` em `ubuntu-latest`, `timeout-minutes: 30`
-- steps: checkout, setup-python 3.12 com cache pip, `pip install -r requirements.txt`, `pytest -q`, loop de `jupyter nbconvert --execute` para `*/*.ipynb`, `python3 scripts/validar.py`, detecção de diff, upload de artifact de `/tmp/nbexec`, criação do PR.
+- steps: checkout, setup-python 3.12 com cache pip, `pip install -r requirements.txt`, `pytest -q`, loop de `jupyter nbconvert --execute` para `indicadores/*/*.ipynb`, `python3 scripts/validar.py`, detecção de diff, upload de artifact de `/tmp/nbexec`, criação do PR.
 
 - [ ] **Step 2: Implementar o workflow**
 
@@ -797,7 +797,7 @@ Regras:
 - Todos os steps de publicação usam `if: steps.diff.outputs.mudou == 'true'`.
 - Configurar `user.name` e `user.email` do bot.
 - `git checkout -B dados/atualizacao`.
-- Adicionar apenas séries: `git add -- '*/*.json' ':!governos/*'`.
+- Adicionar apenas séries: `git add -- 'indicadores/*/*.json'`.
 - Commit fixo: `dados: atualizacao`.
 - `git push --force origin dados/atualizacao`.
 - Gerar o corpo do PR com:
@@ -868,7 +868,7 @@ python3 - <<'PY'
 import glob, json
 from pathlib import Path
 
-for caminho in sorted(glob.glob("*/*.json")):
+for caminho in sorted(glob.glob("indicadores/*/*.json")):
     p = Path(caminho)
     d = json.loads(p.read_text(encoding="utf-8"))
     for ponto in d["data"]:
@@ -884,7 +884,7 @@ Run:
 python3 - <<'PY'
 import glob, json, subprocess
 
-for caminho in sorted(glob.glob("*/*.json")):
+for caminho in sorted(glob.glob("indicadores/*/*.json")):
     antes = json.loads(subprocess.check_output(["git", "show", f"HEAD:{caminho}"], text=True))
     depois = json.loads(open(caminho, encoding="utf-8").read())
     a = [(p["date"], p["value"]) for p in antes["data"]]
@@ -909,7 +909,7 @@ Expected: PASS e exit `0`.
 Run:
 ```bash
 mkdir -p /tmp/nbexec-todos
-for nb in */*.ipynb; do
+for nb in indicadores/*/*.ipynb; do
   jupyter nbconvert --to notebook --execute --output-dir /tmp/nbexec-todos "$nb" || exit 1
 done
 python3 scripts/validar.py
@@ -938,7 +938,7 @@ Remova qualquer menção a `rate == value` e documente o estado final:
 
 ```bash
 git add AGENTS.md
-git add -- '*/*.json'
+git add -- 'indicadores/*/*.json'
 git commit -m "chore(dados): publica somente value em todas as series"
 ```
 
