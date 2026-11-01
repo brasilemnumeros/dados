@@ -4,6 +4,15 @@
 
 Arquivos públicos de dados (`*.json`) do **brasilemnumeros**, consumidos pelo app do repo `sitio`. O JSON é o produto. Cada pasta de indicador contém o notebook Colab usado para extrair, calcular e publicar aqueles dados. Há validador e testes em Python; ainda não há CI nem build.
 
+## Ao encontrar um problema
+
+- **Diagnóstico sem solução não vale.** Todo problema apontado vem com **a** solução recomendada
+  (uma, com o porquê e o custo), não com um menu de alternativas.
+- Quando a correção muda valor publicado, a recomendação vem separada em "o que eu faria" e
+  "o que depende de aval" — e o aval é pedido antes de aplicar.
+- Preferir consertar rótulo a mexer em número: se o dado está certo e a descrição engana, o
+  defeito é da descrição.
+
 ## Contrato das séries
 
 **Fonte de verdade:** `../sitio/docs/contrato-de-indicadores.md` (repo irmão `sitio`; `versao` **1**, regras `C1…C14`).
