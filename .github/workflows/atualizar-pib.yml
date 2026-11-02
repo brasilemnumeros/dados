@@ -1,0 +1,25 @@
+# Workflow da família PIB; o notebook e os dados vivem em indicadores/pib/.
+name: atualizar pib
+on:
+  schedule:
+    - cron: '0 15 10 3,6,9,12 *'
+    - cron: '0 15 20 3 *'
+  workflow_dispatch:
+    inputs:
+      seco:
+        description: Executar sem publicar
+        type: boolean
+        default: true
+permissions:
+  contents: read
+concurrency:
+  group: atualizar-pib
+  cancel-in-progress: false
+jobs:
+  atualizar:
+    uses: ./.github/workflows/atualizar-familia.yml
+    with:
+      familia: pib
+      seco: ${{ inputs.seco == true }}
+    secrets:
+      token: ${{ secrets.DADOS_BOT_TOKEN }}

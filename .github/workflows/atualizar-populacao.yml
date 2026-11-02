@@ -1,0 +1,24 @@
+# Workflow da família População; o notebook e os dados vivem em indicadores/populacao/.
+name: atualizar populacao
+on:
+  schedule:
+    - cron: '0 15 5 9,10 *'
+  workflow_dispatch:
+    inputs:
+      seco:
+        description: Executar sem publicar
+        type: boolean
+        default: true
+permissions:
+  contents: read
+concurrency:
+  group: atualizar-populacao
+  cancel-in-progress: false
+jobs:
+  atualizar:
+    uses: ./.github/workflows/atualizar-familia.yml
+    with:
+      familia: populacao
+      seco: ${{ inputs.seco == true }}
+    secrets:
+      token: ${{ secrets.DADOS_BOT_TOKEN }}

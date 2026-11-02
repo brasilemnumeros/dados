@@ -1,0 +1,24 @@
+# Workflow da família Homicídios; o notebook e os dados vivem em indicadores/homicidios/.
+name: atualizar homicidios
+on:
+  schedule:
+    - cron: '0 15 15 7,8,12 *'
+  workflow_dispatch:
+    inputs:
+      seco:
+        description: Executar sem publicar
+        type: boolean
+        default: true
+permissions:
+  contents: read
+concurrency:
+  group: atualizar-homicidios
+  cancel-in-progress: false
+jobs:
+  atualizar:
+    uses: ./.github/workflows/atualizar-familia.yml
+    with:
+      familia: homicidios
+      seco: ${{ inputs.seco == true }}
+    secrets:
+      token: ${{ secrets.DADOS_BOT_TOKEN }}

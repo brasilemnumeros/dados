@@ -1,0 +1,24 @@
+# Workflow da família Selic; o notebook e os dados vivem em indicadores/selic/.
+name: atualizar selic
+on:
+  schedule:
+    - cron: '0 15 2,8 * *'
+  workflow_dispatch:
+    inputs:
+      seco:
+        description: Executar sem publicar
+        type: boolean
+        default: true
+permissions:
+  contents: read
+concurrency:
+  group: atualizar-selic
+  cancel-in-progress: false
+jobs:
+  atualizar:
+    uses: ./.github/workflows/atualizar-familia.yml
+    with:
+      familia: selic
+      seco: ${{ inputs.seco == true }}
+    secrets:
+      token: ${{ secrets.DADOS_BOT_TOKEN }}

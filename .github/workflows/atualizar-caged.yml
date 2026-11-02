@@ -1,0 +1,24 @@
+# Workflow da família CAGED; o notebook e os dados vivem em indicadores/caged/.
+name: atualizar caged
+on:
+  schedule:
+    - cron: '0 15 3,10 * *'
+  workflow_dispatch:
+    inputs:
+      seco:
+        description: Executar sem publicar
+        type: boolean
+        default: true
+permissions:
+  contents: read
+concurrency:
+  group: atualizar-caged
+  cancel-in-progress: false
+jobs:
+  atualizar:
+    uses: ./.github/workflows/atualizar-familia.yml
+    with:
+      familia: caged
+      seco: ${{ inputs.seco == true }}
+    secrets:
+      token: ${{ secrets.DADOS_BOT_TOKEN }}
