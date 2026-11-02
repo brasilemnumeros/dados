@@ -175,9 +175,11 @@ Entrada: `familia` (string), `seco` (bool). Segredo: `token` (PAT). Passos:
    `$RUNNER_TEMP/nbexec`. Uma retentativa com espera de 60 s.
 7. `python3 scripts/validar.py` e `python3 -m pytest -q`.
 8. `git add -- "indicadores/<familia>/*.json"`; se `git diff --cached --quiet`, encerrar
-   sem PR.
-9. Publicar o artifact com o notebook executado.
-10. Se `seco=false`, houver diff e o ref for `main`, publicar.
+   com uma mensagem de “sem mudanças” e sem PR.
+9. Se `seco=false`, houver diff e o ref for `main`, atualizar a `main` (`git fetch origin
+   main` + `git reset --mixed origin/main`), reaplicar o `git add`, rechecar o diff e
+   publicar.
+10. Publicar o artifact com o notebook executado (`if: always()`, `continue-on-error: true`).
 
 O `git add` restrito já é a proteção de escopo: se o notebook escrever em outra pasta, o
 arquivo fica fora do commit e a próxima execução daquela família o trata.
@@ -185,6 +187,14 @@ arquivo fica fora do commit e a próxima execução daquela família o trata.
 ### Publicação
 
 ```bash
+git fetch origin main
+git reset --mixed origin/main
+git add -- "indicadores/$FAMILIA/*.json"
+if git diff --cached --quiet; then
+  echo "Sem mudanças depois de atualizar a main; nada a publicar."
+  exit 0
+fi
+
 git checkout -B "dados/atualizacao/$FAMILIA"
 git commit -m "chore(dados): atualiza $FAMILIA"
 git push --force origin "dados/atualizacao/$FAMILIA"
@@ -195,6 +205,10 @@ if [ -z "$(gh pr list --head "dados/atualizacao/$FAMILIA" --state open --json nu
     --body "Atualização automática de \`$FAMILIA\`. O diff é a fonte de verdade."
 fi
 ```
+
+- Antes de commitar, a branch é reconstruída sobre a `main` atual. Se a `main` já contém a
+  mudança (por exemplo, um PR anterior foi mergeado durante a execução), o run encerra sem
+  PR.
 
 - PR aberto: o push atualiza o diff; o `if` não cria outro.
 - Sem PR aberto: cria.
@@ -282,12 +296,14 @@ teste nunca abre PR.
 
 1. Abrir um único PR com `atualizar-familia.yml`, os oito callers e a documentação.
 2. Criar o segredo `DADOS_BOT_TOKEN` antes do merge.
-3. Ativar `Settings → General → Pull Requests → Automatically delete head branches`.
-4. Ainda na branch do PR, rodar `workflow_dispatch` com `seco=true` para IPCA e População.
-   Isso prova kernel, dependências, execução, validação, diff e artifact. Não abre PR.
-5. Mergear o PR dos workflows. Só a partir daqui os schedules valem.
+3. Ativar `Settings → General → Pull Requests → Automatically delete head branches` antes do
+   primeiro merge.
+4. Mergear o PR dos workflows. Só a partir daqui os schedules valem; eles rodam a partir da
+   `main`.
+5. Na `main`, rodar `workflow_dispatch` com `seco=true` para IPCA e População. Isso prova
+   kernel, dependências, execução, validação, diff e artifact; não abre PR.
 6. Na `main`, rodar `workflow_dispatch` com `seco=false` para IPCA. Hoje o esperado é
-   “sem mudanças; nenhum PR”; se a fonte já publicou, o resultado correto é um PR.
+   “nenhum PR”; se a fonte já publicou, o resultado correto é um PR.
 7. A primeira janela real é o teste ponta a ponta: o PR deve rodar o `validar`, mostrar o
    diff e o artifact. Se a criação do PR falhar, o dado não foi publicado; corrija e rode
    de novo.

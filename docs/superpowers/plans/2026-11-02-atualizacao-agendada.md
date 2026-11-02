@@ -26,7 +26,7 @@
   - `homicidios`: `0 15 15 7,8,12 *`
 - Branch fixa por família: `dados/atualizacao/<familia>`.
 - Segredo: `DADOS_BOT_TOKEN` (PAT fine-grained; `Contents: Read and write`, `Pull requests: Read and write`, `Metadata: Read`; validade de um ano).
-- Configuração do repositório: `Settings → General → Pull Requests → Automatically delete head branches` ligada. É o que apaga a branch ao mergear.
+- Configuração do repositório: `Settings → General → Pull Requests → Automatically delete head branches` deve estar ligada antes do primeiro merge. É o que apaga a branch ao mergear.
 - Checkout com `persist-credentials: false`; o PAT entra só no step de publicação.
 - `permissions: contents: read` nos callers; escrita via PAT.
 - Publicação só quando `steps.diff.outputs.mudou == 'true'`, `inputs.seco != true` e `github.ref == 'refs/heads/main'`.
@@ -171,6 +171,7 @@ jobs:
           git add -- "indicadores/$FAMILIA/*.json"
           if git diff --cached --quiet; then
             echo "mudou=false" >> "$GITHUB_OUTPUT"
+            echo "Sem mudanças em indicadores/$FAMILIA; nada a publicar."
           else
             echo "mudou=true" >> "$GITHUB_OUTPUT"
           fi
@@ -178,15 +179,6 @@ jobs:
       - name: Mostrar diff
         if: steps.diff.outputs.mudou == 'true'
         run: git diff --cached --stat -- 'indicadores/*/*.json'
-
-      - name: Publicar artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: nbexec-${{ inputs.familia }}-${{ github.run_id }}
-          path: ${{ runner.temp }}/nbexec
-          if-no-files-found: ignore
-          retention-days: 14
 
       - name: Publicar
         if: steps.diff.outputs.mudou == 'true' && inputs.seco != true && github.ref == 'refs/heads/main'
@@ -203,6 +195,13 @@ jobs:
           git config user.name "dados-bot"
           git config user.email "dados-bot@users.noreply.github.com"
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git fetch origin main
+          git reset --mixed origin/main
+          git add -- "indicadores/$FAMILIA/*.json"
+          if git diff --cached --quiet; then
+            echo "Sem mudanças em indicadores/$FAMILIA depois de atualizar a main; nada a publicar."
+            exit 0
+          fi
           git checkout -B "$BRANCH"
           git commit -m "chore(dados): atualiza $FAMILIA"
           git push --force origin "$BRANCH"
@@ -214,6 +213,16 @@ jobs:
               --title "dados: atualiza $FAMILIA" \
               --body "Atualização automática de \`$FAMILIA\`. O diff é a fonte de verdade."
           fi
+
+      - name: Publicar artifact
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: nbexec-${{ inputs.familia }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/nbexec
+          if-no-files-found: ignore
+          retention-days: 14
 ```
 
 - [ ] **Step 2: Conferir a sintaxe YAML**
@@ -357,7 +366,7 @@ for caminho in sorted(glob.glob(".github/workflows/*.yml")):
 PY
 ```
 
-Expected: `ok` para cada um dos 9 workflows.
+Expected: `ok` para cada um dos 10 workflows (os 9 novos e o `validar.yml`).
 
 - [ ] **Step 4: Commit**
 
@@ -406,8 +415,9 @@ reutilizável `atualizar-familia.yml`. A cadência segue a fonte (UTC):
 - Sem mudança, nenhum PR, branch ou commit é criado.
 - O PR é aberto com o PAT `DADOS_BOT_TOKEN` (fine-grained, um ano) para que o check
   `validar` rode; renove antes do vencimento.
-- O repositório tem `Settings → General → Pull Requests → Automatically delete head
-  branches` ligado: a branch é apagada ao mergear, e o próximo ciclo cria outra.
+- O repositório precisa ter `Settings → General → Pull Requests → Automatically delete head
+  branches` ligado antes do primeiro merge: a branch é apagada ao mergear, e o próximo ciclo
+  cria outra.
 - Se um PR for fechado sem merge, a branch continua; apague a branch ou reabra o PR antes
   do próximo ciclo. Não há configuração nativa para apagar no close.
 - `workflow_dispatch` com `seco=true` executa e valida sem publicar; `seco=false` em `main`
@@ -529,27 +539,25 @@ Expected: `DADOS_BOT_TOKEN` aparece na lista.
 
 No GitHub, ligue `Settings → General → Pull Requests → Automatically delete head branches`.
 
-- [ ] **Step 10: Rodar o modo seco na branch do PR**
+- [ ] **Step 10: Mergear o PR dos workflows**
+
+Com o PAT e o auto-delete configurados, mergeie o PR. Só a partir daqui os schedules valem;
+eles rodam a partir da `main`.
+
+- [ ] **Step 11: Rodar o modo seco e o no-op na `main`**
 
 ```bash
-gh workflow run atualizar-ipca.yml --ref <branch-do-pr> -f seco=true
-gh workflow run atualizar-populacao.yml --ref <branch-do-pr> -f seco=true
+gh workflow run atualizar-ipca.yml -f seco=true
+gh workflow run atualizar-populacao.yml -f seco=true
 gh run watch
-```
-
-Expected: os runs terminam verdes, executam os notebooks, validam e **não** abrem PR.
-
-- [ ] **Step 11: Depois do merge, conferir o no-op na `main`**
-
-```bash
 gh workflow run atualizar-ipca.yml -f seco=false
 gh run watch
 gh pr list --head dados/atualizacao/ipca
 ```
 
-Expected: se não houve divulgação desde a última atualização, o run termina verde com “sem
-mudanças” e a lista de PRs fica vazia. Se a fonte já publicou, o resultado correto é um PR —
-revise-o.
+Expected: os dry-runs terminam verdes, executam os notebooks, validam e **não** abrem PR. O
+run com `seco=false` termina verde: se não houve divulgação desde a última atualização, a
+lista de PRs fica vazia; se a fonte já publicou, o resultado correto é um PR — revise-o.
 
 - [ ] **Step 12: Acompanhar a primeira janela real**
 

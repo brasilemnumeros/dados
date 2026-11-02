@@ -134,8 +134,9 @@ reutilizável `atualizar-familia.yml`. A cadência segue a fonte (UTC):
 - Sem mudança, nenhum PR, branch ou commit é criado.
 - O PR é aberto com o PAT `DADOS_BOT_TOKEN` (fine-grained, um ano) para que o check
   `validar` rode; renove antes do vencimento.
-- O repositório tem `Settings → General → Pull Requests → Automatically delete head
-  branches` ligado: a branch é apagada ao mergear, e o próximo ciclo cria outra.
+- O repositório precisa ter `Settings → General → Pull Requests → Automatically delete head
+  branches` ligado antes do primeiro merge: a branch é apagada ao mergear, e o próximo ciclo
+  cria outra.
 - Se um PR for fechado sem merge, a branch continua; apague a branch ou reabra o PR antes
   do próximo ciclo. Não há configuração nativa para apagar no close.
 - `workflow_dispatch` com `seco=true` executa e valida sem publicar; `seco=false` em `main`
