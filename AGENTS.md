@@ -96,8 +96,11 @@ séries. O schema de lá é o mesmo que estava aqui (exercício efetivo, sem sob
 
 `.github/workflows/validar.yml`, job `validar`: roda em **todo pull request** e em **push para `main`**,
 com `actions/checkout` → `actions/setup-python` em **Python 3.12** (a mesma versão do ambiente local) →
-`pip install -r requirements.txt` → `python3 scripts/validar.py` → `python3 -m pytest -q`.
+`python3 -m pip install -r requirements-ci.txt` → `python3 scripts/validar.py` → `python3 -m pytest -q`.
 
+- **`requirements-ci.txt` é só o gate** (`pytest`): o validador e os testes são biblioteca padrão, e
+  instalar a stack dos notebooks para conferir JSON faria uma quebra de wheel alheia reprovar um PR
+  de dado. As dependências dos notebooks continuam em `requirements.txt`, com a mesma versão do pytest.
 - **Indicador novo entra por pull request**, não por commit direto em `main`. O gate é esse par de
   comandos: `validar.py` reprova contrato quebrado (`C1…C14`) e catálogo fora de sincronia com as
   séries (`K1…K8`); o `pytest` reprova regressão do próprio validador.

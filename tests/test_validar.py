@@ -313,3 +313,37 @@ def test_catalogo_arquivo_repetido(tmp_path):
         e.startswith("K8") and "'ipca/ipca-acum-12m.json' repetido" in e
         for e in validar_catalogo(tmp_path)
     )
+
+
+def test_catalogo_ausente(tmp_path):
+    pasta = tmp_path / "indicadores" / "ipca"
+    pasta.mkdir(parents=True)
+    (pasta / "ipca-acum-12m.json").write_text(json.dumps(serie()), encoding="utf-8")
+    assert validar_catalogo(tmp_path) == ["K1: catalogo.json ausente"]
+
+
+def test_catalogo_grupos_que_nao_e_objeto(tmp_path):
+    montar_raiz(tmp_path)
+    caminho = tmp_path / "indicadores" / "catalogo.json"
+    catalogo = json.loads(caminho.read_text(encoding="utf-8"))
+    catalogo["grupos"] = []
+    caminho.write_text(json.dumps(catalogo), encoding="utf-8")
+    erros = validar_catalogo(tmp_path)
+    assert any(e.startswith("K5") and "grupos" in e for e in erros)
+
+
+def test_catalogo_entrada_que_nao_e_objeto(tmp_path):
+    montar_raiz(tmp_path)
+    caminho = tmp_path / "indicadores" / "catalogo.json"
+    catalogo = json.loads(caminho.read_text(encoding="utf-8"))
+    catalogo["indicadores"].append("nao-e-objeto")
+    caminho.write_text(json.dumps(catalogo), encoding="utf-8")
+    assert any(e.startswith("K3") and "não é um objeto" in e for e in validar_catalogo(tmp_path))
+
+
+def test_catalogo_um_defeito_uma_mensagem(tmp_path):
+    """Id divergente quebra dois elos (nome do arquivo e id da série) e reporta UM só."""
+    montar_raiz(tmp_path, catalogo_id="outro-id")
+    erros = validar_catalogo(tmp_path)
+    assert len(erros) == 1, erros
+    assert erros[0].startswith("K3")

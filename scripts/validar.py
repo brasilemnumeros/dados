@@ -305,7 +305,7 @@ def validar_catalogo(raiz: Path) -> list[str]:
             valor = entrada.get(chave)
             if not isinstance(valor, str) or not valor:
                 erros.append(
-                    f"K7: catálogo: entrada {rotulo!r}: {chave} precisa ser string não vazia"
+                    f"K7: catalogo.json: entrada {rotulo!r}: {chave} precisa ser string não vazia"
                 )
 
         # K8 — id e arquivo são chave de índice no app (`{#each ... (ind.id)}` e o fetch da
@@ -313,7 +313,7 @@ def validar_catalogo(raiz: Path) -> list[str]:
         if isinstance(identificador, str) and identificador:
             if identificador in ids_vistos:
                 erros.append(
-                    f"K8: catálogo: id {identificador!r} repetido "
+                    f"K8: catalogo.json: id {identificador!r} repetido "
                     f"(também na entrada {ids_vistos[identificador]})"
                 )
             else:
@@ -321,23 +321,29 @@ def validar_catalogo(raiz: Path) -> list[str]:
 
         grupo = entrada.get("grupo")
         # lista/objeto é unhashable: checar o tipo antes do `in` é o que vira K5 em vez de
-        # TypeError — o validador existe para reportar, não para derrubar o hook.
-        if not isinstance(grupo, str) or grupo not in grupos:
+        # TypeError — o validador existe para reportar, não para derrubar o hook. A mensagem
+        # separa "não é texto" de "não existe": dizer que um array "não existe em grupos"
+        # manda quem lê procurar no lugar errado.
+        if not isinstance(grupo, str):
             erros.append(
-                f"K5: catálogo: entrada {rotulo!r}: grupo {grupo!r} não existe em grupos"
+                f"K5: catalogo.json: entrada {rotulo!r}: grupo {grupo!r} precisa ser texto"
+            )
+        elif grupo not in grupos:
+            erros.append(
+                f"K5: catalogo.json: entrada {rotulo!r}: grupo {grupo!r} não existe em grupos"
             )
 
         arquivo = entrada.get("arquivo")
         if not isinstance(arquivo, str) or not REGRA_ARQUIVO_CATALOGO.fullmatch(arquivo):
             erros.append(
-                f"K1: catálogo: entrada {rotulo!r}: arquivo {arquivo!r} "
+                f"K1: catalogo.json: entrada {rotulo!r}: arquivo {arquivo!r} "
                 "não é <familia>/<id>.json"
             )
             continue
 
         if arquivo in arquivos_vistos:
             erros.append(
-                f"K8: catálogo: arquivo {arquivo!r} repetido "
+                f"K8: catalogo.json: arquivo {arquivo!r} repetido "
                 f"(também na entrada {arquivos_vistos[arquivo]})"
             )
         else:
@@ -346,25 +352,25 @@ def validar_catalogo(raiz: Path) -> list[str]:
         declaradas.add(arquivo)
         serie_caminho = pasta / arquivo
         if not serie_caminho.is_file():
-            erros.append(f"K1: catálogo: entrada {rotulo!r}: arquivo {arquivo!r} não existe")
+            erros.append(f"K1: catalogo.json: entrada {rotulo!r}: arquivo {arquivo!r} não existe")
             continue
 
         try:
             serie = json.loads(serie_caminho.read_text(encoding="utf-8"))
         except OSError as exc:
             erros.append(
-                f"K1: catálogo: entrada {rotulo!r}: não foi possível ler {arquivo!r} ({exc})"
+                f"K1: catalogo.json: entrada {rotulo!r}: não foi possível ler {arquivo!r} ({exc})"
             )
             continue
         except json.JSONDecodeError as exc:
             erros.append(
-                f"K1: catálogo: entrada {rotulo!r}: {arquivo!r} com JSON inválido ({exc})"
+                f"K1: catalogo.json: entrada {rotulo!r}: {arquivo!r} com JSON inválido ({exc})"
             )
             continue
 
         if not isinstance(serie, dict):
             erros.append(
-                f"K1: catálogo: entrada {rotulo!r}: {arquivo!r} precisa ter um objeto na raiz"
+                f"K1: catalogo.json: entrada {rotulo!r}: {arquivo!r} precisa ter um objeto na raiz"
             )
             continue
 
@@ -372,12 +378,12 @@ def validar_catalogo(raiz: Path) -> list[str]:
         # defeito quebra os dois elos, então reporta-se só o primeiro.
         if not isinstance(identificador, str) or identificador != serie_caminho.stem:
             erros.append(
-                f"K3: catálogo: entrada {rotulo!r}: id diverge do nome do arquivo "
+                f"K3: catalogo.json: entrada {rotulo!r}: id diverge do nome do arquivo "
                 f"(esperado {serie_caminho.stem!r})"
             )
         elif serie.get("id") != identificador:
             erros.append(
-                f"K3: catálogo: entrada {rotulo!r}: id diverge do id da série {arquivo!r} "
+                f"K3: catalogo.json: entrada {rotulo!r}: id diverge do id da série {arquivo!r} "
                 f"({serie.get('id')!r})"
             )
 
@@ -386,25 +392,31 @@ def validar_catalogo(raiz: Path) -> list[str]:
         tipo = unidade.get("tipo") if isinstance(unidade, dict) else None
         if escala != tipo:
             erros.append(
-                f"K4: catálogo: entrada {rotulo!r}: escala {escala!r} diverge de "
+                f"K4: catalogo.json: entrada {rotulo!r}: escala {escala!r} diverge de "
                 f"unidade.tipo {tipo!r} em {arquivo!r}"
             )
 
     for serie_caminho in _series_da_raiz(raiz):
         relativo = serie_caminho.relative_to(pasta).as_posix()
         if relativo not in declaradas:
-            erros.append(f"K2: catálogo: série {relativo!r} não tem entrada no catálogo")
+            erros.append(f"K2: catalogo.json: série {relativo!r} não tem entrada no catálogo")
 
     return erros
 
 
-def validar_todos(raiz: Path) -> dict[Path, list[str]]:
-    """Valida todas as séries sob ``raiz`` e o catálogo; devolve só o que tem erro."""
+def _falhas_dos_caminhos(caminhos: list[Path]) -> dict[Path, list[str]]:
+    """Valida cada arquivo avulso e devolve só o que tem erro — o laço dos dois caminhos."""
     falhas: dict[Path, list[str]] = {}
-    for caminho in _series_da_raiz(raiz):
+    for caminho in caminhos:
         problemas = validar_arquivo(caminho)
         if problemas:
             falhas[caminho] = problemas
+    return falhas
+
+
+def validar_todos(raiz: Path) -> dict[Path, list[str]]:
+    """Valida todas as séries sob ``raiz`` e o catálogo; devolve só o que tem erro."""
+    falhas = _falhas_dos_caminhos(_series_da_raiz(raiz))
     problemas_catalogo = validar_catalogo(raiz)
     if problemas_catalogo:
         falhas[raiz / "indicadores" / "catalogo.json"] = problemas_catalogo
@@ -418,11 +430,7 @@ def main(argumentos: list[str] | None = None) -> int:
     if caminhos:
         # Arquivos avulsos: o catálogo descreve o conjunto inteiro, então fica de fora —
         # conferir a raiz a partir de um recorte produziria K2 falso.
-        falhas: dict[Path, list[str]] = {}
-        for caminho in caminhos:
-            problemas = validar_arquivo(caminho)
-            if problemas:
-                falhas[caminho] = problemas
+        falhas = _falhas_dos_caminhos(caminhos)
     else:
         if not _series_da_raiz(Path(".")):
             print(
