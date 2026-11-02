@@ -9,8 +9,8 @@
   "eixo": "por-100-mil",
   "medida": "nivel",
   "granularidade": "anual",
-  "fonte": "IPEA/Atlas da Violência (SIM/DATASUS); taxa por 100 mil calculada pelo site",
-  "urlFonte": "https://www.ipea.gov.br/atlasviolencia/dados-series/31/",
+  "fonte": "IPEA/Atlas da Violência (SIM/DATASUS); 2014–2024: Atlas da Violência 2026 (FBSP/Ipea), Tabela 11.1 (PDF); taxa por 100 mil calculada pelo site",
+  "urlFonte": "https://forumseguranca.org.br/wp-content/uploads/2026/05/atlas-violencia-2026-relatorio-completo.pdf",
   "dados": [
     {
       "data": "1995-01-01",
@@ -90,35 +90,35 @@
     },
     {
       "data": "2014-01-01",
-      "valor": 21.09
+      "valor": 21.4
     },
     {
       "data": "2015-01-01",
-      "valor": 20.45
+      "valor": 20.86
     },
     {
       "data": "2016-01-01",
-      "valor": 21.58
+      "valor": 22.13
     },
     {
       "data": "2017-01-01",
-      "valor": 22.98
+      "valor": 23.74
     },
     {
       "data": "2018-01-01",
-      "valor": 19.75
+      "valor": 20.58
     },
     {
       "data": "2019-01-01",
-      "valor": 14.37
+      "valor": 15.27
     },
     {
       "data": "2020-01-01",
-      "valor": 16.05
+      "valor": 16.92
     },
     {
       "data": "2021-01-01",
-      "valor": 15.49
+      "valor": 16.44
     },
     {
       "data": "2022-01-01",
@@ -126,7 +126,11 @@
     },
     {
       "data": "2023-01-01",
-      "valor": 14.48
+      "valor": 15.41
+    },
+    {
+      "data": "2024-01-01",
+      "valor": 14.05
     }
   ]
 }

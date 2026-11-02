@@ -359,40 +359,96 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
 
 - **Definição:** taxa anual de homicídios por armas de fogo por 100 mil habitantes, por
   residência. `numero` (`por 100 mil`, 2 casas), `eixo: por-100-mil`, `medida: nivel`, `anual`.
-- **Fonte e código:** SIM compilado pelo Atlas, numerador na série 31 e denominador na
-  `AVIOL12_VIOLPOP`.
+- **Fonte e código:** SIM compilado pelo Atlas. Numerador: série 31 do Ipea até 2013;
+  2014–2024: Atlas da Violência 2026 (FBSP/Ipea), Tabela 11.1, publicado em PDF
+  (`https://forumseguranca.org.br/wp-content/uploads/2026/05/atlas-violencia-2026-relatorio-completo.pdf`).
+  Denominador: `AVIOL12_VIOLPOP`.
 - **Fórmula atual:** lia a taxa pronta da série 35 pela API antiga do Atlas (`/valores-series/35/1`,
   hoje 404) e usava o `periodo` como data — a API devolve `YYYY-01-15`, e daí vinha **o dia 15**
   desta série, sozinho no repo. Não calculava denominador; a taxa 35 usa população mista e para
   em 2022.
-- **Fórmula proposta:** `100.000 × homicídios_armas ÷ população`, com a contagem 31 e a mesma
-  população do ano. Datas no dia 01, como manda C9.
+- **Fórmula proposta:** `100.000 × homicídios_armas ÷ população`, com a contagem 31 (1995–2013)
+  ou a contagem do Atlas 2026 (2014–2024) e a mesma população do ano. Datas no dia 01, como
+  manda C9.
 - **Evidência:** 2007 `34.147 ÷ 189.462.739 = 18,02` (antigo 18,56; implica 184,0 mi); 2012
-  `40.077 ÷ 199.239.473 = 20,11` (antigo 20,66); 2019 `30.206 ÷ 210.131.314 = 14,37` (o antigo
-  14,67 implica 30.826 homicídios por arma, 620 acima da contagem publicada). 2003 20,42 → 20,00;
-  2017 22,88 → 22,98; 2022 15,68 → 15,78; 2023 novo, 14,48. Maior desvio 2012, −0,55.
+  `40.077 ÷ 199.239.473 = 20,11` (antigo 20,66); 2019 `30.206 ÷ 210.131.314 = 14,37` (safra
+  antiga, 1995–2013; o antigo 14,67 implica 30.826 homicídios por arma, 620 acima da contagem
+  publicada). O bloco 2014–2024 muda 10 dos 11 anos em relação à safra antiga (só 2022 é
+  idêntico); nesta emenda, em relação ao HEAD anterior, mudam 2014–2021 (2022–2024 já estavam
+  desde 977e8cb). Contagem, taxa e proporção, safra antiga → safra 2026:
+
+  | ano | contagem | taxa | proporção |
+  |---:|---:|---:|---:|
+  | 2014 | 42.755 → 43.397 | 21,09 → 21,40 | 70,70 → 71,76 |
+  | 2015 | 41.817 → 42.656 | 20,45 → 20,86 | 70,78 → 72,20 |
+  | 2016 | 44.475 → 45.616 | 21,58 → 22,13 | 71,14 → 72,97 |
+  | 2017 | 47.510 → 49.085 | 22,98 → 23,74 | 72,42 → 74,82 |
+  | 2018 | 41.179 → 42.908 | 19,75 → 20,58 | 71,05 → 74,04 |
+  | 2019 | 30.206 → 32.091 | 14,37 → 15,27 | 66,38 → 70,53 |
+  | 2020 | 33.994 → 35.828 | 16,05 → 16,92 | 68,17 → 71,85 |
+  | 2021 | 33.039 → 35.070 | 15,49 → 16,44 | 69,05 → 73,30 |
+  | 2022 | 33.580 → 33.580 | 15,78 → 15,78 | 72,36 → 72,36 |
+  | 2023 | 30.789 → 32.749 | 14,48 → 15,41 | 67,30 → 71,59 |
+  | 2024 | — → 29.870 | — → 14,05 | — → 70,13 |
+
+  A variação 2013→2014 é **+7,50%** na contagem (40.369 → 43.397) e **+6,58%** na taxa
+  (20,08 → 21,40). A safra 2026 tem 2013 = 40.870 (Tabela 11.1 de 2025); se ele fosse usado,
+  a variação seria +6,18%. O resíduo de +1,32 p.p. é a revisão de 2013 que não foi aplicada.
+  Maior desvio de taxa no bloco: 2021, +0,95 (15,49 → 16,44); maior desvio de proporção:
+  2023, +4,29 p.p. (67,30 → 71,59).
 - **Veredito:** corrigir.
-- **Impacto esperado:** 28 → 29 pontos; `1995-01-15`–`2022-01-15` → `1995-01-01`–`2023-01-01`.
-  **As 28 datas mudam** (dia 15 → 01) e 16 dos 28 valores mudam; maior desvio 0,55.
-- **Decisão pendente:** não — aprovada pelo usuário em 2026-11-01, inclusive a normalização do
-  dia 15.
+- **Impacto esperado:** 30 pontos (1995–2024; a cobertura não muda nesta emenda). Em relação à
+  revisão original de 2026-11-01, 28 → 30 pontos. 2014–2021 mudam nesta emenda; 2022–2024 já
+  estavam desde 977e8cb (2022 é idêntico à safra antiga).
+- **Decisão pendente:** não — bloco completo 2014–2024 aprovado pelo usuário em 2026-11-02.
+- **Complemento 2014–2024 (Atlas da Violência 2026).** A série 31 da API do Ipea cobre
+  1995–2013 na safra antiga e termina em 2023 com 30.789 — valor que já não é o da safra
+  revisada —, sem 2024. O Atlas 2026 publica a safra revisada na Tabela 11.1 (p. 151):
+  **2014 = 43.397**, **2015 = 42.656**, **2016 = 45.616**, **2017 = 49.085**, **2018 = 42.908**,
+  **2019 = 32.091**, **2020 = 35.828**, **2021 = 35.070**, **2022 = 33.580**, **2023 = 32.749**
+  e **2024 = 29.870**, com a mesma definição (CID-10 X93–X95 + Y35.0, Brasil, por residência,
+  contagem). O bloco 2014–2024 é contíguo; 2022 = 33.580 coincide nas duas safras, então não
+  há degrau em 2022. A emenda é 2013/2014: 2013 continua na série 31 (40.369) e 2014 entra
+  pelo Atlas (43.397), +7,50% na contagem. A safra nova tem 2013 = 40.870 (Tabela 11.1 de
+  2025), o que daria +6,18%; a diferença é o resíduo de 2013, que fica para uma revisão com
+  aval. A fonte é PDF porque não há publicação machine-readable da safra 2026: a API do Ipea
+  não foi atualizada, o site do FBSP só oferece o relatório e os microdados do SIM/DATASUS
+  não estão tabulados para 2024 neste ambiente. A transcrição é explícita no notebook e
+  conferida contra a Tabela 11.3 (70,1% em 2024).
+  **Safra mista:** 1995–2013 continuam na série 31 (safra antiga) e 2014–2024 vêm do Atlas
+  2026. A Tabela 11.1 de 2025 já revisa 2013 (40.369 → 40.870); esse único ano não foi trocado
+  porque a emenda 2013/2014 é o limite do bloco aprovado. O valor de 2022 coincide nas duas
+  safras (33.580), então a emenda em 2022 não tem degrau de nível.
 
 ## proporcao-homicidios-armas-fogo-anual
 
 - **Definição:** participação percentual dos homicídios por armas de fogo no total de homicídios.
   `percentual` (`%`, 2 casas), `eixo: percentual`, `medida: participacao`, `anual`.
-- **Fonte e código:** derivada das contagens 31 (armas) e 328 (total) do SIM/Atlas.
+- **Fonte e código:** derivada das contagens de armas (série 31 até 2013; Atlas da Violência
+  2026, Tabela 11.1, em 2014–2024) e do total (série 328).
 - **Fórmula atual:** `100 × taxa_armas ÷ taxa_total`. Só é igual a `100 × armas ÷ total` quando
   as duas taxas usam o mesmo denominador — o que não acontece em vários anos.
 - **Fórmula proposta:** `100 × homicídios_armas ÷ homicídios_total`, direto das contagens, nos
   anos em que ambas existem.
-- **Evidência:** a proporção proposta é exatamente `100 × série 31 ÷ série 328` nos 29 anos
-  (diferença 0,00 no 2º decimal). 2019 **67,76% → 66,38%** (−1,38 p.p., o maior desvio); fora
-  2019 todos os desvios são ≤0,03 p.p. (arredondamento). 2023 novo, 67,30.
+- **Evidência:** nos anos 1995–2013, a proporção publicada é exatamente `100 × série 31 ÷
+  série 328` (diferença 0,00 no 2º decimal). 2019 **67,76% → 66,38%** (−1,38 p.p., o maior
+  desvio da revisão de 2026-11-01); fora 2019 todos os desvios são ≤0,03 p.p. (arredondamento).
+  O bloco 2014–2024 usa as contagens do Atlas 2026; a proporção muda em 10 dos 11 anos (2022
+  é idêntico): 2014 70,70 → 71,76; 2015 70,78 → 72,20; 2016 71,14 → 72,97; 2017 72,42 →
+  74,82; 2018 71,05 → 74,04; 2019 66,38 → 70,53; 2020 68,17 → 71,85; 2021 69,05 → 73,30;
+  2022 72,36 = 72,36; 2023 67,30 → 71,59; 2024 — → 70,13. O Atlas publica 70,1% em 2024.
 - **Veredito:** corrigir.
-- **Impacto esperado:** 28 → 29 pontos; `1995`–`2022` → `1995`–`2023`; 28 valores mudam no 2º
-  decimal, só 2019 de forma substantiva.
-- **Decisão pendente:** não — aprovada pelo usuário em 2026-11-01.
+- **Impacto esperado:** 30 pontos; a cobertura não muda. Em relação à revisão original de
+  2026-11-01, 28 → 30 pontos. 2014–2021 mudam nesta emenda; 2022–2024 já estavam (2022 é
+  idêntico). Maior desvio: 2023, +4,29 p.p. (67,30 → 71,59); depois 2021, +4,25 p.p. e 2019,
+  +4,15 p.p.
+- **Decisão pendente:** não — bloco completo 2014–2024 aprovado pelo usuário em 2026-11-02.
+- **Safra mista:** a mesma do bloco de `homicidios-armas-fogo-anual`. Como o total (série 328)
+  já é a safra 2026, a proporção de 1995–2013 mistura o numerador antigo com o denominador
+  atual. Em 2013, a proporção publicada é **70,33%** (40.369 ÷ 57.396); com a contagem revisada
+  de 2013 (40.870, Tabela 11.1 de 2025) seria **71,21%**. A emenda 2013/2014 na proporção é
+  70,33 → 71,76 (+1,43 p.p.); com o 2013 revisado, 71,21 → 71,76 (+0,55 p.p.). O resíduo é a
+  revisão de 2013, que depende de aval.
 
 ## Pendentes
 
@@ -407,11 +463,16 @@ As decisões de apresentação que estavam abertas foram fechadas no catálogo d
   referência em 1º de julho;
 - o carimbo `AAAA-01-01` nas séries anuais é convenção de C9 (início do período) e foi mantido.
 
-Duas **condições de revisão** ficam registradas — não são pendências, são gatilhos:
+Três **condições de revisão** ficam registradas — não são pendências, são gatilhos:
 
 - **Homicídios:** o denominador de 2022–2023 é interpolação do IPEA, com erro limitado a 0,9%
   (ver o bloco de `homicidios-anual`). Refazer quando IPEA/IBGE publicarem população consolidada
   para esses anos.
+- **Homicídios por armas de fogo:** 2014–2024 vêm do Atlas 2026 em PDF e 1995–2013 vêm da série
+  31 (safra antiga). Quando o Ipea publicar a safra 2026 na API (série 31 com 2024), remover o
+  complemento do notebook e conferir o bloco 2014–2024 contra a API; a Tabela 11.1 de 2025 já
+  traz 2013 = 40.870, que pode ser aplicado com aval para fechar a emenda 2013/2014 na mesma
+  safra. O gatilho é a API deixar de devolver 2023 = 30.789 ou passar a devolver 2024.
 - **Séries anuais:** se o instante da medida (1º de julho, no caso da população) passar a
   importar mais que o alinhamento entre séries anuais, muda-se C9 para as seis séries anuais no
   mesmo commit — não série a série.

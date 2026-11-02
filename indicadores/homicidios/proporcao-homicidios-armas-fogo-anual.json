@@ -9,8 +9,8 @@
   "eixo": "percentual",
   "medida": "participacao",
   "granularidade": "anual",
-  "fonte": "IPEA/Atlas da Violência (SIM/DATASUS); proporção calculada pelo site",
-  "urlFonte": "https://www.ipea.gov.br/atlasviolencia/tema/1/",
+  "fonte": "IPEA/Atlas da Violência (SIM/DATASUS); 2014–2024: Atlas da Violência 2026 (FBSP/Ipea), Tabela 11.1 (PDF); proporção calculada pelo site",
+  "urlFonte": "https://forumseguranca.org.br/wp-content/uploads/2026/05/atlas-violencia-2026-relatorio-completo.pdf",
   "dados": [
     {
       "data": "1995-01-01",
@@ -90,35 +90,35 @@
     },
     {
       "data": "2014-01-01",
-      "valor": 70.7
+      "valor": 71.76
     },
     {
       "data": "2015-01-01",
-      "valor": 70.78
+      "valor": 72.2
     },
     {
       "data": "2016-01-01",
-      "valor": 71.14
+      "valor": 72.97
     },
     {
       "data": "2017-01-01",
-      "valor": 72.42
+      "valor": 74.82
     },
     {
       "data": "2018-01-01",
-      "valor": 71.05
+      "valor": 74.04
     },
     {
       "data": "2019-01-01",
-      "valor": 66.38
+      "valor": 70.53
     },
     {
       "data": "2020-01-01",
-      "valor": 68.17
+      "valor": 71.85
     },
     {
       "data": "2021-01-01",
-      "valor": 69.05
+      "valor": 73.3
     },
     {
       "data": "2022-01-01",
@@ -126,7 +126,11 @@
     },
     {
       "data": "2023-01-01",
-      "valor": 67.3
+      "valor": 71.59
+    },
+    {
+      "data": "2024-01-01",
+      "valor": 70.13
     }
   ]
 }

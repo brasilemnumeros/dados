@@ -106,7 +106,7 @@
       "grupo": "seguranca-publica",
       "arquivo": "homicidios/homicidios-armas-fogo-anual.json",
       "escala": "numero",
-      "descricao": "Taxa de homicídios por armas de fogo por 100 mil habitantes, calculada pelo site a partir das mortes registradas no SIM (compiladas pelo Atlas da Violência) e da população residente",
+      "descricao": "Taxa de homicídios por armas de fogo por 100 mil habitantes, calculada pelo site a partir das mortes registradas no SIM (compiladas pelo Atlas da Violência) e da população residente. 2014–2024 usam as contagens revisadas do Atlas da Violência 2026 (Tabela 11.1); 1995–2013 usam a série 31 do Ipea (safra anterior).",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/homicidios/Homicidios.ipynb"
     },
     {
@@ -115,7 +115,7 @@
       "grupo": "seguranca-publica",
       "arquivo": "homicidios/proporcao-homicidios-armas-fogo-anual.json",
       "escala": "percentual",
-      "descricao": "Proporção de homicídios cometidos por armas de fogo em relação ao total de homicídios no Brasil",
+      "descricao": "Proporção de homicídios cometidos por armas de fogo em relação ao total de homicídios no Brasil. 2014–2024 usam as contagens revisadas do Atlas da Violência 2026 (Tabela 11.1); 1995–2013 usam a série 31 do Ipea (safra anterior).",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/homicidios/Homicidios.ipynb"
     }
   ],
