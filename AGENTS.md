@@ -2,7 +2,7 @@
 
 ## Visão geral
 
-Arquivos públicos de dados (`*.json`) do **brasilemnumeros**, consumidos pelo app do repo `sitio`. O JSON é o produto. Cada pasta de indicador contém o notebook Colab usado para extrair, calcular e publicar aqueles dados. Há validador e testes em Python; ainda não há CI nem build.
+Arquivos públicos de dados (`*.json`) do **brasilemnumeros**, consumidos pelo app do repo `sitio`. O JSON é o produto. Cada pasta de indicador contém o notebook Colab usado para extrair, calcular e publicar aqueles dados. O validador (`scripts/validar.py`) e os testes (`pytest`) rodam no CI em todo pull request e em push para `main` — ver seção **CI**.
 
 ## Ao encontrar um problema
 
@@ -71,6 +71,20 @@ O registro de mandatos (índice + `federal.json`) mora agora no repo `sitio`, em
 `app/src/data/governos/`, e é embutido no bundle do app. Este repositório guarda só as
 séries. O schema de lá é o mesmo que estava aqui (exercício efetivo, sem sobreposição,
 `mandatoDe`, `emCurso`).
+
+## CI (GitHub Actions)
+
+`.github/workflows/validar.yml`, job `validar`: roda em **todo pull request** e em **push para `main`**,
+com `actions/checkout` → `actions/setup-python` em **Python 3.12** (a mesma versão do ambiente local) →
+`pip install -r requirements.txt` → `python3 scripts/validar.py` → `python3 -m pytest -q`.
+
+- **Indicador novo entra por pull request**, não por commit direto em `main`. O gate é esse par de
+  comandos: `validar.py` reprova contrato quebrado (`C1…C14`) e catálogo fora de sincronia com as
+  séries (`K1…K6`); o `pytest` reprova regressão do próprio validador.
+- O job se chama `validar`. Torná-lo **check obrigatório** é configuração de *branch protection* no
+  GitHub, fora do repositório: sem isso o CI verde informa, não bloqueia.
+- O hook em `.githooks/pre-commit` continua valendo para quem commita localmente, mas não roda no PR de
+  quem nunca o instalou — quem garante o gate é o CI.
 
 ## Antes de commitar
 
