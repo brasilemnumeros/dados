@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from scripts.validar import validar_serie
+from scripts.validar import validar_catalogo, validar_serie
 
 CAMINHO = Path("indicadores/ipca/ipca-acum-12m.json")
 CONTRATO = Path(__file__).parent / "contrato"
@@ -166,3 +166,75 @@ def test_casos_invalidos_do_corpus_falham_com_o_codigo_do_nome():
         codigo = caminho.stem.split("-")[0]
         encontrados = [e.split(": ")[1] for e in validar_serie(bruto, caminho, checar_nome=False)]
         assert codigo in encontrados, f"{caminho.name}: esperava {codigo}, veio {encontrados}"
+
+
+# Catálogo (K1…K6): o catálogo publicado e o disco descrevem o MESMO conjunto de séries.
+# Uma raiz mínima tem uma série em disco e o catálogo que deveria descrevê-la; cada teste
+# estraga uma peça e cobra o código da regra correspondente.
+
+
+def montar_raiz(
+    raiz: Path,
+    *,
+    catalogo_arquivo: str = "ipca/ipca-acum-12m.json",
+    omitir_entrada: bool = False,
+    catalogo_id: str = "ipca-acum-12m",
+    catalogo_escala: str = "percentual",
+    catalogo_grupo: str = "inflacao",
+    catalogo_versao: int = 1,
+) -> None:
+    pasta = raiz / "indicadores" / "ipca"
+    pasta.mkdir(parents=True)
+    (pasta / "ipca-acum-12m.json").write_text(json.dumps(serie()), encoding="utf-8")
+
+    entrada = {
+        "id": catalogo_id,
+        "nome": "IPCA (%)",
+        "grupo": catalogo_grupo,
+        "arquivo": catalogo_arquivo,
+        "escala": catalogo_escala,
+        "descricao": "Variação acumulada do IPCA em 12 meses",
+    }
+    catalogo = {
+        "versao": catalogo_versao,
+        "indicadores": [] if omitir_entrada else [entrada],
+        "grupos": {"inflacao": {"nome": "📈 Inflação"}},
+    }
+    (raiz / "indicadores" / "catalogo.json").write_text(
+        json.dumps(catalogo, ensure_ascii=False), encoding="utf-8"
+    )
+
+
+def test_catalogo_ok(tmp_path):
+    montar_raiz(tmp_path)
+    assert validar_catalogo(tmp_path) == []
+
+
+def test_catalogo_arquivo_inexistente(tmp_path):
+    montar_raiz(tmp_path, catalogo_arquivo="selic/nao-existe.json")
+    assert any(e.startswith("K1") for e in validar_catalogo(tmp_path))
+
+
+def test_catalogo_serie_sem_entrada(tmp_path):
+    montar_raiz(tmp_path, omitir_entrada=True)
+    assert any(e.startswith("K2") for e in validar_catalogo(tmp_path))
+
+
+def test_catalogo_id_divergente(tmp_path):
+    montar_raiz(tmp_path, catalogo_id="outro-id")
+    assert any(e.startswith("K3") for e in validar_catalogo(tmp_path))
+
+
+def test_catalogo_escala_divergente(tmp_path):
+    montar_raiz(tmp_path, catalogo_escala="moeda")
+    assert any(e.startswith("K4") for e in validar_catalogo(tmp_path))
+
+
+def test_catalogo_grupo_inexistente(tmp_path):
+    montar_raiz(tmp_path, catalogo_grupo="nao-existe")
+    assert any(e.startswith("K5") for e in validar_catalogo(tmp_path))
+
+
+def test_catalogo_versao_desconhecida(tmp_path):
+    montar_raiz(tmp_path, catalogo_versao=2)
+    assert any(e.startswith("K6") for e in validar_catalogo(tmp_path))
