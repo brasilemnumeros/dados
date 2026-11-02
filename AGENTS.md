@@ -108,6 +108,6 @@ com `actions/checkout` → `actions/setup-python` em **Python 3.12** (a mesma ve
 
 - Instale o hook uma vez por clone: `git config core.hooksPath .githooks`. Ele roda `scripts/validar.py` e `pytest` quando o commit toca `indicadores/`, `scripts/`, `tests/` ou `requirements.txt`. Foi assim que o IPCA voltou a escrever o formato antigo sem ninguém notar: o validador existia, mas não era executado.
 - Rode `python3 -m pytest -q`.
-- Valide o parse de todos os arquivos: `python3 -c "import json,glob; [json.load(open(f)) for f in glob.glob('indicadores/*/*.json')]"`.
+- Valide o parse de todos os arquivos — as séries em `indicadores/<familia>/` **e** o catálogo editado à mão em `indicadores/`: `python3 -c "import json,glob; [json.load(open(f)) for f in glob.glob('indicadores/*.json')+glob.glob('indicadores/*/*.json')]"`.
 - Revise o `git diff` em busca de mudanças numéricas acidentais; alterações de data e ordenação se escondem facilmente em diffs grandes de JSON.
 - As mensagens de commit seguem Conventional Commits em português com escopo `dados` (ex.: `fix(dados): ...`), e o corpo explica o impacto nos dados.
