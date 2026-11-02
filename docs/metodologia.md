@@ -100,36 +100,30 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
   reescreve `indicadores/igp-m/igpm-acum-12m.json` inteiro a cada execução, com a
   série de 382 pontos publicada nesta rodada.
 
-## selic-meta-acum-12m
+## selic-meta
 
-- **Definição:** taxa acumulada em 12 meses equivalente à trajetória da meta Selic do Copom —
-  a taxa efetiva do período que a meta produziria capitalizada mês a mês. Unidade
-  `percentual` (`%`, 2 casas), `eixo: percentual`, `medida: acumulado-12m`, `mensal`.
+- **Definição:** meta da taxa Selic definida pelo Copom, **ao ano** — o nível em vigor no mês.
+  `percentual` (`%`, 2 casas), `eixo: percentual`, `medida: nivel`, `mensal`.
 - **Fonte e código:** Banco Central do Brasil, SGS **432** (meta Selic definida pelo Copom,
   % a.a., diária, desde 05/03/1999). Endpoint:
   `https://api.bcb.gov.br/dados/serie/bcdata.sgs.432/dados?formato=json`, consultado em janelas
-  de 5 anos (o SGS recusa janela longa em série diária). Conferência na SGS 4390 (Selic
-  acumulada no mês). Não existe série oficial de acumulado-12m da meta.
-- **Fórmula atual:** `resample('ME').mean()` — média aritmética das metas diárias do mês,
-  publicada desde 1999-03 sob o nome de "acumulada em 12 meses". **Não era acumulado nenhum**:
-  era o nível da meta no mês (jan/2000 = 19,00%, que era a meta em vigor). O último ponto saía
-  de mês aberto e o notebook fazia merge com o JSON existente em vez de recalcular.
-- **Fórmula proposta:** `V_t = (∏_{k=t−11}^{t} (1 + m_k/100)^{1/12} − 1) × 100`, com `m_k` a
-  média das metas anualizadas em vigor no mês — capitalização das taxas mensais equivalentes
-  (convenção base 252 do BCB, a mesma da SGS 1178). Controle: meta constante nos 12 meses dá
-  acumulado exatamente igual à meta (jul/2016 = 14,25%). Março/1999 é descartado por ser mês
-  parcial (a fonte começa em 05/03); a primeira janela completa fecha em 2000-03.
-- **Evidência:** a série antiga reproduz o `resample('ME').mean()` da 432 em 318 de 320 pontos
-  — é nível, não acumulado. Novo: 2003-12 **17,05 → 23,48** (+6,43 p.p., maior desvio: 2003
-  começou com meta de 25,5% e terminou em ~17,0%); 2003-02 25,82 → 20,27; 2021-12 8,86 → 4,50;
-  2025-10 15,00 → 13,82. Em 308 meses comuns, 298 mudam, diferença média 1,54 p.p. A variante
-  diária base 252 foi testada e descartada (janela de 12 meses tem 260–262 dias de semana
-  contra 252 dias úteis; inflaria 0,2–0,9 p.p.).
-- **Veredito:** corrigir (erro conceitual: nível publicado como acumulado).
-- **Impacto esperado:** 320 → 320 pontos; `1999-03`–`2025-10` → `2000-03`–`2026-10`; 298 dos 308
-  pontos comuns mudam; maior desvio 6,43 p.p.
-- **Decisão pendente:** não — aprovada pelo usuário em 2026-11-01 (corrigir para acumulado; a
-  alternativa de renomear a série para `nivel` foi descartada).
+  de 5 anos (limite do SGS para série diária).
+- **Fórmula atual:** nenhuma. A meta do mês é o valor em vigor (a média das leituras diárias do
+  mês só lida com mudança de meta no meio do mês — efeito máximo de ~0,03 p.p.). O mês corrente
+  é descartado.
+- **Fórmula proposta:** nenhuma. A meta é o que o Copom decide; repetir o nível é reproduzir a
+  fonte, não calcular.
+- **Evidência:** jul/2016 = 14,25% ao ano (meta constante no período); out/2025 = 15,00%;
+  mar/1999 = 44,22% (primeiro mês da fonte, a partir de 05/03). Não existe série oficial de
+  "meta acumulada em 12 meses" porque a meta é anualizada — acumulá-la exigiria convertê-la em
+  taxa mensal equivalente e recompor, um construto que só coincide com a meta quando ela fica
+  parada 12 meses. Em dez/2003 a meta em vigor era **17,05%** e esse construto daria **23,48%**.
+- **Veredito:** corrigir (a série publicava um construto acumulado; passa a publicar o nível).
+- **Impacto esperado:** 320 → **332 pontos**; `2000-03`–`2026-10` → **`1999-03`–`2026-10`**; os
+  valores voltam ao nível (out/2025 = 15,00%, dez/2003 = 17,05%) e o `id` muda de
+  `selic-meta-acum-12m` para **`selic-meta`**.
+- **Decisão pendente:** não — aprovada pelo usuário em 2026-11-01: a meta é nível; a série
+  acumulada é a do over.
 
 ## selic-over-acum-12m
 
