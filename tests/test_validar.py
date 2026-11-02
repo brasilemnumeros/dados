@@ -30,8 +30,8 @@ def test_serie_valida():
     assert erros(serie()) == []
 
 
-def test_recusa_rate_no_ponto():
-    s = serie(dados=[{"data": "2026-09-01", "rate": 5.0, "valor": 5.0}])
+def test_recusa_campo_extra_no_ponto():
+    s = serie(dados=[{"data": "2026-09-01", "valor": 5.0, "unidade": "x"}])
     assert any(e.split(": ")[1] == "C8.1" for e in erros(s))
 
 
