@@ -168,7 +168,7 @@ def test_casos_invalidos_do_corpus_falham_com_o_codigo_do_nome():
         assert codigo in encontrados, f"{caminho.name}: esperava {codigo}, veio {encontrados}"
 
 
-# Catálogo (K1…K6): o catálogo publicado e o disco descrevem o MESMO conjunto de séries.
+# Catálogo (K1…K8): o catálogo publicado e o disco descrevem o MESMO conjunto de séries.
 # Uma raiz mínima tem uma série em disco e o catálogo que deveria descrevê-la; cada teste
 # estraga uma peça e cobra o código da regra correspondente.
 
@@ -182,6 +182,9 @@ def montar_raiz(
     catalogo_escala: str = "percentual",
     catalogo_grupo: object = "inflacao",
     catalogo_versao: int = 1,
+    catalogo_nome: object = "IPCA (%)",
+    catalogo_descricao: object = "Variação acumulada do IPCA em 12 meses",
+    entradas_extras: list[dict] | None = None,
 ) -> None:
     pasta = raiz / "indicadores" / "ipca"
     pasta.mkdir(parents=True)
@@ -189,15 +192,17 @@ def montar_raiz(
 
     entrada = {
         "id": catalogo_id,
-        "nome": "IPCA (%)",
+        "nome": catalogo_nome,
         "grupo": catalogo_grupo,
         "arquivo": catalogo_arquivo,
         "escala": catalogo_escala,
-        "descricao": "Variação acumulada do IPCA em 12 meses",
+        "descricao": catalogo_descricao,
     }
+    entradas = [] if omitir_entrada else [entrada]
+    entradas.extend(entradas_extras or [])
     catalogo = {
         "versao": catalogo_versao,
-        "indicadores": [] if omitir_entrada else [entrada],
+        "indicadores": entradas,
         "grupos": {"inflacao": {"nome": "📈 Inflação"}},
     }
     (raiz / "indicadores" / "catalogo.json").write_text(
@@ -244,3 +249,67 @@ def test_catalogo_grupo_que_nao_e_string(tmp_path):
 def test_catalogo_versao_desconhecida(tmp_path):
     montar_raiz(tmp_path, catalogo_versao=2)
     assert any(e.startswith("K6") for e in validar_catalogo(tmp_path))
+
+
+def test_catalogo_arquivo_fora_do_formato(tmp_path):
+    # `../ipca-acum-12m.json` tem duas partes para `Path(...).parts` e passava no validador —
+    # passava no CI do `dados` e reprovava no `validateCatalog` do app. K1 cobre o formato.
+    montar_raiz(tmp_path, catalogo_arquivo="../ipca-acum-12m.json")
+    assert any(
+        e.startswith("K1") and "não é <familia>/<id>.json" in e
+        for e in validar_catalogo(tmp_path)
+    )
+
+
+def test_catalogo_nome_vazio(tmp_path):
+    montar_raiz(tmp_path, catalogo_nome="")
+    assert any(
+        e.startswith("K7") and "nome" in e for e in validar_catalogo(tmp_path)
+    )
+
+
+def test_catalogo_descricao_ausente(tmp_path):
+    montar_raiz(tmp_path, catalogo_descricao=None)
+    assert any(
+        e.startswith("K7") and "descricao" in e for e in validar_catalogo(tmp_path)
+    )
+
+
+def test_catalogo_id_repetido(tmp_path):
+    montar_raiz(
+        tmp_path,
+        entradas_extras=[
+            {
+                "id": "ipca-acum-12m",
+                "nome": "IPCA (duplicado)",
+                "grupo": "inflacao",
+                "arquivo": "ipca/outro.json",
+                "escala": "percentual",
+                "descricao": "duplicata",
+            }
+        ],
+    )
+    assert any(
+        e.startswith("K8") and "'ipca-acum-12m' repetido" in e
+        for e in validar_catalogo(tmp_path)
+    )
+
+
+def test_catalogo_arquivo_repetido(tmp_path):
+    montar_raiz(
+        tmp_path,
+        entradas_extras=[
+            {
+                "id": "ipca-outro",
+                "nome": "Outro",
+                "grupo": "inflacao",
+                "arquivo": "ipca/ipca-acum-12m.json",
+                "escala": "percentual",
+                "descricao": "duplicata",
+            }
+        ],
+    )
+    assert any(
+        e.startswith("K8") and "'ipca/ipca-acum-12m.json' repetido" in e
+        for e in validar_catalogo(tmp_path)
+    )

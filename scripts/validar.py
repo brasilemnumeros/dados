@@ -5,7 +5,7 @@ começa pelo CÓDIGO da regra, porque o corpus de conformidade em ``tests/contra
 o código no nome do arquivo — o validador JS (``sitio/app/src/data/validate.js``) roda os
 MESMOS casos. É assim que os dois deixam de divergir.
 
-As regras ``K1…K6`` conferem o outro lado: o catálogo publicado
+As regras ``K1…K8`` conferem o outro lado: o catálogo publicado
 (``indicadores/catalogo.json``) contra as séries no disco — rótulo e dado têm de descrever o
 mesmo conjunto. Aqui a fonte de verdade é o próprio produto: o app lê os dois.
 """
@@ -25,6 +25,10 @@ REGRA_ID = re.compile(r"[a-z0-9-]+")
 REGRA_DATA = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
 REGRA_LOCALE = re.compile(r"[a-z]{2}(-[A-Z]{2})?")
 REGRA_URL = re.compile(r"https://\S+")
+# MESMA regex do runtime (``app/src/data/catalog.js``): caminho relativo de duas partes, sem
+# ``..`` nem barra inicial. ``Path(arquivo).parts`` aceitava ``../x.json`` e o catálogo passava
+# no CI do `dados` para depois derrubar a lista no navegador.
+REGRA_ARQUIVO_CATALOGO = re.compile(r"[a-z0-9-]+/[a-z0-9-]+\.json")
 
 TIPOS_UNIDADE = ("percentual", "numero", "moeda")
 GRANULARIDADES = ("diaria", "mensal", "anual")
@@ -231,7 +235,7 @@ def _series_da_raiz(raiz: Path) -> list[Path]:
 
 
 def validar_catalogo(raiz: Path) -> list[str]:
-    """K1…K6 — o catálogo e o disco descrevem o MESMO conjunto de séries.
+    """K1…K8 — o catálogo e o disco descrevem o MESMO conjunto de séries.
 
     O catálogo publica o rótulo (nome, grupo, escala, descrição) e a série publica o dado;
     se os dois divergirem, o app desenha um gráfico com o rótulo de outro. Por isso a
@@ -281,6 +285,10 @@ def validar_catalogo(raiz: Path) -> list[str]:
 
     # Caminhos declarados (<familia>/<id>.json), para não acusar K2 em série já coberta.
     declaradas: set[str] = set()
+    # K8 — o runtime indexa id e arquivo: repetido, o navegador lança `each_key_duplicate` na
+    # busca. Guarda o índice da PRIMEIRA ocorrência para a mensagem apontar as duas entradas.
+    ids_vistos: dict[str, int] = {}
+    arquivos_vistos: dict[str, int] = {}
 
     for indice, entrada in enumerate(entradas):
         if not isinstance(entrada, dict):
@@ -289,6 +297,27 @@ def validar_catalogo(raiz: Path) -> list[str]:
 
         identificador = entrada.get("id")
         rotulo = identificador if isinstance(identificador, str) else f"entrada {indice}"
+
+        # K7 — o runtime exige `nome` não vazio e rejeita o catálogo INTEIRO sem ele; `descricao`
+        # é o texto da ficha. Sem esta conferência, a entrada sem nome passa no CI do `dados` e
+        # tira a lista do ar para todo mundo.
+        for chave in ("nome", "descricao"):
+            valor = entrada.get(chave)
+            if not isinstance(valor, str) or not valor:
+                erros.append(
+                    f"K7: catálogo: entrada {rotulo!r}: {chave} precisa ser string não vazia"
+                )
+
+        # K8 — id e arquivo são chave de índice no app (`{#each ... (ind.id)}` e o fetch da
+        # série); repetido, o catálogo "válido" derruba a busca no navegador.
+        if isinstance(identificador, str) and identificador:
+            if identificador in ids_vistos:
+                erros.append(
+                    f"K8: catálogo: id {identificador!r} repetido "
+                    f"(também na entrada {ids_vistos[identificador]})"
+                )
+            else:
+                ids_vistos[identificador] = indice
 
         grupo = entrada.get("grupo")
         # lista/objeto é unhashable: checar o tipo antes do `in` é o que vira K5 em vez de
@@ -299,15 +328,22 @@ def validar_catalogo(raiz: Path) -> list[str]:
             )
 
         arquivo = entrada.get("arquivo")
-        partes = Path(arquivo).parts if isinstance(arquivo, str) else ()
-        if len(partes) != 2 or not arquivo.endswith(".json"):
+        if not isinstance(arquivo, str) or not REGRA_ARQUIVO_CATALOGO.fullmatch(arquivo):
             erros.append(
                 f"K1: catálogo: entrada {rotulo!r}: arquivo {arquivo!r} "
                 "não é <familia>/<id>.json"
             )
             continue
 
-        declaradas.add(Path(arquivo).as_posix())
+        if arquivo in arquivos_vistos:
+            erros.append(
+                f"K8: catálogo: arquivo {arquivo!r} repetido "
+                f"(também na entrada {arquivos_vistos[arquivo]})"
+            )
+        else:
+            arquivos_vistos[arquivo] = indice
+
+        declaradas.add(arquivo)
         serie_caminho = pasta / arquivo
         if not serie_caminho.is_file():
             erros.append(f"K1: catálogo: entrada {rotulo!r}: arquivo {arquivo!r} não existe")

@@ -47,15 +47,17 @@ Irmão das pastas de família, `indicadores/catalogo.json` é a **fonte da apres
 notebooks escrevem a série inteira do zero, então curadoria não pode morar neles. O app do
 `sitio` busca o arquivo em runtime (`${__BASE_DADOS__}/catalogo.json`, ao lado das séries).
 
-- As regras **`K1…K6`** do `validar.py` conferem o catálogo **contra o disco**: todo `arquivo`
+- As regras **`K1…K8`** do `validar.py` conferem o catálogo **contra o disco**: todo `arquivo`
   declarado existe e toda série de `indicadores/*/*.json` tem entrada; `id` casa com o nome do
-  arquivo e com o `id` da série; `grupo` existe em `grupos`; `versao` é a esperada.
+  arquivo e com o `id` da série; `grupo` existe em `grupos`; `versao` é a esperada; `nome` e
+  `descricao` são strings não vazias (K7) e nem `id` nem `arquivo` se repetem (K8).
 - `escala` é a **classe derivada de `unidade.tipo`** da série. Ela é repetida no catálogo para a
   lista pintar o distintivo antes de o dado chegar — por isso é **conferida** (K4), não digitada
   à toa: se divergir da série, o commit reprova.
 - **Indicador novo = arquivo da série + entrada no catálogo, no mesmo pull request.** É o par
-  que o CI confere; publicar só um dos dois reprova (K1 ou K2). Renomear, reescrever a descrição
-  ou mudar de grupo é uma linha do catálogo, sem tocar no dado.
+  que o CI confere; publicar só um dos dois reprova (K1 ou K2). Renomear (o `nome`), reescrever a
+  descrição ou mudar de grupo é uma linha do catálogo, sem tocar no dado — renomear o `id` quebra
+  `?series=`, presets e posts.
 
 ## Editar ou regenerar dados
 
@@ -98,7 +100,7 @@ com `actions/checkout` → `actions/setup-python` em **Python 3.12** (a mesma ve
 
 - **Indicador novo entra por pull request**, não por commit direto em `main`. O gate é esse par de
   comandos: `validar.py` reprova contrato quebrado (`C1…C14`) e catálogo fora de sincronia com as
-  séries (`K1…K6`); o `pytest` reprova regressão do próprio validador.
+  séries (`K1…K8`); o `pytest` reprova regressão do próprio validador.
 - O job se chama `validar`. Torná-lo **check obrigatório** é configuração de *branch protection* no
   GitHub, fora do repositório: sem isso o CI verde informa, não bloqueia.
 - O hook em `.githooks/pre-commit` continua valendo para quem commita localmente, mas não roda no PR de
