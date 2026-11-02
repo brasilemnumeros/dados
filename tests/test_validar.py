@@ -180,7 +180,7 @@ def montar_raiz(
     omitir_entrada: bool = False,
     catalogo_id: str = "ipca-acum-12m",
     catalogo_escala: str = "percentual",
-    catalogo_grupo: str = "inflacao",
+    catalogo_grupo: object = "inflacao",
     catalogo_versao: int = 1,
 ) -> None:
     pasta = raiz / "indicadores" / "ipca"
@@ -232,6 +232,12 @@ def test_catalogo_escala_divergente(tmp_path):
 
 def test_catalogo_grupo_inexistente(tmp_path):
     montar_raiz(tmp_path, catalogo_grupo="nao-existe")
+    assert any(e.startswith("K5") for e in validar_catalogo(tmp_path))
+
+
+def test_catalogo_grupo_que_nao_e_string(tmp_path):
+    # lista é unhashable: `grupo not in grupos` estoura TypeError se não houver checagem de tipo
+    montar_raiz(tmp_path, catalogo_grupo=["inflacao"])
     assert any(e.startswith("K5") for e in validar_catalogo(tmp_path))
 
 

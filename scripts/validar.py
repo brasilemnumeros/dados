@@ -291,7 +291,9 @@ def validar_catalogo(raiz: Path) -> list[str]:
         rotulo = identificador if isinstance(identificador, str) else f"entrada {indice}"
 
         grupo = entrada.get("grupo")
-        if grupo not in grupos:
+        # lista/objeto é unhashable: checar o tipo antes do `in` é o que vira K5 em vez de
+        # TypeError — o validador existe para reportar, não para derrubar o hook.
+        if not isinstance(grupo, str) or grupo not in grupos:
             erros.append(
                 f"K5: catálogo: entrada {rotulo!r}: grupo {grupo!r} não existe em grupos"
             )
