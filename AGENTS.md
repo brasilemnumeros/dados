@@ -39,6 +39,24 @@ documento vale e a divergência é defeito a corrigir no mesmo commit.
   no nome do arquivo). O validador Python e o `validate.js` do `sitio` rodam os MESMOS casos —
   é assim que os dois concordam.
 
+### Catálogo de apresentação (`indicadores/catalogo.json`)
+
+Irmão das pastas de família, `indicadores/catalogo.json` é a **fonte da apresentação**: `versao`
+(1), `grupos` (mapa `id` → `{ nome }`, na ordem de navegação) e `indicadores`, cada um com `id`,
+`nome`, `grupo`, `escala`, `descricao` e `arquivo` (`<familia>/<id>.json`). É editado à mão: os
+notebooks escrevem a série inteira do zero, então curadoria não pode morar neles. O app do
+`sitio` busca o arquivo em runtime (`${__BASE_DADOS__}/catalogo.json`, ao lado das séries).
+
+- As regras **`K1…K6`** do `validar.py` conferem o catálogo **contra o disco**: todo `arquivo`
+  declarado existe e toda série de `indicadores/*/*.json` tem entrada; `id` casa com o nome do
+  arquivo e com o `id` da série; `grupo` existe em `grupos`; `versao` é a esperada.
+- `escala` é a **classe derivada de `unidade.tipo`** da série. Ela é repetida no catálogo para a
+  lista pintar o distintivo antes de o dado chegar — por isso é **conferida** (K4), não digitada
+  à toa: se divergir da série, o commit reprova.
+- **Indicador novo = arquivo da série + entrada no catálogo, no mesmo pull request.** É o par
+  que o CI confere; publicar só um dos dois reprova (K1 ou K2). Renomear, reescrever a descrição
+  ou mudar de grupo é uma linha do catálogo, sem tocar no dado.
+
 ## Editar ou regenerar dados
 
 - **Nunca altere valores ao mudar a forma.** Correção de fórmula é revisão histórica: registre definição, fonte e impacto em `docs/metodologia.md` e peça aval antes.
