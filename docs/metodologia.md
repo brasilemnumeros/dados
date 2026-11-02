@@ -102,28 +102,41 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
 
 ## selic-meta
 
-- **Definição:** meta da taxa Selic definida pelo Copom, **ao ano** — o nível em vigor no mês.
-  `percentual` (`%`, 2 casas), `eixo: percentual`, `medida: nivel`, `mensal`.
+- **Definição:** meta da taxa Selic definida pelo Copom, **ao ano** — o nível em vigor no
+  **último dia do mês**. `percentual` (`%`, 2 casas), `eixo: percentual`, `medida: nivel`,
+  `mensal`.
 - **Fonte e código:** Banco Central do Brasil, SGS **432** (meta Selic definida pelo Copom,
   % a.a., diária, desde 05/03/1999). Endpoint:
   `https://api.bcb.gov.br/dados/serie/bcdata.sgs.432/dados?formato=json`, consultado em janelas
-  de 5 anos (limite do SGS para série diária).
-- **Fórmula atual:** nenhuma. A meta do mês é o valor em vigor (a média das leituras diárias do
-  mês só lida com mudança de meta no meio do mês — efeito máximo de ~0,03 p.p.). O mês corrente
-  é descartado.
+  de 10 anos (limite do SGS para série diária).
+- **Fórmula atual:** nenhuma. A meta do mês é a **última leitura diária do mês**
+  (`valores[-1]`), isto é, o nível em vigor no último dia do mês. O mês corrente é descartado.
 - **Fórmula proposta:** nenhuma. A meta é o que o Copom decide; repetir o nível é reproduzir a
   fonte, não calcular.
+- **Correção de 2026-11-02:** a versão anterior publicava a **média** das leituras diárias do
+  mês (`sum(valores) / len(valores)`), alegando que ela só lidava com mudança de meta no meio
+  do mês e teria "efeito máximo de ~0,03 p.p.". A alegação era falsa: a média se afasta do
+  nível de fim de mês sempre que o Copom se move dentro do mês, e o desvio chega a **4,85 p.p.**
+  (abr/1999: 36,85% publicado contra **32,00%** em vigor no último dia). A série passou a
+  publicar `valores[-1]`; o descarte do mês corrente e a checagem de meses contínuos foram
+  mantidos.
 - **Evidência:** jul/2016 = 14,25% ao ano (meta constante no período); out/2025 = 15,00%;
-  mar/1999 = 44,22% (primeiro mês da fonte, a partir de 05/03). Não existe série oficial de
+  mar/1999 = **42,00%** (primeiro mês da fonte, a partir de 05/03; a média dava 44,22%). Na
+  correção, **148 dos 332 valores** publicados mudam; o maior desvio é 4,85 p.p. (abr/1999) e
+  todos os valores novos são múltiplos de 0,25 p.p. Exemplos recentes: dez/2024 **11,90 →
+  12,25**; jun/2025 **14,85 → 15,00**; set/2026 **13,88 → 13,75**. Não existe série oficial de
   "meta acumulada em 12 meses" porque a meta é anualizada — acumulá-la exigiria convertê-la em
   taxa mensal equivalente e recompor, um construto que só coincide com a meta quando ela fica
-  parada 12 meses. Em dez/2003 a meta em vigor era **17,05%** e esse construto daria **23,48%**.
-- **Veredito:** corrigir (a série publicava um construto acumulado; passa a publicar o nível).
-- **Impacto esperado:** 320 → **332 pontos**; `2000-03`–`2026-10` → **`1999-03`–`2026-10`**; os
-  valores voltam ao nível (out/2025 = 15,00%, dez/2003 = 17,05%) e o `id` muda de
-  `selic-meta-acum-12m` para **`selic-meta`**.
-- **Decisão pendente:** não — aprovada pelo usuário em 2026-11-01: a meta é nível; a série
-  acumulada é a do over.
+  parada 12 meses. Em dez/2003 a meta em vigor no último dia era **16,50%** e esse construto
+  daria **23,03%** (com a média antiga, 17,05%, dava 23,48%).
+- **Veredito:** corrigir (a série publicava a média diária; passa a publicar o nível de fim de
+  mês). A migração anterior, de construto acumulado para nível, já estava aprovada em
+  2026-11-01.
+- **Impacto esperado:** 332 pontos mantidos (`1999-03`–`2026-10`); **148 valores mudam**; maior
+  desvio 4,85 p.p. (abr/1999); o primeiro ponto passa de 44,22% para **42,00%** e o último
+  (out/2026) continua **13,75%**. `id`, `unidade`, `eixo`, `medida` e cobertura não mudam.
+- **Decisão pendente:** não — correção de agregação aplicada em 2026-11-02; a definição da meta
+  como nível (e não acumulado) segue a decisão de 2026-11-01.
 
 ## selic-over-acum-12m
 

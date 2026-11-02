@@ -7,7 +7,7 @@
       "grupo": "monetario",
       "arquivo": "selic/selic-meta.json",
       "escala": "percentual",
-      "descricao": "Meta da taxa Selic definida pelo Copom, ao ano — o nível em vigor no mês",
+      "descricao": "Meta da taxa Selic definida pelo Copom, ao ano — o nível em vigor no último dia do mês",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/selic/Selic.ipynb"
     },
     {
