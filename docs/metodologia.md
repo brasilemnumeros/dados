@@ -3,7 +3,7 @@
 Revisão da definição e da fórmula de cada indicador, conferida contra a fonte
 e contra a matemática do próprio indicador — nunca contra o código atual.
 
-> **Escopo:** as 12 séries foram revisadas e publicadas em 2026-11-01. O IPCA foi o piloto
+> **Escopo:** as 13 séries foram revisadas e publicadas em 2026-11-01. O IPCA foi o piloto
 > (`ipca-acum-12m`); o IGP-M veio em seguida; as outras seis famílias fecharam a rodada.
 
 ## ipca-acum-12m
@@ -189,10 +189,14 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
 
 ## mvgr-nominal
 
-- **Definição:** mediana dos valores de avaliação dos imóveis residenciais dados em garantia a
-  financiamentos imobiliários de pessoas físicas, informados ao SCR — janela móvel de 3 meses,
-  cobertura nacional, financiamentos acima de 13,3 salários mínimos. É nível de preço mediano
-  em reais, não massa agregada. `moeda` (`R$`, 2 casas), `eixo: reais`, `medida: nivel`, `mensal`.
+- **Definição:** **MVG-R** (Mediana dos Valores de Garantia de Imóveis Residenciais
+  Financiados): mediana dos valores de **avaliação** dos imóveis residenciais dados em garantia
+  a financiamentos imobiliários de pessoas físicas (alienação fiduciária e hipoteca
+  residencial), informados ao SCR — janela móvel de 3 meses, cobertura nacional, operações com
+  valor contratado acima de 13,3 salários mínimos mensais (um salário mínimo anual; piso baixo,
+  não corte de alta renda). É nível de **valor de garantia** mediano em reais, não preço de
+  mercado, índice de preços ou massa agregada. `moeda` (`R$`, 0 casas), `eixo: reais`,
+  `medida: nivel`, `mensal`.
 - **Fonte e código:** BCB (SCR), SGS **25419**. Endpoint:
   `https://api.bcb.gov.br/dados/serie/bcdata.sgs.25419/dados?formato=json`. Definição em
   `https://www.bcb.gov.br/content/estatisticas/mercadoimobiliario_docs/Metodologia.pdf`.
@@ -201,6 +205,13 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
   anterior.
 - **Fórmula proposta:** nenhuma. A série é publicada tal qual o BCB a divulga, recalculada
   inteira a cada execução — é a única forma de acompanhar as revisões do SCR.
+- **Correção de 2026-11-02 (apresentação):** o nome "Valor mediano do imóvel em garantia"
+  sugeria preço de mercado; passa a "MVG-R — valor mediano de garantia (R$ correntes)". A
+  descrição do catálogo explicita PF, modalidades, janela de 3 meses, cobertura nacional e o
+  piso de 13,3 salários mínimos. `casas` passa de 2 para 0 (a 25419 publica reais inteiros) e
+  o `fonte` vira "Banco Central do Brasil (SGS 25419)". Nenhum valor muda. O post do `sitio`
+  ainda chama o MVG-R de "valor médio", "preço de etiqueta" e "valor real dos imóveis" —
+  corrigir no repo `sitio`.
 - **Evidência:** 270 leituras na fonte, `2004-03`–`2026-08`, sem lacuna. Contra o publicado
   (257 pontos): 132 idênticos, **125 divergentes**, desvio máximo **3,17%** em 2025-07
   (252.000 → 260.000); 93 valores publicados não existem em nenhuma data da série atual —
@@ -213,8 +224,9 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
 
 ## mvgr-real
 
-- **Definição:** MVG-R nominal deflacionado pelo IPCA, em reais constantes de **março de 2004**
-  (mês-base = primeiro mês da série). `moeda` (`R$`, 2 casas), `eixo: reais`, `medida: nivel`,
+- **Definição:** **MVG-R deflacionado pelo IPCA**, em reais constantes de **março de 2004**
+  (mês-base = primeiro mês da série). É o nominal dividido pelo IPCA; não é um índice de preços
+  nem a valorização de um mesmo imóvel. `moeda` (`R$`, 2 casas), `eixo: reais`, `medida: nivel`,
   `mensal`.
 - **Fonte e código:** BCB/SGS 25419 deflacionada pelo IPCA mensal, SGS **433**. O BCB não publica
   MVG-R real; o IVG-R (21340) é índice de preços, não valor em reais.
@@ -223,7 +235,11 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
   contra 0,75%) e `2015-10` (1,6467% contra 0,82%), além de herdar o nominal desatualizado.
 - **Fórmula proposta:** a mesma, executada uma única vez por mês, base fixa em 2004-03 (para o
   histórico não ser reescalado a cada execução). IGP-M descartado: é atacado e reajuste
-  contratual, não custo de vida; o catálogo do app declara IPCA.
+  contratual, não custo de vida; o catálogo do app declara IPCA. **Aproximação:** o nominal é
+  uma mediana móvel de 3 meses; deflacionar pelo IPCA do mês corrente não é exatamente o
+  deflator da janela (o exato seria a média do IPCA de M, M−1 e M−2, ou deflacionar cada
+  observação). O erro é pequeno (0,5–1% em inflação alta) e fica documentado; a série continua
+  sendo um nível deflacionado, não um índice de preços constante-quality.
 - **Evidência:** a cadeia do 433 reproduz o número-índice do IPCA do IBGE (SIDRA 1737, variável
   2266) com desvio relativo máximo 2,1×10⁻⁵. Dupla contagem provada pelo fator implícito
   `nominal/real`: 2005-10 = 1,015056 = (1,0075)² e 2015-10 = 1,016467 = (1,0082)²; nos outros
@@ -234,8 +250,11 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
 - **Veredito:** corrigir.
 - **Impacto esperado:** 257 → 270 pontos, `2004-03`–`2026-08`; 247 dos 257 valores comuns mudam;
   maior desvio R$ 3.688,62 (+4,80%) em 2025-07.
-- **Decisão pendente:** não — aprovada pelo usuário em 2026-11-01. Fica registrado que o produto
-  não comunica a base (reais de mar/2004): é pendência de apresentação, não de dado.
+- **Decisão pendente:** não — aprovada pelo usuário em 2026-11-01; nomenclatura corrigida em
+  2026-11-02. O nome passa a "MVG-R deflacionado pelo IPCA (R$ de mar/2004)" e a descrição
+  explica a base; o `fonte` credita o IPCA/IBGE (SGS 433). O símbolo da unidade continua "R$"
+  (a base aparece no nome/descrição). Nenhum valor muda. O que a série real **não** mede:
+  valorização do mesmo imóvel, preço de mercado ou "patrimônio" — a composição da amostra muda.
 
 ## caged-total-mensal
 
@@ -452,13 +471,17 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
 
 ## Pendentes
 
-Revisão concluída para as 12 séries em 2026-11-01. **Não há pendência de dado nem de forma.**
+Revisão concluída para as 13 séries em 2026-11-01. **Não há pendência de dado nem de forma.**
 
-As decisões de apresentação que estavam abertas foram fechadas no catálogo do `sitio`
-(`app/src/data/indicadores.json`), que é o que a ficha do app exibe:
+Fora deste repo, o post do `sitio` sobre o MVG-R ainda usa "valor médio", "preço de etiqueta" e
+"valor real dos imóveis"; isso não é sustentado pelo dado e deve ser corrigido lá.
 
-- `mvgr-real` chama-se "Valor mediano do imóvel em garantia (R$ de mar/2004)" e a descrição diz
-  que são reais constantes de março de 2004 — o número não é preço de hoje;
+As decisões de apresentação que estavam abertas foram fechadas no catálogo deste repo
+(`indicadores/catalogo.json`), que o app do `sitio` lê em runtime:
+
+- `mvgr-real` chama-se "MVG-R deflacionado pelo IPCA (R$ de mar/2004)" e a descrição diz
+  que são reais constantes de março de 2004 — o número não é preço de hoje; `mvgr-nominal` é
+  "MVG-R — valor mediano de garantia (R$ correntes)", não preço de mercado;
 - `populacao-*` diz que é projeção de 2024 do IBGE, população conciliada ao Censo 2022, com
   referência em 1º de julho;
 - o carimbo `AAAA-01-01` nas séries anuais é convenção de C9 (início do período) e foi mantido.

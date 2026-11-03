@@ -48,20 +48,20 @@
     },
     {
       "id": "mvgr-nominal",
-      "nome": "Valor mediano do imóvel em garantia (R$)",
+      "nome": "MVG-R — valor mediano de garantia (R$ correntes)",
       "grupo": "imobiliario",
       "arquivo": "mvgr/mvgr-nominal.json",
       "escala": "moeda",
-      "descricao": "Mediana dos valores de avaliação dos imóveis residenciais dados em garantia a financiamentos imobiliários, em reais correntes (janela móvel de 3 meses)",
+      "descricao": "Mediana dos valores de avaliação (laudo) dos imóveis residenciais dados em garantia a financiamentos imobiliários de pessoas físicas (alienação fiduciária e hipoteca residencial), informados ao SCR; janela móvel de 3 meses, cobertura nacional, apenas operações com valor contratado acima de um salário mínimo anual (13,3 × salário mínimo mensal). É o valor mediano da garantia, em reais correntes — não o preço de compra nem um índice de preços.",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/mvgr/MVG-R.ipynb"
     },
     {
       "id": "mvgr-real",
-      "nome": "Valor mediano do imóvel em garantia (R$ de mar/2004)",
+      "nome": "MVG-R deflacionado pelo IPCA (R$ de mar/2004)",
       "grupo": "imobiliario",
       "arquivo": "mvgr/mvgr-real.json",
       "escala": "moeda",
-      "descricao": "Mediana dos valores de avaliação dos imóveis residenciais dados em garantia a financiamentos imobiliários, em reais constantes de março de 2004 (deflacionada pelo IPCA)",
+      "descricao": "Mesma mediana do MVG-R, deflacionada pelo IPCA mensal (IBGE, SGS 433) e expressa em reais constantes de março de 2004 (mês-base = 1). Mede a evolução do poder de compra do valor mediano da garantia, não a valorização de um mesmo imóvel: a composição da amostra (quem financia, qual imóvel, qual região) muda ao longo do tempo.",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/mvgr/MVG-R.ipynb"
     },
     {

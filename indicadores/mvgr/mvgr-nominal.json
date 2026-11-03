@@ -4,7 +4,7 @@
   "unidade": {
     "tipo": "moeda",
     "simbolo": "R$",
-    "casas": 2
+    "casas": 0
   },
   "eixo": "reais",
   "medida": "nivel",
