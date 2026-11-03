@@ -9,7 +9,7 @@
   "eixo": "reais",
   "medida": "nivel",
   "granularidade": "mensal",
-  "fonte": "Banco Central do Brasil",
+  "fonte": "Banco Central do Brasil (SGS 25419); deflator IPCA/IBGE (SGS 433); cálculo do site",
   "urlFonte": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.25419/dados?formato=json",
   "dados": [
     {

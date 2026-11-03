@@ -9,7 +9,7 @@
   "eixo": "percentual",
   "medida": "acumulado-12m",
   "granularidade": "mensal",
-  "fonte": "FGV",
+  "fonte": "FGV (SGS 28655); acumulado 12m calculado pelo site",
   "urlFonte": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.28655/dados?formato=json",
   "dados": [
     {
