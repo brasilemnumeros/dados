@@ -80,19 +80,34 @@ período fechado.
 
 ## Gate de verificação
 
+**Regra:** nenhum PR de indicador passa sem uma **publicação externa** conferida — ou sem uma
+**busca documentada** que mostre que ela não existe. "Ad hoc" é o método da conferência, não a
+dispensa da busca.
+
 Antes do PR:
 
-- compare com pelo menos uma **fonte independente** que já publicou o indicador. Independente é
-  **outra instituição ou publicação**, não outro endpoint do mesmo produtor. SIDRA v1 × API v3
-  do IBGE é consistência da mesma fonte, não verificação independente;
-- compare níveis **e** variações em janelas sobrepostas; quantifique a divergência e explique
-  (arredondamento, revisão, metodologia, cobertura);
-- se não houver fonte independente, declare a limitação na metodologia e na descrição;
-- compare também com um número publicado em release, artigo ou gráfico, para pegar erro de
-  unidade, base ou escala;
-- rode o notebook duas vezes e confira primeiro/último ponto, lacunas, duplicatas, ordem, C15 e
-  uma amostra contra a fonte;
-- documente a divergência; não ajuste o número para bater com o publicado.
+1. **Procure** uma publicação externa que já publicou o indicador: veículo de imprensa,
+   instituto, associação ou relatório de terceiro. Registre na metodologia o que procurou,
+   onde, quando e o que encontrou.
+2. **Release/nota do próprio produtor não conta**, mesmo que o número bata. SIDRA v1 × API v3
+   do IBGE é consistência da mesma fonte; release do IBGE é o produtor. Continue procurando
+   uma publicação de terceiro.
+3. Compare **níveis e variações** em janelas sobrepostas; quantifique a divergência e explique
+   (arredondamento, revisão, metodologia, cobertura).
+4. **Só depois da busca**, se realmente não houver publicação externa, declare a limitação na
+   metodologia e na descrição, com o que foi procurado e por que não serviu.
+5. Rode o notebook duas vezes e confira primeiro/último ponto, lacunas, duplicatas, ordem, C15
+   e uma amostra contra a fonte.
+6. Documente a divergência; não ajuste o número para bater com o publicado.
+
+**Critério de aceite:** a metodologia tem um parágrafo "Verificação independente" com a
+publicação externa (nome, data, valores e URL) **ou** com a busca feita e o motivo de não
+haver. Sem esse parágrafo, o gate não passou.
+
+**Publicação externa ≠ segunda medição.** A publicação externa (mesmo citando o produtor) pega
+erro de unidade, base e escala; a segunda medição é outra instituição que calculou o indicador.
+O gate exige a publicação externa; se só houver citação, diga na metodologia que não há segunda
+medição.
 
 ## Fluxo
 
@@ -118,7 +133,7 @@ Antes do PR:
 7. Acrescente o workflow conforme `references/workflow-recorrente.md`.
 8. Documente a metodologia com todas as fontes, URLs, fórmula, evidência, caveats e verificação,
    e confira que a `descricao` do catálogo conta a mesma história que a metodologia.
-9. Rode o gate de verificação e registre a evidência.
+9. Rode o gate de verificação (busca por publicação externa incluída) e registre a evidência.
 10. Valide, revise o diff e abra o PR.
 
 ## Tabela de decisão
@@ -220,6 +235,9 @@ gerado com o publicado, revise o diff numérico e confirme K1/K2.
 - Começar o notebook antes do brief de definição.
 - Chamar o agregador de produtor ou omitir a segunda fonte de uma emenda.
 - Chamar outro endpoint do mesmo produtor de “verificação independente”.
+- Usar release/nota do próprio produtor como verificação independente.
+- Declarar “sem fonte independente” sem ter procurado e registrado uma publicação externa.
+- Tratar “ad hoc” como dispensa da busca: ad hoc é o método, a busca é obrigatória.
 - Criar família nova sem allowlist ou ignorar cadência incompatível.
 - Gravar data fora de C15 (mensal no dia 15, anual em fevereiro).
 - Escrever JSON à mão ou arredondar o valor publicado.
@@ -231,6 +249,12 @@ gerado com o publicado, revise o diff numérico e confirme K1/K2.
   commitadas e o `tests/test_notebooks.py` reprova.
 - Deixar a `descricao` falando do cálculo antigo depois de revisar a fórmula.
 - Mudar valor existente sem pedido e aval.
+
+| Racionalização | Realidade |
+|---|---|
+| “O release do produtor já confere.” | É o mesmo produtor; não é publicação externa. |
+| “Não achei fonte independente.” | Só vale com a busca registrada (o que, onde, quando). |
+| “A verificação é ad hoc.” | Ad hoc é o método; a busca continua obrigatória. |
 
 ## Referências
 

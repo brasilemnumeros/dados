@@ -157,7 +157,8 @@ A última célula deve falhar se:
 - `versao`, `id`, `unidade`, `eixo`, `medida`, `granularidade`, `fonte` não baterem;
 - houver data fora de C15, período repetido, ordem errada ou valor não finito;
 - o primeiro/último ponto ou a contagem divergirem da fonte;
-- a conferência independente (quando existir) divergir.
+- a conferência independente registrada na metodologia divergir (quando existir; a busca por
+  publicação externa é gate de PR, não célula do notebook).
 
 ## Rodada de ensaio
 

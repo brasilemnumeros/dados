@@ -77,19 +77,31 @@ fechado.
 
 ## Gate de verificação
 
-**Independente** significa outra instituição ou publicação, não outro endpoint do mesmo
-produtor. Exemplo: SIDRA v1 × API v3 do IBGE é consistência da mesma fonte; não é verificação
-independente. Para a PNAD, uma verificação independente seria um número publicado por outra
-instituição ou um artigo/release que cite a mesma taxa.
+**Regra:** nenhum PR passa sem uma **publicação externa** conferida — ou sem uma **busca
+documentada** que mostre que ela não existe. "Ad hoc" é o método, não a dispensa.
 
-- Compare **níveis e variações** em janelas sobrepostas.
-- Quantifique a divergência e explique: arredondamento, revisão, metodologia, cobertura.
-- Compare também com um número publicado em release, artigo ou gráfico, para pegar erro de
-  unidade, base ou escala.
-- Se não houver fonte independente, declare a limitação na metodologia e na descrição.
-- Rode o notebook duas vezes e compare os JSONs.
-- Confira primeiro/último ponto, lacunas, duplicatas, ordem, C15 e uma amostra contra a fonte.
-- Documente a divergência; não ajuste o número para bater com o publicado.
+**Publicação externa** é veículo, instituto, associação ou relatório de terceiro que publicou
+o número, mesmo que cite o produtor. Ela pega erro de unidade, base e escala. **Segunda
+medição** é outra instituição que calculou o indicador; é mais forte, mas não é o mínimo.
+Release/nota do próprio produtor não conta como nenhuma das duas.
+
+Procedimento:
+
+1. Procure a publicação externa (busca na web, release de terceiro, artigo, relatório).
+   Registre na metodologia: o que procurou, onde, quando e o que encontrou.
+2. Compare **níveis e variações** em janelas sobrepostas; quantifique a divergência e explique:
+   arredondamento, revisão, metodologia, cobertura.
+3. Se só houver citação do produtor, registre isso: não há segunda medição.
+4. **Só depois da busca**, se não houver publicação externa, declare a limitação na metodologia
+   e na descrição, com o que foi procurado e por que não serviu.
+5. Rode o notebook duas vezes e compare os JSONs.
+6. Confira primeiro/último ponto, lacunas, duplicatas, ordem, C15 e uma amostra contra a fonte.
+7. Documente a divergência; não ajuste o número para bater com o publicado.
+
+Exemplo (PNAD, 2026-11-03): o release do IBGE não contou; a conferência usou Estadão, UOL,
+O Globo, Folha e InfoMoney de 30/10/2026, que citam 5,2% para jul–set/2026, 5,4% para abr–jun
+e 5,6% para jul–set/2025. Como as publicações citam o IBGE, a metodologia também declara que
+não há segunda medição.
 
 ## Atribuição de fonte(s)
 
@@ -120,7 +132,8 @@ O contrato tem **um** `fonte` (texto) e **um** `urlFonte` (URL). Para múltiplas
       `urlNotebook` para o notebook que gera a série.
 - [ ] A `descricao` não contradiz a fórmula: revisão de cálculo atualizou o texto no mesmo PR.
 - [ ] A fonte escolhida é a mais próxima possível de “oficial já calculada”.
-- [ ] A verificação independente foi feita ou a limitação foi declarada.
+- [ ] A busca por publicação externa foi feita e registrada (nome, data, valores e URL); se não
+      houve, a limitação está declarada com o que foi procurado.
 - [ ] `fonte`/`urlFonte` contam a mesma história que a metodologia.
 - [ ] A ficha do app exibe a fonte (ou o bug foi registrado para PR no `sitio`).
 - [ ] Datas em C15, sem lacuna preenchida, sem valor arredondado.
