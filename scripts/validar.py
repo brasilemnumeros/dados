@@ -5,7 +5,7 @@ começa pelo CÓDIGO da regra, porque o corpus de conformidade em ``tests/contra
 o código no nome do arquivo — o validador JS (``sitio/app/src/data/validate.js``) roda os
 MESMOS casos. É assim que os dois deixam de divergir.
 
-As regras ``K1…K8`` conferem o outro lado: o catálogo publicado
+As regras ``K1…K9`` conferem o outro lado: o catálogo publicado
 (``indicadores/catalogo.json``) contra as séries no disco — rótulo e dado têm de descrever o
 mesmo conjunto. Aqui a fonte de verdade é o próprio produto: o app lê os dois.
 """
@@ -18,6 +18,7 @@ import re
 import sys
 from datetime import date as _date
 from pathlib import Path
+from urllib.parse import unquote
 
 VERSAO = 1
 VERSAO_CATALOGO = 1
@@ -29,6 +30,11 @@ REGRA_URL = re.compile(r"https://\S+")
 # ``..`` nem barra inicial. ``Path(arquivo).parts`` aceitava ``../x.json`` e o catálogo passava
 # no CI do `dados` para depois derrubar a lista no navegador.
 REGRA_ARQUIVO_CATALOGO = re.compile(r"[a-z0-9-]+/[a-z0-9-]+\.json")
+# K9 — o notebook é o método: a URL tem de apontar para um arquivo que existe no repo. O
+# prefixo é o endereço canônico do GitHub (branch ``main``); um typo de caminho passa em
+# qualquer validação de forma e só morre quando alguém clica.
+PREFIXO_NOTEBOOK = "https://github.com/brasilemnumeros/dados/blob/main/indicadores/"
+REGRA_NOTEBOOK = re.compile(r"[a-z0-9-]+/[^/]+\.ipynb")
 
 TIPOS_UNIDADE = ("percentual", "numero", "moeda")
 GRANULARIDADES = ("diaria", "mensal", "anual")
@@ -252,7 +258,7 @@ def _series_da_raiz(raiz: Path) -> list[Path]:
 
 
 def validar_catalogo(raiz: Path) -> list[str]:
-    """K1…K8 — o catálogo e o disco descrevem o MESMO conjunto de séries.
+    """K1…K9 — o catálogo e o disco descrevem o MESMO conjunto de séries.
 
     O catálogo publica o rótulo (nome, grupo, escala, descrição) e a série publica o dado;
     se os dois divergirem, o app desenha um gráfico com o rótulo de outro. Por isso a
@@ -349,6 +355,29 @@ def validar_catalogo(raiz: Path) -> list[str]:
             erros.append(
                 f"K5: catalogo.json: entrada {rotulo!r}: grupo {grupo!r} não existe em grupos"
             )
+
+        # K9 — `urlNotebook` é o link de auditoria da ficha. A URL completa (em vez de um
+        # caminho resolvido no app) mantém o host fora do bundle; em troca, o validador confere
+        # o prefixo canônico e o arquivo no disco, para um typo não virar link morto em produção.
+        # `unquote` existe por causa de `População.ipynb`: a URL é percent-encoded, o disco não.
+        url_notebook = entrada.get("urlNotebook")
+        if not isinstance(url_notebook, str) or not url_notebook.startswith(PREFIXO_NOTEBOOK):
+            erros.append(
+                f"K9: catalogo.json: entrada {rotulo!r}: urlNotebook precisa começar em "
+                f"{PREFIXO_NOTEBOOK!r}"
+            )
+        else:
+            bruto = url_notebook[len(PREFIXO_NOTEBOOK) :]
+            relativo = unquote(bruto)
+            if not REGRA_NOTEBOOK.fullmatch(bruto) or not REGRA_NOTEBOOK.fullmatch(relativo):
+                erros.append(
+                    f"K9: catalogo.json: entrada {rotulo!r}: urlNotebook {url_notebook!r} "
+                    "não termina em <familia>/<arquivo>.ipynb"
+                )
+            elif not (pasta / relativo).is_file():
+                erros.append(
+                    f"K9: catalogo.json: entrada {rotulo!r}: notebook {relativo!r} não existe"
+                )
 
         arquivo = entrada.get("arquivo")
         if not isinstance(arquivo, str) or not REGRA_ARQUIVO_CATALOGO.fullmatch(arquivo):

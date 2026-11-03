@@ -46,14 +46,21 @@ documento vale e a divergência é defeito a corrigir no mesmo commit.
 
 Irmão das pastas de família, `indicadores/catalogo.json` é a **fonte da apresentação**: `versao`
 (1), `grupos` (mapa `id` → `{ nome }`, na ordem de navegação) e `indicadores`, cada um com `id`,
-`nome`, `grupo`, `escala`, `descricao` e `arquivo` (`<familia>/<id>.json`). É editado à mão: os
-notebooks escrevem a série inteira do zero, então curadoria não pode morar neles. O app do
-`sitio` busca o arquivo em runtime (`${__BASE_DADOS__}/catalogo.json`, ao lado das séries).
+`nome`, `grupo`, `escala`, `descricao`, `arquivo` (`<familia>/<id>.json`) e `urlNotebook` (URL do
+notebook que gera a série, exibida na ficha do app). É editado à mão: os notebooks escrevem a
+série inteira do zero, então curadoria não pode morar neles. O app do `sitio` busca o arquivo em
+runtime (`${__BASE_DADOS__}/catalogo.json`, ao lado das séries).
 
-- As regras **`K1…K8`** do `validar.py` conferem o catálogo **contra o disco**: todo `arquivo`
+- As regras **`K1…K9`** do `validar.py` conferem o catálogo **contra o disco**: todo `arquivo`
   declarado existe e toda série de `indicadores/*/*.json` tem entrada; `id` casa com o nome do
   arquivo e com o `id` da série; `grupo` existe em `grupos`; `versao` é a esperada; `nome` e
-  `descricao` são strings não vazias (K7) e nem `id` nem `arquivo` se repetem (K8).
+  `descricao` são strings não vazias (K7), nem `id` nem `arquivo` se repetem (K8) e
+  `urlNotebook` aponta para um `.ipynb` existente sob `indicadores/` (K9). A URL é completa
+  (`https://github.com/brasilemnumeros/dados/blob/main/indicadores/...`); um typo de caminho
+  reprova o PR em vez de virar link morto na ficha.
+- Todo notebook começa com a célula `id: view-in-github` do selo **Open in Colab**, apontando
+  para o próprio arquivo em `main/indicadores/`. `tests/test_notebooks.py` reprova se ela sumir
+  ou apontar para o caminho antigo.
 - `escala` é a **classe derivada de `unidade.tipo`** da série. Ela é repetida no catálogo para a
   lista pintar o distintivo antes de o dado chegar — por isso é **conferida** (K4), não digitada
   à toa: se divergir da série, o commit reprova.
@@ -109,7 +116,7 @@ com `actions/checkout` → `actions/setup-python` em **Python 3.12** (a mesma ve
   de dado. As dependências dos notebooks continuam em `requirements.txt`, com a mesma versão do pytest.
 - **Indicador novo entra por pull request**, não por commit direto em `main`. O gate é esse par de
   comandos: `validar.py` reprova contrato quebrado (`C1…C15`) e catálogo fora de sincronia com as
-  séries (`K1…K8`); o `pytest` reprova regressão do próprio validador.
+  séries (`K1…K9`); o `pytest` reprova regressão do próprio validador.
 - O job se chama `validar` e está configurado como **check obrigatório** em `main` (branch protection,
   fora do repositório). `enforce_admins` fica desligado de propósito: o dono consegue passar numa
   emergência, mas o caminho normal — PR — exige o check verde.

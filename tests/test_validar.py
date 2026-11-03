@@ -203,11 +203,15 @@ def montar_raiz(
     catalogo_versao: int = 1,
     catalogo_nome: object = "IPCA (%)",
     catalogo_descricao: object = "Variação acumulada do IPCA em 12 meses",
+    catalogo_url_notebook: object = (
+        "https://github.com/brasilemnumeros/dados/blob/main/indicadores/ipca/IPCA.ipynb"
+    ),
     entradas_extras: list[dict] | None = None,
 ) -> None:
     pasta = raiz / "indicadores" / "ipca"
     pasta.mkdir(parents=True)
     (pasta / "ipca-acum-12m.json").write_text(json.dumps(serie()), encoding="utf-8")
+    (pasta / "IPCA.ipynb").write_text("{}", encoding="utf-8")
 
     entrada = {
         "id": catalogo_id,
@@ -216,6 +220,7 @@ def montar_raiz(
         "arquivo": catalogo_arquivo,
         "escala": catalogo_escala,
         "descricao": catalogo_descricao,
+        "urlNotebook": catalogo_url_notebook,
     }
     entradas = [] if omitir_entrada else [entrada]
     entradas.extend(entradas_extras or [])
@@ -292,6 +297,47 @@ def test_catalogo_descricao_ausente(tmp_path):
     assert any(
         e.startswith("K7") and "descricao" in e for e in validar_catalogo(tmp_path)
     )
+
+
+def test_catalogo_sem_url_notebook(tmp_path):
+    montar_raiz(tmp_path, catalogo_url_notebook=None)
+    assert any(
+        e.startswith("K9") and "urlNotebook" in e for e in validar_catalogo(tmp_path)
+    )
+
+
+def test_catalogo_url_notebook_nao_https(tmp_path):
+    montar_raiz(tmp_path, catalogo_url_notebook="http://github.com/x/IPCA.ipynb")
+    assert any(e.startswith("K9") for e in validar_catalogo(tmp_path))
+
+
+def test_catalogo_url_notebook_inexistente(tmp_path):
+    montar_raiz(
+        tmp_path,
+        catalogo_url_notebook=(
+            "https://github.com/brasilemnumeros/dados/blob/main/indicadores/ipca/Nao.ipynb"
+        ),
+    )
+    assert any(
+        e.startswith("K9") and "não existe" in e for e in validar_catalogo(tmp_path)
+    )
+
+
+def test_catalogo_url_notebook_percent_encoded(tmp_path):
+    # `População.ipynb` só cabe numa URL percent-encoded; o validador decodifica antes de
+    # conferir o disco, senão o único notebook com acento viraria K9 falso.
+    pasta = tmp_path / "indicadores" / "populacao"
+    pasta.mkdir(parents=True)
+    (pasta / "População.ipynb").write_text("{}", encoding="utf-8")
+    montar_raiz(
+        tmp_path,
+        catalogo_url_notebook=(
+            "https://github.com/brasilemnumeros/dados/blob/main/indicadores/populacao/"
+            "Popula%C3%A7%C3%A3o.ipynb"
+        ),
+    )
+    erros = validar_catalogo(tmp_path)
+    assert not any(e.startswith("K9") for e in erros), erros
 
 
 def test_catalogo_id_repetido(tmp_path):
