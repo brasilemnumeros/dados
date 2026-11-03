@@ -225,35 +225,45 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
 ## mvgr-real
 
 - **Definição:** **MVG-R deflacionado pelo IPCA**, em reais constantes de **março de 2004**
-  (mês-base = primeiro mês da série). É o nominal dividido pelo IPCA; não é um índice de preços
-  nem a valorização de um mesmo imóvel. `moeda` (`R$`, 2 casas), `eixo: reais`, `medida: nivel`,
-  `mensal`.
-- **Fonte e código:** BCB/SGS 25419 deflacionada pelo IPCA mensal, SGS **433**. O BCB não publica
-  MVG-R real; o IVG-R (21340) é índice de preços, não valor em reais.
+  (mês-base = primeiro mês da série). É o nominal dividido pela **média geométrica de 3 meses do
+  IPCA** (a mesma janela da mediana móvel); não é um índice de preços nem a valorização de um
+  mesmo imóvel. `moeda` (`R$`, 2 casas), `eixo: reais`, `medida: nivel`, `mensal`.
+- **Fonte e código:** BCB/SGS 25419 deflacionada pela média geométrica de 3 meses do IPCA, SGS
+  **433**. O BCB não publica MVG-R real; o IVG-R (21340) é índice de preços, não valor em reais.
 - **Fórmula atual:** `nominal(t) / ∏(1 + IPCA_s/100)`, base 2004-03 — conceitualmente correta,
   mas o deflator implícito aplica a variação do IPCA **duas vezes** em `2005-10` (fator 1,5056%
   contra 0,75%) e `2015-10` (1,6467% contra 0,82%), além de herdar o nominal desatualizado.
-- **Fórmula proposta:** a mesma, executada uma única vez por mês, base fixa em 2004-03 (para o
-  histórico não ser reescalado a cada execução). IGP-M descartado: é atacado e reajuste
-  contratual, não custo de vida; o catálogo do app declara IPCA. **Aproximação:** o nominal é
-  uma mediana móvel de 3 meses; deflacionar pelo IPCA do mês corrente não é exatamente o
-  deflator da janela (o exato seria a média do IPCA de M, M−1 e M−2, ou deflacionar cada
-  observação). O erro é pequeno (0,5–1% em inflação alta) e fica documentado; a série continua
-  sendo um nível deflacionado, não um índice de preços constante-quality.
+- **Fórmula proposta:** `nominal(t) / ∏(1 + i_avg(s)/100)`, com
+  `i_avg(s) = [(1+i_{s-2})(1+i_{s-1})(1+i_s)]^(1/3) − 1`, base fixa em 2004-03 (para o
+  histórico não ser reescalado a cada execução). A janela de 3 meses é a mesma do MVG-R
+  nominal; a média geométrica é a taxa média que, composta, reproduz a inflação da janela (a
+  média aritmética das taxas daria 85.619,95 no último ponto, contra 85.662,08 da geométrica —
+  diferença de segunda ordem). IGP-M descartado: é atacado e reajuste contratual, não custo de
+  vida; o catálogo do app declara IPCA. O exato seria deflacionar cada uma das três observações
+  e tomar a mediana, mas o BCB publica só a mediana da janela; a média da janela é a melhor
+  aproximação com o dado disponível. A série continua sendo um nível deflacionado, não um
+  índice de preços constante-quality.
 - **Evidência:** a cadeia do 433 reproduz o número-índice do IPCA do IBGE (SIDRA 1737, variável
   2266) com desvio relativo máximo 2,1×10⁻⁵. Dupla contagem provada pelo fator implícito
   `nominal/real`: 2005-10 = 1,015056 = (1,0075)² e 2015-10 = 1,016467 = (1,0082)²; nos outros
   254 meses o fator é exatamente `1 + IPCA/100`. Efeito acumulado: o real publicado fica 0,75%
   abaixo do correto depois de out/2005 e 1,55% depois de out/2015. 2025-07 **76.833,66 →
   80.522,29** (+4,80%, maior desvio); 2026-08 novo, 86.268,70. `real/nominal = 1/deflator` em
-  todos os 270 meses.
+  todos os 270 meses. (Valores desta Evidência são da revisão de 2026-11-01; a média da janela
+  de 2026-11-02 muda o último para 85.662,08 — ver abaixo.)
+- **Correção de 2026-11-02 (média da janela):** o deflator do mês `t` deixou de ser o IPCA de
+  `t` e passou a ser a média geométrica dos fatores de `t-2`, `t-1` e `t`, a mesma janela da
+  mediana móvel. Todos os 269 pontos depois da base mudam; o último (2026-08) passa de
+  **86.268,70** para **85.662,08** e o maior desvio é 2022-08 (**80.679,93 → 79.890,58**,
+  −789,35). A base 2004-03 continua 44.419,00 (deflator = 1). A validação inline confere que o
+  fator mensal é exatamente `1 + média da janela/100` e que a média entra uma única vez.
 - **Veredito:** corrigir.
-- **Impacto esperado:** 257 → 270 pontos, `2004-03`–`2026-08`; 247 dos 257 valores comuns mudam;
-  maior desvio R$ 3.688,62 (+4,80%) em 2025-07.
-- **Decisão pendente:** não — aprovada pelo usuário em 2026-11-01; nomenclatura corrigida em
-  2026-11-02. O nome passa a "MVG-R deflacionado pelo IPCA (R$ de mar/2004)" e a descrição
-  explica a base; o `fonte` credita o IPCA/IBGE (SGS 433). O símbolo da unidade continua "R$"
-  (a base aparece no nome/descrição). Nenhum valor muda. O que a série real **não** mede:
+- **Impacto esperado:** 270 pontos mantidos, `2004-03`–`2026-08`; 269 dos 270 valores mudam
+  (só a base não muda); maior desvio R$ 789,35 em 2022-08; último 86.268,70 → 85.662,08.
+- **Decisão pendente:** não — aprovada pelo usuário em 2026-11-01; nomenclatura e média da
+  janela aplicadas em 2026-11-02. O nome é "MVG-R deflacionado pelo IPCA (R$ de mar/2004)"; a
+  descrição explica a base e a janela; o `fonte` credita o IPCA/IBGE (SGS 433). O símbolo da
+  unidade continua "R$" (a base aparece no nome/descrição). O que a série real **não** mede:
   valorização do mesmo imóvel, preço de mercado ou "patrimônio" — a composição da amostra muda.
 
 ## caged-total-mensal

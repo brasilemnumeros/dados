@@ -61,7 +61,7 @@
       "grupo": "imobiliario",
       "arquivo": "mvgr/mvgr-real.json",
       "escala": "moeda",
-      "descricao": "Mesma mediana do MVG-R, deflacionada pelo IPCA mensal (IBGE, SGS 433) e expressa em reais constantes de março de 2004 (mês-base = 1). Mede a evolução do poder de compra do valor mediano da garantia, não a valorização de um mesmo imóvel: a composição da amostra (quem financia, qual imóvel, qual região) muda ao longo do tempo.",
+      "descricao": "Mesma mediana do MVG-R, deflacionada pela média geométrica de 3 meses do IPCA (IBGE, SGS 433) — a mesma janela móvel da mediana — e expressa em reais constantes de março de 2004 (mês-base = 1). Mede a evolução do poder de compra do valor mediano da garantia, não a valorização de um mesmo imóvel: a composição da amostra (quem financia, qual imóvel, qual região) muda ao longo do tempo.",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/mvgr/MVG-R.ipynb"
     },
     {
