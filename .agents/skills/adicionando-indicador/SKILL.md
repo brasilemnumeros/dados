@@ -103,7 +103,8 @@ Antes do PR:
      allowlist, linha no `AGENTS.md` e a variável `<FAMILIA>_SAIDA`.
    - **Família existente sem caller:** crie o caller, a allowlist e a linha no `AGENTS.md`.
 4. Escreva/ajuste o notebook conforme `references/notebook-padrao.md`. Se precisar de
-   dependência nova, fixe a versão em `requirements.txt` no mesmo PR.
+   dependência nova, acrescente a versão exata em `[project].dependencies` do `pyproject.toml`
+   e rode `uv lock` no mesmo PR.
 5. Gere o JSON executando o notebook; nunca digite valores. O JSON inclui `fonte` e, quando
    houver recorte estável, `urlFonte`; a atribuição não é opcional. Nunca invente URL: sem
    recorte, omita e registre o motivo na metodologia.

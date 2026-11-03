@@ -10,17 +10,21 @@ set -e
 
 cd "$(git rev-parse --show-toplevel)"
 
-# Só vale a pena quando o commit toca dado, validador ou testes.
-if ! git diff --cached --name-only | grep -qE '^(indicadores/|scripts/|tests/|requirements\.txt)'; then
+# Só vale a pena quando o commit toca dado, validador, testes ou dependências.
+if ! git diff --cached --name-only | grep -qE '^(indicadores/|scripts/|tests/|pyproject\.toml|uv\.lock)'; then
   exit 0
 fi
 
 test -f scripts/validar.py || exit 0
 
+# O validador é biblioteca padrão: roda com o python3 do PATH, sem sincronizar ambiente.
 python3 scripts/validar.py
 
-if python3 -c "import pytest" >/dev/null 2>&1; then
+# Os testes usam o ambiente do uv — o mesmo Python 3.12 e o mesmo pytest do CI.
+if command -v uv >/dev/null 2>&1; then
+  uv run --frozen --group ci pytest -q
+elif python3 -c "import pytest" >/dev/null 2>&1; then
   python3 -m pytest -q
 else
-  echo "aviso: pytest não instalado; rode 'pip install -r requirements.txt'" >&2
+  echo "aviso: sem uv e sem pytest; rode 'uv sync --group ci' (ou instale pytest)" >&2
 fi

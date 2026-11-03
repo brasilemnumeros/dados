@@ -8,9 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - uses: astral-sh/setup-uv@v10.3.3
         with:
-          python-version: "3.12"
-      - run: python3 -m pip install -r requirements-ci.txt
-      - run: python3 scripts/validar.py
-      - run: python3 -m pytest -q
+          version: "0.13.7"
+          enable-cache: true
+      # Só o grupo `ci`: o gate não instala a stack de notebook de propósito.
+      - run: uv sync --frozen --only-group ci
+      - run: uv run --no-sync python scripts/validar.py
+      - run: uv run --no-sync pytest -q

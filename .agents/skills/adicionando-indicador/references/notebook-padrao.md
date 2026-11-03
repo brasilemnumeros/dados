@@ -55,9 +55,9 @@ com `DADOS_RAIZ`, a pasta da família tem de existir — não caia para a raiz d
 
 ## Dependências
 
-Se o notebook usar pacote que ainda não está em `requirements.txt` (ex.: `openpyxl`,
-`beautifulsoup4`, `lxml`), acrescente a versão fixada no mesmo PR. O workflow agendado instala
-`requirements.txt`; sem isso, a primeira execução automática falha no import.
+Se o notebook usar pacote que ainda não está em `[project].dependencies` do `pyproject.toml`
+(ex.: `openpyxl`, `beautifulsoup4`, `lxml`), acrescente a versão exata e rode `uv lock` no mesmo PR.
+Os workflows instalam a partir do `uv.lock`; sem isso, a primeira execução automática falha no import.
 
 ## Escrita
 

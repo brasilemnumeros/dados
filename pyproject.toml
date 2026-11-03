@@ -1,0 +1,35 @@
+# Ambiente do repositório: o JSON é o produto, o notebook é o motor e o pytest é o gate.
+# Resolução congelada em uv.lock — reexecução usa exatamente as mesmas versões.
+
+[project]
+name = "brasilemnumeros-dados"
+version = "0.0.0"
+description = "Séries públicas do brasilemnumeros e os notebooks que as geram."
+requires-python = ">=3.12"
+
+# O que os notebooks importam de fato (pandas, requests) + o executor do nbconvert.
+# stdlib não entra aqui; matplotlib/seaborn/plotly/python-bcb/ipeadatapy saíram por não
+# serem importados por nenhum notebook.
+dependencies = [
+    "ipykernel==7.4.0",
+    "nbconvert==7.17.2",
+    "pandas==3.1.0",
+    "requests==2.34.2",
+]
+
+[dependency-groups]
+# Só o gate. O job `validar` instala este grupo e nada mais: uma wheel quebrada de
+# notebook não pode reprovar um PR que só mexeu em JSON.
+ci = ["pytest==9.2.0"]
+# Ferramenta local: a skill usa PyYAML para conferir o YAML dos workflows.
+dev = ["pyyaml==6.0.3"]
+
+[tool.uv]
+# Não é uma distribuição instalável: é repositório de dados.
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# `scripts.validar` é importado pelos testes; o console script do pytest não põe o cwd no
+# sys.path (o antigo `python3 -m pytest` punha). Sem isto, `uv run pytest` quebra na coleta.
+pythonpath = ["."]

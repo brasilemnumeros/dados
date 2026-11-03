@@ -1,7 +1,0 @@
-# Dependências do GATE (CI e hook), não do produto.
-#
-# O validador e os testes usam só a biblioteca padrão + pytest; os notebooks (pandas, plotly,
-# matplotlib, nbconvert…) ficam em `requirements.txt` e NÃO entram aqui de propósito: uma quebra
-# de wheel de notebook passaria a reprovar um PR que só editou JSON. A versão do pytest acompanha
-# a de `requirements.txt` — as duas listas apontam para o mesmo ambiente de desenvolvimento.
-pytest==9.2.0

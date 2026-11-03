@@ -82,7 +82,11 @@ runtime (`${__BASE_DADOS__}/catalogo.json`, ao lado das séries).
   pode não responder de dentro do GitHub Actions. O notebook da População cai para a conferência
   apenas do último ano, com aviso; os valores continuam vindo do XLSX da projeção.
 - `python3 scripts/validar.py` valida o contrato de todas as séries. Não corrige nem calcula nada.
-- Dependências fixadas em `requirements.txt`.
+- **Ambiente e dependências:** uv + `pyproject.toml`, resolução congelada em `uv.lock`. `uv sync`
+  instala a stack dos notebooks; `uv sync --only-group ci` instala só o gate (`pytest`).
+  `.python-version` fixa **3.12**, a mesma do CI — não dependa do `python3` do PATH, que pode ser
+  outra versão. Dependência nova entra em `[project].dependencies` (notebook) ou no grupo `dev`
+  (ferramenta local), com versão exata e `uv.lock` no mesmo commit.
 
 ## API do BCB (SGS): o que já mordeu
 
@@ -112,12 +116,14 @@ séries. O schema de lá é o mesmo que estava aqui (exercício efetivo, sem sob
 ## CI (GitHub Actions)
 
 `.github/workflows/validar.yml`, job `validar`: roda em **todo pull request** e em **push para `main`**,
-com `actions/checkout` → `actions/setup-python` em **Python 3.12** (a mesma versão do ambiente local) →
-`python3 -m pip install -r requirements-ci.txt` → `python3 scripts/validar.py` → `python3 -m pytest -q`.
+com `actions/checkout` → `astral-sh/setup-uv` (Python **3.12** vindo do `.python-version`) →
+`uv sync --frozen --only-group ci` → `uv run --no-sync python scripts/validar.py` → `uv run --no-sync pytest -q`.
 
-- **`requirements-ci.txt` é só o gate** (`pytest`): o validador e os testes são biblioteca padrão, e
+- **O grupo `ci` é só o gate** (`pytest`): o validador e os testes são biblioteca padrão, e
   instalar a stack dos notebooks para conferir JSON faria uma quebra de wheel alheia reprovar um PR
-  de dado. As dependências dos notebooks continuam em `requirements.txt`, com a mesma versão do pytest.
+  de dado. Por isso o job usa `--only-group ci`, que não instala `[project].dependencies` nem o
+  grupo `dev`. A stack dos notebooks e a versão do pytest vêm do mesmo `uv.lock`, então não há pin
+  duplicado para divergir.
 - **Indicador novo entra por pull request**, não por commit direto em `main`. O gate é esse par de
   comandos: `validar.py` reprova contrato quebrado (`C1…C15`) e catálogo fora de sincronia com as
   séries (`K1…K9`); o `pytest` reprova regressão do próprio validador.
@@ -164,8 +170,8 @@ reutilizável `atualizar-familia.yml`. A cadência segue a fonte (UTC):
 
 ## Antes de commitar
 
-- Instale o hook uma vez por clone: `git config core.hooksPath .githooks`. Ele roda `scripts/validar.py` e `pytest` quando o commit toca `indicadores/`, `scripts/`, `tests/` ou `requirements.txt`. Foi assim que o IPCA voltou a escrever o formato antigo sem ninguém notar: o validador existia, mas não era executado.
-- Rode `python3 -m pytest -q`.
+- Instale o hook uma vez por clone: `git config core.hooksPath .githooks`. Ele roda `scripts/validar.py` e `pytest` quando o commit toca `indicadores/`, `scripts/`, `tests/`, `pyproject.toml` ou `uv.lock`. Foi assim que o IPCA voltou a escrever o formato antigo sem ninguém notar: o validador existia, mas não era executado.
+- Rode `uv run --frozen --group ci pytest -q` (é o mesmo comando do hook e o mesmo Python 3.12 do CI).
 - Valide o parse de todos os arquivos — as séries em `indicadores/<familia>/` **e** o catálogo editado à mão em `indicadores/`: `python3 -c "import json,glob; [json.load(open(f)) for f in glob.glob('indicadores/*.json')+glob.glob('indicadores/*/*.json')]"`.
 - Revise o `git diff` em busca de mudanças numéricas acidentais; alterações de data e ordenação se escondem facilmente em diffs grandes de JSON.
 - As mensagens de commit seguem Conventional Commits em português com escopo `dados` (ex.: `fix(dados): ...`), e o corpo explica o impacto nos dados.
