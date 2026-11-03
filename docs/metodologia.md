@@ -500,10 +500,13 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
   em set/2026.
 - **Verificação independente:** ad hoc. A divulgação do IBGE de 30/10/2026 (trimestre
   jul–set/2026) traz `5,2%`, igual ao ponto `2026-09`; a de 29/09/2026 (jun–ago/2026)
-  traz `5,3%`, igual ao ponto `2026-08`. Publicações externas de 30/10/2026 (Estadão, UOL,
-  O Globo, Folha, InfoMoney) citam `5,2%` para jul–set/2026, `5,4%` para abr–jun e `5,6%`
-  para jul–set/2025 — os três pontos batem. As publicações citam o IBGE, não são uma
-  segunda medição; a limitação fica declarada.
+  traz `5,3%`, igual ao ponto `2026-08`
+  (`https://biblioteca.ibge.gov.br/visualizacao/periodicos/3086/pnacm_2026_set.pdf`).
+  Publicações externas de 30/10/2026 (Estadão, UOL, O Globo, Folha, InfoMoney) citam
+  `5,2%` para jul–set/2026, `5,4%` para abr–jun e `5,6%` para jul–set/2025 — os três pontos
+  batem (Estadão: `https://www.estadao.com.br/economia/ibge-pnad-desemprego-setembro-2026/`;
+  O Globo: `https://oglobo.globo.com/economia/noticia/2026/10/30/desemprego-cai-para-52percent-e-chega-ao-menor-nivel-ja-registrado-em-setembro.ghtml`).
+  As publicações citam o IBGE, não são uma segunda medição; a limitação fica declarada.
 - **Caveats:** trimestre móvel lido como mês; comparação com a PME ou com os anos 1990;
   confusão com o estoque do Caged; queda da taxa por saída da força de trabalho (ver a
   série de participação). A taxa se refere a pessoas de 14 anos ou mais, no Brasil, sem
@@ -525,8 +528,9 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
   (1 − desocupação/100)` é conferida ponto a ponto no notebook, com tolerância de 0,15 p.p.
   (o resíduo máximo medido é 0,1125 p.p. em 2019-02, efeito do arredondamento de 1 casa).
 - **Verificação independente:** a mesma limitação da desocupação; a divulgação de
-  30/10/2026 traz `62,2%` e o Dadobruto (out/2026) também cita `62,2%` para jul–set/2026,
-  igual ao ponto `2026-09`.
+  30/10/2026 traz `62,2%` e o Dadobruto (out/2026,
+  `https://dadobruto.com/analises/mercado-de-trabalho`) também cita `62,2%` para
+  jul–set/2026, igual ao ponto `2026-09`.
 
 ## pnad-nivel-ocupacao
 
@@ -543,8 +547,9 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
   força de trabalho. A identidade é a mesma conferida no notebook; ela não substitui a
   leitura das três séries, porque cada uma isola uma margem diferente.
 - **Verificação independente:** a mesma limitação da desocupação; a divulgação de
-  30/10/2026 traz `59,0%` e o Dadobruto (out/2026) cita `59,0%` em nov/2025 e `58,9%` em
-  jun–ago/2026, iguais aos pontos `2025-11` e `2026-08`.
+  30/10/2026 traz `59,0%` e o Dadobruto (out/2026,
+  `https://dadobruto.com/analises/mercado-de-trabalho`) cita `59,0%` em nov/2025 e `58,9%`
+  em jun–ago/2026, iguais aos pontos `2025-11` e `2026-08`.
 
 ## Pendentes
 
