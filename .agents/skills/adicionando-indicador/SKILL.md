@@ -100,7 +100,8 @@ Antes do PR:
      allowlist e linha no `AGENTS.md`.
    - **Família existente sem caller:** crie o caller, a allowlist e a linha no `AGENTS.md`.
 4. Escreva/ajuste o notebook conforme `references/notebook-padrao.md`.
-5. Gere o JSON executando o notebook; nunca digite valores.
+5. Gere o JSON executando o notebook; nunca digite valores. O JSON inclui `fonte` e
+   `urlFonte`; a atribuição não é opcional.
 6. Entre no catálogo com `id`, `nome`, `grupo`, `escala` (= `unidade.tipo`), `descricao` e
    `arquivo`.
 7. Acrescente o workflow conforme `references/workflow-recorrente.md`.
@@ -141,6 +142,9 @@ Antes do PR:
 
 ## Atribuição de fonte(s)
 
+Toda série precisa de `fonte` e, quando houver recorte, `urlFonte`; a metodologia complementa,
+não substitui.
+
 - `fonte` é a linha legível da ficha: nomeie todas as fontes com papel/período e diga o que é
   cálculo próprio. Não trate agregador como produtor.
 - `urlFonte` é a URL exata do recorte; todas as URLs/códigos vão para `docs/metodologia.md`.
@@ -170,7 +174,8 @@ gerado com o publicado, revise o diff numérico e confirme K1/K2.
 - Criar família nova sem allowlist ou ignorar cadência incompatível.
 - Gravar data fora de C15 (mensal no dia 15, anual em fevereiro).
 - Escrever JSON à mão ou arredondar o valor publicado.
-- Publicar sem `fonte` legível, sem `urlFonte` exata ou sem conferir a ficha.
+- Publicar sem `fonte` legível, sem `urlFonte` exata ou sem conferir a ficha. Achar que a
+  entrada do catálogo substitui a atribuição dentro do JSON.
 - Mudar valor existente sem pedido e aval.
 
 ## Referências
