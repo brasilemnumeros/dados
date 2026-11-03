@@ -483,8 +483,9 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
 
 Revisão concluída para as 13 séries em 2026-11-01. **Não há pendência de dado nem de forma.**
 
-Fora deste repo, o post do `sitio` sobre o MVG-R ainda usa "valor médio", "preço de etiqueta" e
-"valor real dos imóveis"; isso não é sustentado pelo dado e deve ser corrigido lá.
+Fora deste repo, o post do `sitio` sobre o MVG-R foi alinhado ao catálogo em 2026-11-03: não
+fala mais em "valor médio", "preço de etiqueta" nem "valor real dos imóveis", e os números do
+texto passaram a ser os do deflator da janela (R$ 290.000 nominal e R$ 85.662,08 real).
 
 As decisões de apresentação que estavam abertas foram fechadas no catálogo deste repo
 (`indicadores/catalogo.json`), que o app do `sitio` lê em runtime:
@@ -503,9 +504,12 @@ Três **condições de revisão** ficam registradas — não são pendências, s
   para esses anos.
 - **Homicídios por armas de fogo:** 2014–2024 vêm do Atlas 2026 em PDF e 1995–2013 vêm da série
   31 (safra antiga). Quando o Ipea publicar a safra 2026 na API (série 31 com 2024), remover o
-  complemento do notebook e conferir o bloco 2014–2024 contra a API; a Tabela 11.1 de 2025 já
-  traz 2013 = 40.870, que pode ser aplicado com aval para fechar a emenda 2013/2014 na mesma
-  safra. O gatilho é a API deixar de devolver 2023 = 30.789 ou passar a devolver 2024.
+  complemento do notebook e conferir o bloco 2014–2024 contra a API. A Tabela 11.1 de 2025 já
+  traz 2013 = 40.870, mas **não** é aplicada sozinha: trocar só esse ano criaria uma ilha de
+  safra entre 1995–2012 (API antiga) e 2014–2024 (Atlas 2026), sem saber o tamanho da revisão
+  de 2012. A emenda 2013/2014 fica em +7,50% (40.369 → 43.397) até a API publicar a safra
+  revisada, quando o bloco 1995–2013 inteiro é trocado de uma vez. O gatilho é a API deixar de
+  devolver 2023 = 30.789 ou passar a devolver 2024.
 - **Séries anuais:** se o instante da medida (1º de julho, no caso da população) passar a
   importar mais que o alinhamento entre séries anuais, muda-se C9 para as seis séries anuais no
   mesmo commit — não série a série.
