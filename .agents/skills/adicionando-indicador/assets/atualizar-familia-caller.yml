@@ -1,0 +1,24 @@
+# Workflow da família __FAMILIA__; o notebook e os dados vivem em indicadores/__FAMILIA__/.
+name: atualizar __FAMILIA__
+on:
+  schedule:
+    - cron: '__CRON__'
+  workflow_dispatch:
+    inputs:
+      seco:
+        description: Executar sem publicar
+        type: boolean
+        default: true
+permissions:
+  contents: read
+concurrency:
+  group: atualizar-__FAMILIA__
+  cancel-in-progress: false
+jobs:
+  atualizar:
+    uses: ./.github/workflows/atualizar-familia.yml
+    with:
+      familia: __FAMILIA__
+      seco: ${{ inputs.seco == true }}
+    secrets:
+      token: ${{ secrets.DADOS_BOT_TOKEN }}
