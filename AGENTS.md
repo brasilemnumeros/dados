@@ -61,6 +61,10 @@ runtime (`${__BASE_DADOS__}/catalogo.json`, ao lado das séries).
 - Todo notebook começa com a célula `id: view-in-github` do selo **Open in Colab**, apontando
   para o próprio arquivo em `main/indicadores/`. `tests/test_notebooks.py` reprova se ela sumir
   ou apontar para o caminho antigo.
+- As **saídas commitadas são públicas**: notebook não cita caminho absoluto da máquina. O caminho
+  de arquivo aparece sempre relativo à raiz (`indicadores/<familia>/<id>.json`, via helper
+  `relativo()` na célula de configuração) — `tests/test_notebooks.py` reprova `/Users/`, `/home/`,
+  `/root/`, `C:\` e `file://` em qualquer célula ou saída.
 - `escala` é a **classe derivada de `unidade.tipo`** da série. Ela é repetida no catálogo para a
   lista pintar o distintivo antes de o dado chegar — por isso é **conferida** (K4), não digitada
   à toa: se divergir da série, o commit reprova.
