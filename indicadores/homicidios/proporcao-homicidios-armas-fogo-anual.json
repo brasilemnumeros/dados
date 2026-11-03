@@ -9,7 +9,7 @@
   "eixo": "percentual",
   "medida": "participacao",
   "granularidade": "anual",
-  "fonte": "IPEA/Atlas da Violência (SIM/DATASUS)",
+  "fonte": "IPEA/Atlas da Violência (SIM/DATASUS); proporção calculada pelo site",
   "urlFonte": "https://www.ipea.gov.br/atlasviolencia/tema/1/",
   "dados": [
     {
