@@ -68,6 +68,10 @@ def test_aceita_casas_float_integral():
     assert erros(s) == []
 
 
+def test_aceita_versao_float_integral():
+    assert erros(serie(versao=1.0)) == []
+
+
 def test_recusa_idioma_fora_do_padrao():
     s = serie(
         unidade={"tipo": "moeda", "simbolo": "R$", "casas": 0, "idioma": "portugues"},
@@ -132,9 +136,24 @@ def test_recusa_fora_de_ordem():
     assert any(e.split(": ")[1] == "C12" for e in erros(s))
 
 
-def test_aceita_periodo_aberto_e_dia_15():
-    s = serie(granularidade="anual", dados=[{"data": "2026-12-15", "valor": 5.0}])
+def test_aceita_periodo_aberto():
+    s = serie(granularidade="anual", dados=[{"data": "2026-01-01", "valor": 5.0}])
     assert erros(s) == []
+
+
+def test_aceita_dia_15_em_serie_diaria():
+    s = serie(granularidade="diaria", dados=[{"data": "2026-12-15", "valor": 5.0}])
+    assert erros(s) == []
+
+
+def test_recusa_mensal_fora_do_primeiro_dia():
+    s = serie(dados=[{"data": "2026-09-15", "valor": 5.0}])
+    assert any(e.split(": ")[1] == "C15" for e in erros(s))
+
+
+def test_recusa_anual_fora_do_primeiro_dia():
+    s = serie(granularidade="anual", dados=[{"data": "2026-02-01", "valor": 5.0}])
+    assert any(e.split(": ")[1] == "C15" for e in erros(s))
 
 
 def test_recusa_data_com_quebra_de_linha():

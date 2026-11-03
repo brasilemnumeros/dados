@@ -1,6 +1,6 @@
 """Validador do contrato dos arquivos de indicadores.
 
-Fonte de verdade: ``sitio/docs/contrato-de-indicadores.md`` (regras C1…C14). Cada erro
+Fonte de verdade: ``sitio/docs/contrato-de-indicadores.md`` (regras C1…C15). Cada erro
 começa pelo CÓDIGO da regra, porque o corpus de conformidade em ``tests/contrato/`` carrega
 o código no nome do arquivo — o validador JS (``sitio/app/src/data/validate.js``) roda os
 MESMOS casos. É assim que os dois deixam de divergir.
@@ -78,6 +78,15 @@ def _chave_periodo(data: str, granularidade: str) -> str:
     return data
 
 
+def _inicio_do_periodo(data: str, granularidade: str) -> bool:
+    """C15 — a data é o primeiro dia do período (mensal: dia 01; anual: 01-01)."""
+    if granularidade == "anual":
+        return data[5:] == "01-01"
+    if granularidade == "mensal":
+        return data[8:] == "01"
+    return True
+
+
 def validar_serie(serie: object, caminho: Path, checar_nome: bool = True) -> list[str]:
     """Valida uma série contra o contrato e devolve erros em português (com o código C#).
 
@@ -130,7 +139,7 @@ def validar_serie(serie: object, caminho: Path, checar_nome: bool = True) -> lis
     if idioma is not None and (
         not isinstance(idioma, str) or not REGRA_LOCALE.fullmatch(idioma)
     ):
-        erro("C3.1", f"unidade.idioma {idioma!r} fora do padrão BCP 47 (ex.: pt-BR)")
+        erro("C3.1", f"unidade.idioma {idioma!r} fora do formato xx ou xx-XX (ex.: pt-BR)")
 
     eixo = serie.get("eixo")
     if eixo not in EIXOS:
@@ -195,6 +204,14 @@ def validar_serie(serie: object, caminho: Path, checar_nome: bool = True) -> lis
 
         if data is None:
             continue
+
+        if not _inicio_do_periodo(data, granularidade):
+            esperado = "YYYY-01-01" if granularidade == "anual" else "YYYY-MM-01"
+            erro(
+                "C15",
+                f"ponto {indice}: data {data!r} não é o início do período "
+                f"{granularidade} (esperado {esperado})",
+            )
 
         chave = _chave_periodo(data, granularidade)
         if chave in vistos:

@@ -18,7 +18,7 @@ Arquivos públicos de dados (`*.json`) do **brasilemnumeros**, consumidos pelo a
 
 ## Contrato das séries
 
-**Fonte de verdade:** `../sitio/docs/contrato-de-indicadores.md` (repo irmão `sitio`; `versao` **1**, regras `C1…C14`).
+**Fonte de verdade:** `../sitio/docs/contrato-de-indicadores.md` (repo irmão `sitio`; `versao` **1**, regras `C1…C15`).
 Este repositório só o **implementa e referencia** — se a prosa e o código divergirem, o
 documento vale e a divergência é defeito a corrigir no mesmo commit.
 
@@ -105,7 +105,7 @@ com `actions/checkout` → `actions/setup-python` em **Python 3.12** (a mesma ve
   instalar a stack dos notebooks para conferir JSON faria uma quebra de wheel alheia reprovar um PR
   de dado. As dependências dos notebooks continuam em `requirements.txt`, com a mesma versão do pytest.
 - **Indicador novo entra por pull request**, não por commit direto em `main`. O gate é esse par de
-  comandos: `validar.py` reprova contrato quebrado (`C1…C14`) e catálogo fora de sincronia com as
+  comandos: `validar.py` reprova contrato quebrado (`C1…C15`) e catálogo fora de sincronia com as
   séries (`K1…K8`); o `pytest` reprova regressão do próprio validador.
 - O job se chama `validar` e está configurado como **check obrigatório** em `main` (branch protection,
   fora do repositório). `enforce_admins` fica desligado de propósito: o dono consegue passar numa

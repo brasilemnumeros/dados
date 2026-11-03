@@ -9,8 +9,8 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
 ## ipca-acum-12m
 
 - **Definição:** variação percentual do IPCA acumulada nos últimos 12 meses
-  (taxa efetiva do período), unidade `percentage` (`%`, 2 casas decimais),
-  granularidade `monthly`.
+  (taxa efetiva do período), unidade `percentual` (`%`, 2 casas decimais),
+  granularidade `mensal`.
 - **Fonte e código:** IBGE, via API de Dados Abertos do Banco Central (SGS),
   série **13522** (IPCA, variação acumulada em 12 meses, %). É a série primária
   e única usada para o dado publicado. Endpoint:

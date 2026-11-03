@@ -1,0 +1,23 @@
+{
+  "versao": 1,
+  "id": "canonica-diaria-dia-15",
+  "unidade": {
+    "tipo": "percentual",
+    "simbolo": "%",
+    "casas": 2
+  },
+  "eixo": "percentual",
+  "medida": "nivel",
+  "granularidade": "diaria",
+  "fonte": "Instituto de Teste",
+  "dados": [
+    {
+      "data": "2019-01-15",
+      "valor": 1.5
+    },
+    {
+      "data": "2019-01-16",
+      "valor": 2.5
+    }
+  ]
+}

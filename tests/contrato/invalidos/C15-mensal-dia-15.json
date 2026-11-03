@@ -1,0 +1,19 @@
+{
+  "versao": 1,
+  "id": "caso-invalido",
+  "unidade": {
+    "tipo": "percentual",
+    "simbolo": "%",
+    "casas": 2
+  },
+  "eixo": "percentual",
+  "medida": "nivel",
+  "granularidade": "mensal",
+  "fonte": "Instituto de Teste",
+  "dados": [
+    {
+      "data": "2019-01-15",
+      "valor": 1.5
+    }
+  ]
+}
