@@ -165,8 +165,8 @@ jobs:
 
 Entrada: `familia` (string), `seco` (bool). Segredo: `token` (PAT). Passos:
 
-1. `actions/checkout@v4` com `persist-credentials: false`.
-2. `actions/setup-python@v5` com Python 3.12 e cache de pip em `requirements.txt`.
+1. `actions/checkout@v7` com `persist-credentials: false`.
+2. `actions/setup-python@v7` com Python 3.12 e cache de pip em `requirements.txt`.
 3. `python3 -m pip install -r requirements.txt`.
 4. `python3 -m ipykernel install --user --name python3`.
 5. Validar a família contra a lista das oito.
