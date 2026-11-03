@@ -23,12 +23,20 @@ import os
 import json
 
 RAIZ = Path(os.environ.get("DADOS_RAIZ", Path.cwd())).resolve()
-PASTA = RAIZ / "indicadores" / "<familia>" if (RAIZ / "indicadores" / "<familia>").is_dir() else RAIZ
+if os.environ.get("DADOS_RAIZ"):
+    PASTA = RAIZ / "indicadores" / "<familia>"
+    if not PASTA.is_dir():
+        raise SystemExit(f"família não encontrada em {PASTA}")
+else:
+    PASTA = RAIZ
 DESTINO = Path(os.environ.get("<FAMILIA>_SAIDA", PASTA))
 ```
 
 `DADOS_RAIZ` permite rodar contra uma cópia. `<FAMILIA>_SAIDA` permite ensaio sem tocar no
 arquivo publicado; siga o padrão dos notebooks existentes (`IPCA_SAIDA`, `PIB_SAIDA` etc.).
+O nome é maiúsculo, sem hífen e sem acento: `igp-m` → `IGPM_SAIDA`, `populacao` →
+`POPULACAO_SAIDA`. Sem `DADOS_RAIZ` a pasta é o diretório atual (rodar de dentro da família);
+com `DADOS_RAIZ`, a pasta da família tem de existir — não caia para a raiz do repo.
 
 ## Coleta
 
@@ -44,6 +52,12 @@ arquivo publicado; siga o padrão dos notebooks existentes (`IPCA_SAIDA`, `PIB_S
 - Prefira série oficial já calculada; se calcular, documente a fórmula e os insumos.
 - Não arredonde o valor publicado; `unidade.casas` é só exibição.
 - Filtre períodos abertos antes de montar os pontos.
+
+## Dependências
+
+Se o notebook usar pacote que ainda não está em `requirements.txt` (ex.: `openpyxl`,
+`beautifulsoup4`, `lxml`), acrescente a versão fixada no mesmo PR. O workflow agendado instala
+`requirements.txt`; sem isso, a primeira execução automática falha no import.
 
 ## Escrita
 
@@ -71,6 +85,9 @@ with (DESTINO / "<id>.json").open("w", encoding="utf-8") as arquivo:
 ```
 
 - C15: mensal `AAAA-MM-01`; anual `AAAA-01-01`; diária com a data real.
+- Normalize antes de formatar: `pd.Timestamp(ano, mes, 1)` no mensal; `pd.Timestamp(ano, 1, 1)`
+  no anual. Em trimestre móvel, use o primeiro dia do **mês de encerramento** — não a data de
+  publicação.
 - Lacuna: omita o ponto; não preencha.
 - Ordem ascendente e um ponto por período.
 
@@ -87,7 +104,8 @@ A última célula deve falhar se:
 ## Rodada de ensaio
 
 ```bash
-DADOS_RAIZ="$PWD" <FAMILIA>_SAIDA=/tmp/ensaio ./.venv/bin/jupyter nbconvert \
+# use o Python do ambiente do repo (.venv/bin/python -m jupyter se necessário)
+DADOS_RAIZ="$PWD" <FAMILIA>_SAIDA=/tmp/ensaio jupyter nbconvert \
   --to notebook --execute --ExecutePreprocessor.kernel_name=python3 \
   --ExecutePreprocessor.timeout=600 \
   --output-dir /tmp/nbexec indicadores/<familia>/<Notebook>.ipynb

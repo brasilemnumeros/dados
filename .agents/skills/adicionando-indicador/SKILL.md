@@ -57,7 +57,8 @@ Ordem de preferência:
 
 Registre no mapa de fontes:
 
-- produtor vs agregador (BCB SGS é acesso; IBGE/FGV/Ipea são produtores);
+- produtor vs agregador: o SGS é canal das séries de terceiros; o BCB é produtor das séries
+  próprias (Selic, câmbio, crédito, MVG-R);
 - código da série/tabela, endpoint e `urlFonte` exato;
 - cobertura de 1995-01-01 até o **último período fechado**, não “hoje”;
 - frequência, defasagem de publicação, política de revisão, ajuste sazonal, base/deflator;
@@ -97,11 +98,13 @@ Antes do PR:
      notebook novo na pasta. O caller existente roda todos os `.ipynb`; não crie outro nem
      mexa na allowlist.
    - **Família nova:** crie `indicadores/<familia>/`, notebook, JSON, catálogo, caller,
-     allowlist e linha no `AGENTS.md`.
+     allowlist, linha no `AGENTS.md` e a variável `<FAMILIA>_SAIDA`.
    - **Família existente sem caller:** crie o caller, a allowlist e a linha no `AGENTS.md`.
-4. Escreva/ajuste o notebook conforme `references/notebook-padrao.md`.
-5. Gere o JSON executando o notebook; nunca digite valores. O JSON inclui `fonte` e
-   `urlFonte`; a atribuição não é opcional.
+4. Escreva/ajuste o notebook conforme `references/notebook-padrao.md`. Se precisar de
+   dependência nova, fixe a versão em `requirements.txt` no mesmo PR.
+5. Gere o JSON executando o notebook; nunca digite valores. O JSON inclui `fonte` e, quando
+   houver recorte estável, `urlFonte`; a atribuição não é opcional. Nunca invente URL: sem
+   recorte, omita e registre o motivo na metodologia.
 6. Entre no catálogo com `id`, `nome`, `grupo`, `escala` (= `unidade.tipo`), `descricao` e
    `arquivo`.
 7. Acrescente o workflow conforme `references/workflow-recorrente.md`.
@@ -130,24 +133,35 @@ Antes do PR:
 - Grupo novo exige decisão do usuário sobre nome e posição.
 - Rode `validar.py` na raiz: K1/K2 exigem série + catálogo no mesmo PR.
 
+## C15 — datas
+
+- `mensal`: normalize para o primeiro dia do **mês de referência** (`AAAA-MM-01`); não use a
+  data de publicação.
+- `anual`: `AAAA-01-01`.
+- `diaria`: a data real do dia.
+- Em pandas, `Timestamp(ano, mes, 1)` ou `Period(...).start_time`; para trimestre móvel, o
+  primeiro dia do mês de encerramento.
+
 ## Workflow recorrente
 
 - Família com caller: nada a fazer; o caller roda todos os notebooks da pasta.
 - Família sem caller: crie `.github/workflows/atualizar-<familia>.yml` a partir de
   `assets/atualizar-familia-caller.yml`, acrescente a família à allowlist do step “Validar
-  família” em `atualizar-familia.yml` (só a linha do `case`) e a linha da cadência no `AGENTS.md`.
+  família” em `atualizar-familia.yml` (só a linha do `case`), a linha da cadência no `AGENTS.md`
+  e a variável `<FAMILIA>_SAIDA` na lista de variáveis.
 - Reutilizável ausente no checkout: pare e peça para sincronizar com `origin/main`; não recrie.
 - Cadência divergente da família: pare e pergunte; mudar o cron afeta as outras séries.
 - Cron em UTC; 15:00 = 12:00 de Brasília.
 
 ## Atribuição de fonte(s)
 
-Toda série precisa de `fonte` e, quando houver recorte, `urlFonte`; a metodologia complementa,
-não substitui.
+Toda série precisa de `fonte`; `urlFonte` entra quando houver recorte estável. A metodologia
+complementa, não substitui.
 
 - `fonte` é a linha legível da ficha: nomeie todas as fontes com papel/período e diga o que é
   cálculo próprio. Não trate agregador como produtor.
-- `urlFonte` é a URL exata do recorte; todas as URLs/códigos vão para `docs/metodologia.md`.
+- `urlFonte` é a URL exata do recorte; nunca invente URL. Sem recorte estável, omita e registre
+  o motivo na metodologia. Todas as URLs/códigos vão para `docs/metodologia.md`.
 - A atribuição canônica mora na série e na metodologia; não crie campo paralelo no catálogo.
 - **Confira se a ficha exibe a fonte.** Hoje `Ficha.svelte` usa `estado.series.source`, mas a
   série expõe `fonte`; se a linha estiver vazia, abra um PR separado no `sitio` para corrigir.
@@ -156,9 +170,11 @@ não substitui.
 ## Validação
 
 ```bash
+# use o Python do ambiente do repo (.venv/bin/python se existir)
 python3 scripts/validar.py
 python3 -m pytest -q
 python3 -c "import json,glob; [json.load(open(f)) for f in glob.glob('indicadores/*.json')+glob.glob('indicadores/*/*.json')]"
+# só no caso de família nova/caller novo:
 python3 -c "import yaml; yaml.safe_load(open('.github/workflows/atualizar-<familia>.yml'))"
 git diff --check
 ```
@@ -174,8 +190,8 @@ gerado com o publicado, revise o diff numérico e confirme K1/K2.
 - Criar família nova sem allowlist ou ignorar cadência incompatível.
 - Gravar data fora de C15 (mensal no dia 15, anual em fevereiro).
 - Escrever JSON à mão ou arredondar o valor publicado.
-- Publicar sem `fonte` legível, sem `urlFonte` exata ou sem conferir a ficha. Achar que a
-  entrada do catálogo substitui a atribuição dentro do JSON.
+- Publicar sem `fonte` legível, sem `urlFonte` quando há recorte estável, ou sem conferir a
+  ficha. Achar que a entrada do catálogo substitui a atribuição dentro do JSON.
 - Mudar valor existente sem pedido e aval.
 
 ## Referências

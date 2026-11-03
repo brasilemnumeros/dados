@@ -43,7 +43,8 @@ cobertura menor) e mostre a fórmula.
 
 ### O que registrar
 
-- **Produtor vs agregador.** BCB SGS é acesso; IBGE, FGV, Ipea e MTE são produtores. A
+- **Produtor vs agregador.** O SGS é canal das séries de terceiros; o BCB é produtor das séries
+  próprias (Selic, câmbio, crédito, MVG-R). IBGE, FGV, Ipea e MTE são produtores das suas. A
   metodologia cita a produtora; a `fonte` pode dizer “IBGE, via SGS 13522”.
 - **Código/tabela e endpoint.** Série SGS, tabela SIDRA + variável + localidade, arquivo XLSX,
   PDF e página.
@@ -97,8 +98,9 @@ O contrato tem **um** `fonte` (texto) e **um** `urlFonte` (URL). Para múltiplas
 - `fonte` é a linha legível da ficha. Nomeie todas as fontes com papel/período e diga o que é
   cálculo próprio. Ex.:
   `IPEA/Atlas da Violência (SIM/DATASUS); 2014–2024: Atlas da Violência 2026 (FBSP/Ipea), Tabela 11.1`.
-- `urlFonte` é a URL principal/mais completa do recorte. Todas as URLs, códigos e tabelas vão
-  para `docs/metodologia.md`.
+- `urlFonte` é a URL principal/mais completa do recorte. Nunca invente URL: sem recorte
+  estável, omita e registre o motivo na metodologia. Todas as URLs, códigos e tabelas vão para
+  `docs/metodologia.md`.
 - Não trate agregador como produtor.
 - Se o indicador é calculado pelo site (por 100 mil, deflacionado, proporção), diga isso e
   mostre a fórmula/insumos na metodologia.

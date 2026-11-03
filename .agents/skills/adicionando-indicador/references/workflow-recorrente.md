@@ -46,7 +46,7 @@ jobs:
 | Caso | O que fazer |
 |---|---|
 | Família com caller | Nada no workflow. Confira a cadência; o caller roda todos os `.ipynb` da pasta. |
-| Família sem caller | Criar `atualizar-<familia>.yml`, acrescentar a família à allowlist e a linha no `AGENTS.md`. |
+| Família sem caller | Criar `atualizar-<familia>.yml`, acrescentar a família à allowlist, a linha no `AGENTS.md` e a variável `<FAMILIA>_SAIDA`. |
 | Família nova | O mesmo do caso anterior, mais a pasta, o notebook e o JSON. |
 | Cadência divergente da família | **Parar e perguntar.** Mudar o cron afeta as outras séries. |
 | Reutilizável ausente no checkout | **Parar** e pedir para sincronizar com `origin/main`; não recriar. |

@@ -26,7 +26,8 @@
 - Atribuição: `fonte` é a linha legível da ficha; `urlFonte` é a URL exata do recorte; todas as URLs/códigos vão para `docs/metodologia.md`; produtor ≠ agregador; cálculo próprio é declarado.
 - Workflow: um caller por família; a família entra na allowlist do `atualizar-familia.yml`; não reescrever o reutilizável; se ele não existir no checkout, sincronizar a branch.
 - Cadência divergente da família: parar e perguntar; não mudar o cron da família sozinha.
-- Testes com subagentes não usam rede e não alteram `indicadores/`; param no brief/mapa de fontes.
+- Testes com subagentes: **o teste de mecânica não usa rede**; os cenários de baseline e GREEN
+  podem pesquisar a fonte. Nenhum teste altera `indicadores/`.
 - Commits em Conventional Commits, em português, escopo `dados` (`docs(dados): ...`).
 - Nenhum arquivo de `scripts/`, `tests/` ou `indicadores/` é alterado por este plano; C15 já é um commit anterior.
 
