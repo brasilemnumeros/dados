@@ -110,6 +110,41 @@ com `actions/checkout` → `actions/setup-python` em **Python 3.12** (a mesma ve
 - O hook em `.githooks/pre-commit` continua valendo para quem commita localmente, mas não roda no PR de
   quem nunca o instalou — quem garante o gate é o CI.
 
+## Atualização agendada
+
+Cada família tem um workflow em `.github/workflows/atualizar-<familia>.yml`, que chama o
+reutilizável `atualizar-familia.yml`. A cadência segue a fonte (UTC):
+
+| família | cron | quando |
+|---|---|---|
+| ipca | `0 15 12,20 * *` | mensal, após a divulgação |
+| igp-m | `0 15 2,8 * *` | mensal, após o último dia útil |
+| selic | `0 15 2,8 * *` | mensal, após o fechamento |
+| caged | `0 15 3,10 * *` | mensal, com atraso do SGS |
+| mvgr | `0 15 5 * *` | mensal, defasagem de ~3 meses |
+| pib | `0 15 10 3,6,9,12 *` + `0 15 20 3 *` | trimestral, com Q4 em março |
+| populacao | `0 15 5 9,10 *` | anual, após a estimativa de agosto |
+| homicidios | `0 15 15 7,8,12 *` | anual, com o Atlas |
+
+- Toda execução recalcula a série inteira e roda `scripts/validar.py` + `pytest` antes de
+  publicar.
+- Qualquer mudança nos JSONs — inclusive acréscimo — abre ou atualiza um PR na branch
+  `dados/atualizacao/<familia>`. Não há classificação de diff nem merge automático; o merge
+  é o ato de publicar.
+- Sem mudança, nenhum PR, branch ou commit é criado.
+- O PR é aberto com o PAT `DADOS_BOT_TOKEN` (fine-grained, um ano) para que o check
+  `validar` rode; renove antes do vencimento.
+- O repositório precisa ter `Settings → General → Pull Requests → Automatically delete head
+  branches` ligado antes do primeiro merge: a branch é apagada ao mergear, e o próximo ciclo
+  cria outra.
+- Se um PR for fechado sem merge, a branch continua; apague a branch ou reabra o PR antes
+  do próximo ciclo. Não há configuração nativa para apagar no close.
+- `workflow_dispatch` com `seco=true` executa e valida sem publicar; `seco=false` em `main`
+  força a publicação.
+- O `schedule` roda a partir de `main` e é desativado após 60 dias sem atividade; mergeie
+  os PRs com regularidade.
+- O notebook executado fica no artifact do run, não no repositório.
+
 ## Antes de commitar
 
 - Instale o hook uma vez por clone: `git config core.hooksPath .githooks`. Ele roda `scripts/validar.py` e `pytest` quando o commit toca `indicadores/`, `scripts/`, `tests/` ou `requirements.txt`. Foi assim que o IPCA voltou a escrever o formato antigo sem ninguém notar: o validador existia, mas não era executado.

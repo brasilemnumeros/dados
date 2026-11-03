@@ -3,6 +3,9 @@
 **Data:** 2026-11-01
 **Status:** proposta para aprovação
 
+> **Nota (2026-11-02):** a decisão de frequência diária foi substituída pelo spec
+> `2026-11-02-atualizacao-agendada-design.md`. As demais decisões continuam valendo.
+
 ## Intenção
 
 Substituir os notebooks como pipeline implícito por um processo em que cada indicador seja, ao mesmo tempo:

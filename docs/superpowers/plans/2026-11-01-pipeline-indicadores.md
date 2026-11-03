@@ -10,6 +10,9 @@
 
 **Spec:** `docs/superpowers/specs/2026-11-01-pipeline-indicadores-design.md`
 
+> **Nota (2026-11-02):** a Task 11 foi substituída pelo plano
+> `2026-11-02-atualizacao-agendada.md`. As demais tasks continuam valendo.
+
 ## Global Constraints
 
 - Python 3.12.
@@ -760,6 +763,9 @@ git commit -m "refactor(dados): revisa e migra homicidios para o pipeline audita
 ---
 
 ### Task 11: Workflow de atualização e PR
+
+> **Nota (2026-11-02):** a Task 11 foi substituída pelo plano
+> `2026-11-02-atualizacao-agendada.md`. As demais tasks continuam valendo.
 
 **Files:**
 - Create: `.github/workflows/atualizar-dados.yml`
