@@ -264,7 +264,10 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
   Implícitos), variável `POP_T`:
   `https://ftp.ibge.gov.br/Projecao_da_Populacao/Projecao_da_Populacao_2024/projecoes_2024_tab4_indicadores.xlsx`.
   Conferência na SIDRA 6579 (variável 9324), que republica as estimativas anuais: 2024–2026
-  coincidem dígito a dígito.
+  coincidem dígito a dígito. Se o endpoint de metadados do SIDRA
+  (`servicodados.ibge.gov.br/api/v3/agregados/6579/periodos`) não responder de dentro do
+  GitHub Actions, o notebook confere apenas o último ano, com aviso; os valores continuam
+  vindo da planilha de projeção.
 - **Fórmula atual:** nenhuma — mas a série **não era do IBGE**: era `DEPIS_POP` do IPEADATA,
   construída por interpolação spline cúbica entre Censos e Contagens, com extrapolação em
   2023–2024. Os 30 pontos publicados são idênticos à DEPIS_POP, e a "queda" de 2020–2022
