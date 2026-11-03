@@ -13,6 +13,10 @@ descritas em `indicadores/catalogo.json`. O contrato é
 executável. O notebook é o motor: o JSON não é digitado à mão — e é ele que a ficha do app
 abre pelo `urlNotebook` do catálogo.
 
+O notebook é **público**: começa com o selo do Colab (para qualquer pessoa rodar) e não cita
+caminho absoluto da máquina. `tests/test_notebooks.py` reprova os dois casos; detalhes em
+`references/notebook-padrao.md`.
+
 Esta skill conduz do pedido ao PR com três gates — **definição**, **fonte** e **verificação**.
 Não comece pelo notebook: sem o brief de definição e o mapa de fontes, não há código.
 
@@ -102,9 +106,10 @@ Antes do PR:
    - **Família nova:** crie `indicadores/<familia>/`, notebook, JSON, catálogo, caller,
      allowlist, linha no `AGENTS.md` e a variável `<FAMILIA>_SAIDA`.
    - **Família existente sem caller:** crie o caller, a allowlist e a linha no `AGENTS.md`.
-4. Escreva/ajuste o notebook conforme `references/notebook-padrao.md`. Se precisar de
-   dependência nova, acrescente a versão exata em `[project].dependencies` do `pyproject.toml`
-   e rode `uv lock` no mesmo PR.
+4. Escreva/ajuste o notebook conforme `references/notebook-padrao.md`: a **primeira célula** é
+   o selo do Colab, e nenhum caminho absoluto da máquina entra no código nem nas saídas. Se
+   precisar de dependência nova, acrescente a versão exata em `[project].dependencies` do
+   `pyproject.toml` e rode `uv lock` no mesmo PR.
 5. Gere o JSON executando o notebook; nunca digite valores. O JSON inclui `fonte` e, quando
    houver recorte estável, `urlFonte`; a atribuição não é opcional. Nunca invente URL: sem
    recorte, omita e registre o motivo na metodologia.
@@ -148,6 +153,19 @@ Antes do PR:
 - Rode `validar.py` na raiz: K1/K2 exigem série + catálogo no mesmo PR; K9 exige o notebook no
   disco.
 
+## Notebook público
+
+- **Primeira célula: o selo Open in Colab** (`metadata.id = "view-in-github"`), apontando para o
+  próprio notebook em
+  `https://colab.research.google.com/github/brasilemnumeros/dados/blob/main/indicadores/<familia>/<Notebook>.ipynb`.
+  O GitHub mostra o código; o selo leva ao Colab para rodar. O modelo exato da célula está em
+  `references/notebook-padrao.md`.
+- **Nenhum caminho absoluto da máquina** (`/Users/`, `/home/`, `/root/`, `C:\`, `file://`) no
+  código nem nas saídas commitadas. Use `relativo()` na célula de configuração em todo print de
+  caminho; a saída deve ler `indicadores/<familia>/<id>.json`, igual ao markdown.
+- `tests/test_notebooks.py` reprova selo ausente/errado e caminho local em qualquer célula ou
+  saída. `pytest` roda os dois; não os silencie.
+
 ## C15 — datas
 
 - `mensal`: normalize para o primeiro dia do **mês de referência** (`AAAA-MM-01`); não use a
@@ -187,7 +205,7 @@ complementa, não substitui.
 ```bash
 # use o Python do ambiente do repo (.venv/bin/python se existir)
 python3 scripts/validar.py
-python3 -m pytest -q
+python3 -m pytest -q   # inclui tests/test_notebooks.py: selo do Colab e caminho local
 python3 -c "import json,glob; [json.load(open(f)) for f in glob.glob('indicadores/*.json')+glob.glob('indicadores/*/*.json')]"
 # só no caso de família nova/caller novo:
 python3 -c "import yaml; yaml.safe_load(open('.github/workflows/atualizar-<familia>.yml'))"
@@ -208,6 +226,9 @@ gerado com o publicado, revise o diff numérico e confirme K1/K2.
 - Publicar sem `fonte` legível, sem `urlFonte` quando há recorte estável, ou sem conferir a
   ficha. Achar que a entrada do catálogo substitui a atribuição dentro do JSON.
 - Entrar no catálogo sem `urlNotebook`, ou apontar para notebook que não gera a série (K9).
+- Publicar notebook sem o selo do Colab, ou com a URL apontando para o caminho antigo.
+- Deixar print de caminho resolvido (`/Users/...`, `/home/...`) no notebook: as saídas são
+  commitadas e o `tests/test_notebooks.py` reprova.
 - Deixar a `descricao` falando do cálculo antigo depois de revisar a fórmula.
 - Mudar valor existente sem pedido e aval.
 

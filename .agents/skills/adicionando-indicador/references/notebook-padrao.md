@@ -5,15 +5,39 @@ preencher — use `indicadores/ipca/IPCA.ipynb` como exemplo real e siga as cél
 
 ## Células obrigatórias
 
-1. **Markdown de abertura** — fonte, endpoint/códigos, unidade, eixo, medida, granularidade,
+1. **Selo do Colab** — primeira célula, markdown, com o metadado `id: view-in-github` e o link
+   para abrir o próprio notebook no Colab (modelo abaixo).
+2. **Markdown de abertura** — fonte, endpoint/códigos, unidade, eixo, medida, granularidade,
    definição, fórmula, período coberto e arquivo gerado.
-2. **Setup e raiz** — imports, `RAIZ`, pasta e destino.
-3. **Coleta** — busca a fonte completa, com retentativas; não lê o JSON publicado.
-4. **Cálculo/recorte** — células visíveis; fórmula documentada; sem modo incremental.
-5. **Filtro de período fechado** — descarta mês/ano corrente ou incompleto.
-6. **Escrita** — monta os pontos e grava o JSON inteiro.
-7. **Validação inline** — falha em contrato quebrado, C15, duplicata, ordem, valor não finito
+3. **Setup e raiz** — imports, `RAIZ`, pasta, destino e o helper `relativo()`.
+4. **Coleta** — busca a fonte completa, com retentativas; não lê o JSON publicado.
+5. **Cálculo/recorte** — células visíveis; fórmula documentada; sem modo incremental.
+6. **Filtro de período fechado** — descarta mês/ano corrente ou incompleto.
+7. **Escrita** — monta os pontos e grava o JSON inteiro.
+8. **Validação inline** — falha em contrato quebrado, C15, duplicata, ordem, valor não finito
    ou divergência com a fonte.
+
+## Selo do Colab
+
+A primeira célula é o selo **Open in Colab**. Ele não é enfeite: o GitHub mostra o código, mas
+é o Colab que deixa qualquer pessoa **rodar** o notebook. O caminho é o do próprio arquivo,
+sempre com `indicadores/` e percent-encoding quando houver acento (`População.ipynb` →
+`Popula%C3%A7%C3%A3o.ipynb`).
+
+```json
+{
+  "cell_type": "markdown",
+  "metadata": { "id": "view-in-github", "colab_type": "text" },
+  "source": [
+    "<a href=\"https://colab.research.google.com/github/brasilemnumeros/dados/blob/main/indicadores/<familia>/<Notebook>.ipynb\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+  ]
+}
+```
+
+`tests/test_notebooks.py::test_todo_notebook_tem_selo_do_colab` reprova se a célula sumir, se o
+metadado não for `view-in-github` ou se a URL não apontar para o próprio arquivo. O selo e o
+`urlNotebook` do catálogo apontam para o mesmo notebook: mover ou renomear o arquivo exige
+atualizar os dois.
 
 ## Raiz e saída
 
@@ -30,6 +54,14 @@ if os.environ.get("DADOS_RAIZ"):
 else:
     PASTA = RAIZ
 DESTINO = Path(os.environ.get("<FAMILIA>_SAIDA", PASTA))
+
+
+def relativo(caminho):
+    """Caminho exibido no notebook: relativo à raiz, nunca o absoluto da máquina."""
+    try:
+        return caminho.relative_to(RAIZ)
+    except ValueError:
+        return caminho.name
 ```
 
 `DADOS_RAIZ` permite rodar contra uma cópia. `<FAMILIA>_SAIDA` permite ensaio sem tocar no
@@ -37,6 +69,13 @@ arquivo publicado; siga o padrão dos notebooks existentes (`IPCA_SAIDA`, `PIB_S
 O nome é maiúsculo, sem hífen e sem acento: `igp-m` → `IGPM_SAIDA`, `populacao` →
 `POPULACAO_SAIDA`. Sem `DADOS_RAIZ` a pasta é o diretório atual (rodar de dentro da família);
 com `DADOS_RAIZ`, a pasta da família tem de existir — não caia para a raiz do repo.
+
+**As saídas do notebook são commitadas e públicas.** Nenhum caminho absoluto da máquina pode
+aparecer no código nem no output: todo `print` de caminho passa por `relativo(...)`, e a saída
+lê `indicadores/<familia>/<id>.json`. O teste
+`tests/test_notebooks.py::test_notebook_nao_expoe_caminho_da_maquina` reprova `/Users/`,
+`/home/`, `/root/`, `C:\` e `file://` em qualquer célula ou saída — inclusive no output de uma
+execução local que você esqueceu de limpar.
 
 ## Coleta
 
@@ -90,6 +129,8 @@ with (DESTINO / "<id>.json").open("w", encoding="utf-8") as arquivo:
   publicação.
 - Lacuna: omita o ponto; não preencha.
 - Ordem ascendente e um ponto por período.
+- Se a célula imprime onde gravou, use `relativo(DESTINO / "<id>.json")` — nunca o `Path`
+  resolvido, que carrega o diretório da sua máquina para a saída publicada.
 
 ## Caminho do notebook e `urlNotebook`
 
@@ -103,8 +144,8 @@ apontar para um `.ipynb` que existe no disco.
   `https://github.com/brasilemnumeros/dados/blob/main/indicadores/<familia>/<Notebook>.ipynb` —
   copie o caminho do arquivo, não digite de memória.
 - Renomear ou mover o notebook exige atualizar **todas** as entradas de catálogo que apontam
-  para ele, no mesmo commit; o teste `tests/test_notebooks.py` também amarra o selo do Colab ao
-  caminho.
+  para ele, no mesmo commit; o `tests/test_notebooks.py` amarra o selo do Colab ao caminho e
+  reprova caminho absoluto da máquina.
 - O notebook linkado é o que **gera** a série. Não aponte para um notebook de estudo, para a
   pasta da família nem para outro repositório.
 
@@ -128,4 +169,6 @@ DADOS_RAIZ="$PWD" <FAMILIA>_SAIDA=/tmp/ensaio jupyter nbconvert \
   --output-dir /tmp/nbexec indicadores/<familia>/<Notebook>.ipynb
 ```
 
-Compare o JSON gerado com o publicado antes de rodar no destino real.
+Compare o JSON gerado com o publicado antes de rodar no destino real. A execução grava as
+saídas no notebook: depois do ensaio, revise o `git diff` e rode `pytest` — o
+`tests/test_notebooks.py` reprova caminho da máquina que tenha vazado para uma célula ou output.
