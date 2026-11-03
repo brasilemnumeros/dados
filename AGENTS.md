@@ -64,6 +64,9 @@ notebooks escrevem a série inteira do zero, então curadoria não pode morar ne
 - **Nunca altere valores ao mudar a forma.** Correção de fórmula é revisão histórica: registre definição, fonte e impacto em `docs/metodologia.md` e peça aval antes.
 - Os notebooks escrevem o **formato inteiro** (`versao`, `id`, `unidade`, `eixo`, `medida`, `granularidade`, `fonte`, `urlFonte`, `dados`) direto em `indicadores/<familia>/` — campos de apresentação não entram. Cada um aceita uma variável de ambiente (`IPCA_SAIDA`, `IGPM_SAIDA`, `SELIC_SAIDA`, `PIB_SAIDA`, `MVGR_SAIDA`, `CAGED_SAIDA`, `POPULACAO_SAIDA`, `HOMICIDIOS_SAIDA`) para gravar num diretório de ensaio em vez do arquivo publicado.
 - Toda execução deve recalcular a série inteira; não há modo incremental.
+- O endpoint de metadados do SIDRA (`servicodados.ibge.gov.br/api/v3/agregados/6579/periodos`)
+  pode não responder de dentro do GitHub Actions. O notebook da População cai para a conferência
+  apenas do último ano, com aviso; os valores continuam vindo do XLSX da projeção.
 - `python3 scripts/validar.py` valida o contrato de todas as séries. Não corrige nem calcula nada.
 - Dependências fixadas em `requirements.txt`.
 
