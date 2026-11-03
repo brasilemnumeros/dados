@@ -1,6 +1,6 @@
 # Contrato — resumo operacional
 
-**Fonte de verdade:** `../sitio/docs/contrato-de-indicadores.md` (`C1…C15` + `K1…K8`).
+**Fonte de verdade:** `../sitio/docs/contrato-de-indicadores.md` (`C1…C15` + `K1…K9`).
 Este arquivo é atalho de consulta; se divergir do documento, o documento vale.
 
 ## Arquivo
@@ -96,7 +96,8 @@ Arquivo `indicadores/catalogo.json`, irmão das famílias:
   "grupo": "inflacao",
   "escala": "percentual",
   "descricao": "Variação acumulada do IPCA em 12 meses",
-  "arquivo": "ipca/ipca-acum-12m.json"
+  "arquivo": "ipca/ipca-acum-12m.json",
+  "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/ipca/IPCA.ipynb"
 }
 ```
 
@@ -104,5 +105,8 @@ Arquivo `indicadores/catalogo.json`, irmão das famílias:
 - `grupo` existe em `grupos` (K5).
 - `id` = nome do arquivo = `id` da série (K3).
 - `nome` e `descricao` não vazios (K7); `id`/`arquivo` únicos (K8).
+- `urlNotebook` é URL `https://` completa, sob
+  `https://github.com/brasilemnumeros/dados/blob/main/indicadores/`, apontando para um `.ipynb`
+  que existe no disco (K9) — é o link de auditoria da ficha.
 - Toda série do disco tem entrada (K2); todo `arquivo` existe (K1).
 - Indicador novo = série + catálogo no mesmo PR.

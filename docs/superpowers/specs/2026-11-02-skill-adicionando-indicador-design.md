@@ -2,7 +2,12 @@
 
 **Data:** 2026-11-02
 **Status:** aprovado em 2026-11-03
-**Fonte de verdade do dado:** `../sitio/docs/contrato-de-indicadores.md` (`C1…C15` + `K1…K8`)
+**Fonte de verdade do dado:** `../sitio/docs/contrato-de-indicadores.md` (`C1…C15` + `K1…K9`)
+
+> **Emenda 2026-11-03:** o catálogo passou a exigir `urlNotebook` (K9) — o link de auditoria
+> que a ficha do app abre. A skill foi atualizada no mesmo dia: o campo entrou no passo 6, na
+> seção **Catálogo**, no `contrato-resumo.md`, no `notebook-padrao.md` e no checklist. O texto
+> abaixo, onde fala em `K1…K8`, é o registro do desenho original.
 
 ## Intenção
 

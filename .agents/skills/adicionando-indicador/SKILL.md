@@ -9,8 +9,9 @@ description: Use quando for criar ou publicar um indicador novo no repo dados �
 
 O repo `dados` publica séries em `indicadores/<familia>/<id>.json`, geradas por um notebook e
 descritas em `indicadores/catalogo.json`. O contrato é
-`../sitio/docs/contrato-de-indicadores.md` (`C1…C15` + `K1…K8`); o validador é a prova
-executável. O notebook é o motor: o JSON não é digitado à mão.
+`../sitio/docs/contrato-de-indicadores.md` (`C1…C15` + `K1…K9`); o validador é a prova
+executável. O notebook é o motor: o JSON não é digitado à mão — e é ele que a ficha do app
+abre pelo `urlNotebook` do catálogo.
 
 Esta skill conduz do pedido ao PR com três gates — **definição**, **fonte** e **verificação**.
 Não comece pelo notebook: sem o brief de definição e o mapa de fontes, não há código.
@@ -26,7 +27,8 @@ Não comece pelo notebook: sem o brief de definição e o mapa de fontes, não h
 ## Quando não usar
 
 - corrigir valor de série existente sem pedido explícito e aval;
-- mudar só `nome`, `descricao` ou `grupo` no catálogo (é uma linha, sem dado);
+- mudar só `nome`, `descricao` ou `grupo` no catálogo (é uma linha, sem dado) — exceto quando a
+  `descricao` ficou para trás de uma mudança de cálculo: aí ela entra no PR da revisão;
 - mexer no contrato ou no validador (outra decisão, outro PR).
 
 ## Gate de definição
@@ -105,10 +107,11 @@ Antes do PR:
 5. Gere o JSON executando o notebook; nunca digite valores. O JSON inclui `fonte` e, quando
    houver recorte estável, `urlFonte`; a atribuição não é opcional. Nunca invente URL: sem
    recorte, omita e registre o motivo na metodologia.
-6. Entre no catálogo com `id`, `nome`, `grupo`, `escala` (= `unidade.tipo`), `descricao` e
-   `arquivo`.
+6. Entre no catálogo com `id`, `nome`, `grupo`, `escala` (= `unidade.tipo`), `descricao`,
+   `arquivo` e `urlNotebook` (o link de auditoria da ficha; K9 confere que o `.ipynb` existe).
 7. Acrescente o workflow conforme `references/workflow-recorrente.md`.
-8. Documente a metodologia com todas as fontes, URLs, fórmula, evidência, caveats e verificação.
+8. Documente a metodologia com todas as fontes, URLs, fórmula, evidência, caveats e verificação,
+   e confira que a `descricao` do catálogo conta a mesma história que a metodologia.
 9. Rode o gate de verificação e registre a evidência.
 10. Valide, revise o diff e abra o PR.
 
@@ -129,9 +132,20 @@ Antes do PR:
 
 - Entrada em `indicadores/catalogo.json`, sem reordenar as existentes.
 - `escala` é `unidade.tipo`; divergência reprova K4.
-- `descricao` é uma frase sobre o dado, com unidade, período e o caveat principal.
+- `descricao` é uma frase sobre o **dado**: o que o número é, em que unidade, em que período e
+  qual o caveat principal. Ela aparece na ficha antes de a série carregar, então não pode
+  depender de o leitor abrir o notebook. Se a fórmula, a fonte ou a cobertura mudarem, a
+  `descricao` muda **no mesmo PR** — descrição que sobrevive a uma revisão de cálculo vira
+  afirmação falsa sobre o número.
+- `urlNotebook` é a URL completa do notebook que **gera aquela série**, no formato
+  `https://github.com/brasilemnumeros/dados/blob/main/indicadores/<familia>/<Notebook>.ipynb`.
+  Não é link para tutorial, artigo ou repositório: é o caminho que a ficha exibe como “Ver o
+  notebook que gera estes dados”. K9 reprova URL fora do prefixo `.../blob/main/indicadores/`
+  ou apontando para um `.ipynb` que não existe no disco — mover ou renomear o notebook exige
+  atualizar a entrada no mesmo commit.
 - Grupo novo exige decisão do usuário sobre nome e posição.
-- Rode `validar.py` na raiz: K1/K2 exigem série + catálogo no mesmo PR.
+- Rode `validar.py` na raiz: K1/K2 exigem série + catálogo no mesmo PR; K9 exige o notebook no
+  disco.
 
 ## C15 — datas
 
@@ -192,6 +206,8 @@ gerado com o publicado, revise o diff numérico e confirme K1/K2.
 - Escrever JSON à mão ou arredondar o valor publicado.
 - Publicar sem `fonte` legível, sem `urlFonte` quando há recorte estável, ou sem conferir a
   ficha. Achar que a entrada do catálogo substitui a atribuição dentro do JSON.
+- Entrar no catálogo sem `urlNotebook`, ou apontar para notebook que não gera a série (K9).
+- Deixar a `descricao` falando do cálculo antigo depois de revisar a fórmula.
 - Mudar valor existente sem pedido e aval.
 
 ## Referências

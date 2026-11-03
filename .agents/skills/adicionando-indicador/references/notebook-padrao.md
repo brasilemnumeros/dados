@@ -91,6 +91,23 @@ with (DESTINO / "<id>.json").open("w", encoding="utf-8") as arquivo:
 - Lacuna: omita o ponto; não preencha.
 - Ordem ascendente e um ponto por período.
 
+## Caminho do notebook e `urlNotebook`
+
+O caminho do arquivo é contrato de produto: a ficha do app exibe um link “Ver o notebook que
+gera estes dados” montado a partir de `urlNotebook` no catálogo, e K9 reprova se a URL não
+apontar para um `.ipynb` que existe no disco.
+
+- Um notebook por família, em `indicadores/<familia>/<Notebook>.ipynb`; uma família com várias
+  séries pode ter um notebook só (ele grava todas).
+- `urlNotebook` é sempre
+  `https://github.com/brasilemnumeros/dados/blob/main/indicadores/<familia>/<Notebook>.ipynb` —
+  copie o caminho do arquivo, não digite de memória.
+- Renomear ou mover o notebook exige atualizar **todas** as entradas de catálogo que apontam
+  para ele, no mesmo commit; o teste `tests/test_notebooks.py` também amarra o selo do Colab ao
+  caminho.
+- O notebook linkado é o que **gera** a série. Não aponte para um notebook de estudo, para a
+  pasta da família nem para outro repositório.
+
 ## Validação inline
 
 A última célula deve falhar se:

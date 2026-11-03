@@ -116,6 +116,9 @@ O contrato tem **um** `fonte` (texto) e **um** `urlFonte` (URL). Para múltiplas
 - [ ] Brief de definição existe.
 - [ ] Mapa de fontes existe, com produtor, cobertura, emenda e independente.
 - [ ] O JSON tem `fonte` e, quando houver recorte, `urlFonte`.
+- [ ] A entrada do catálogo tem `descricao` (o que o número é, unidade, período e caveat) e
+      `urlNotebook` para o notebook que gera a série.
+- [ ] A `descricao` não contradiz a fórmula: revisão de cálculo atualizou o texto no mesmo PR.
 - [ ] A fonte escolhida é a mais próxima possível de “oficial já calculada”.
 - [ ] A verificação independente foi feita ou a limitação foi declarada.
 - [ ] `fonte`/`urlFonte` contam a mesma história que a metodologia.
