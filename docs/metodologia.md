@@ -5,6 +5,8 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
 
 > **Escopo:** as 13 séries foram revisadas e publicadas em 2026-11-01. O IPCA foi o piloto
 > (`ipca-acum-12m`); o IGP-M veio em seguida; as outras seis famílias fecharam a rodada.
+> As três séries da PNAD Contínua (`pnad-*`) foram publicadas em 2026-11-03 e têm seção
+> própria abaixo; elas não fazem parte da contagem das 13.
 
 ## ipca-acum-12m
 
@@ -479,9 +481,72 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
   70,33 → 71,76 (+1,43 p.p.); com o 2013 revisado, 71,21 → 71,76 (+0,55 p.p.). O resíduo é a
   revisão de 2013, que depende de aval.
 
+## pnad-desocupacao
+
+- **Definição:** percentual da força de trabalho (pessoas de 14 anos ou mais) que estava
+  desocupada no trimestre móvel de três meses encerrado no mês da data. `percentual` (`%`,
+  1 casa), `eixo: percentual`, `medida: nivel`, `granularidade: mensal`. O ponto
+  `2026-09-01` cobre jul–ago–set/2026; não é a taxa do mês de setembro isolado.
+- **Fonte e código:** IBGE, PNAD Contínua mensal, tabela SIDRA **6381**, variável **4099**,
+  Brasil (N1). Endpoint:
+  `https://apisidra.ibge.gov.br/values/t/6381/n1/all/v/4099/p/all?formato=json`.
+- **Fórmula:** nenhuma — a taxa é publicada pelo IBGE. O notebook busca, recorta o último
+  trimestre fechado e formata. A série começa em `2012-03` (primeiro trimestre móvel da
+  PNAD Contínua mensal). Não há emenda com a PME (2002–2012): a PME tinha outra metodologia
+  e cobria só 6 regiões metropolitanas.
+- **Evidência:** 175 trimestres móveis, `2012-03` a `2026-09`, sem lacuna. Primeiro `8,0%`
+  (jan–fev–mar/2012); último `5,2%` (jul–ago–set/2026); máximo `14,9%` (jul–ago–set/2020);
+  mínimo `5,1%` (out–dez/2025). Contra o mesmo trimestre do ano anterior, `5,6% → 5,2%`
+  em set/2026.
+- **Verificação independente:** ad hoc. A divulgação do IBGE de 29/09/2026 (trimestre
+  jun–ago/2026) traz `5,3%`, igual ao ponto `2026-08` da SIDRA. Não há fonte independente
+  com metodologia própria; a limitação fica declarada. A conferência com a divulgação é do
+  mesmo produtor, não uma segunda medição.
+- **Caveats:** trimestre móvel lido como mês; comparação com a PME ou com os anos 1990;
+  confusão com o estoque do Caged; queda da taxa por saída da força de trabalho (ver a
+  série de participação). A taxa se refere a pessoas de 14 anos ou mais, no Brasil, sem
+  recorte regional nem ajuste sazonal.
+
+## pnad-participacao
+
+- **Definição:** percentual das pessoas de 14 anos ou mais que estavam na força de trabalho
+  (ocupadas ou desocupadas) no trimestre móvel encerrado no mês. `percentual` (`%`, 1 casa),
+  `eixo: percentual`, `medida: nivel`, `granularidade: mensal`.
+- **Fonte e código:** IBGE, PNAD Contínua mensal, tabela SIDRA **5944**, variável **4096**,
+  Brasil (N1). Endpoint:
+  `https://apisidra.ibge.gov.br/values/t/5944/n1/all/v/4096/p/all?formato=json`.
+- **Fórmula:** nenhuma — série oficial. Cobertura e recorte iguais aos da desocupação.
+- **Evidência:** 175 pontos, `2012-03` a `2026-09`; primeiro `62,3%`; último `62,2%`;
+  máximo `63,6%` (abr–jun/2019); mínimo `56,5%` (mai–jul/2020).
+- **Papel na leitura:** é o denominador que explica por que a taxa de desocupação pode cair
+  sem aumento de emprego. A identidade `nível de ocupação = participação ×
+  (1 − desocupação/100)` é conferida ponto a ponto no notebook, com tolerância de 0,15 p.p.
+  (o resíduo máximo medido é 0,1125 p.p. em 2019-02, efeito do arredondamento de 1 casa).
+- **Verificação independente:** a mesma limitação da desocupação; a divulgação de
+  29/09/2026 também traz `62,2%` de participação, igual ao ponto `2026-08` da SIDRA.
+
+## pnad-nivel-ocupacao
+
+- **Definição:** percentual das pessoas de 14 anos ou mais que estavam ocupadas no trimestre
+  móvel encerrado no mês. `percentual` (`%`, 1 casa), `eixo: percentual`, `medida: nivel`,
+  `granularidade: mensal`.
+- **Fonte e código:** IBGE, PNAD Contínua mensal, tabela SIDRA **6379**, variável **4097**,
+  Brasil (N1). Endpoint:
+  `https://apisidra.ibge.gov.br/values/t/6379/n1/all/v/4097/p/all?formato=json`.
+- **Fórmula:** nenhuma — série oficial. Cobertura e recorte iguais aos da desocupação.
+- **Evidência:** 175 pontos, `2012-03` a `2026-09`; primeiro `57,3%`; último `59,0%`;
+  mínimo `48,4%` (jun–ago/2020); máximo `59,0%` (out–dez/2025 e jul–ago–set/2026).
+- **Relação com as outras duas:** é o produto da participação pela fração de ocupados na
+  força de trabalho. A identidade é a mesma conferida no notebook; ela não substitui a
+  leitura das três séries, porque cada uma isola uma margem diferente.
+- **Verificação independente:** a mesma limitação da desocupação; a divulgação de
+  29/09/2026 cobre as três séries.
+
 ## Pendentes
 
 Revisão concluída para as 13 séries em 2026-11-01. **Não há pendência de dado nem de forma.**
+As três séries da PNAD (`pnad-*`) foram publicadas em 2026-11-03 e têm seção própria acima;
+elas não fazem parte da contagem das 13.
 
 Fora deste repo, o post do `sitio` sobre o MVG-R foi alinhado ao catálogo em 2026-11-03: não
 fala mais em "valor médio", "preço de etiqueta" nem "valor real dos imóveis", e os números do
