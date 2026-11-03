@@ -229,8 +229,8 @@ URL `https://` do recorte exato). Para múltiplas fontes:
 - Se o indicador é calculado pelo site (por 100 mil, deflacionado, proporção), a atribuição diz
   o que é cálculo próprio e a metodologia mostra a fórmula e os insumos.
 - A ficha do app deve mostrar `fonte`, não `urlFonte`: a linha precisa ser legível para o
-  leitor. Hoje `Ficha.svelte` usa `estado.series.source` enquanto a série expõe `fonte`, então a
-  linha sai vazia; a correção é um PR separado no `sitio` e a skill deve conferir isso.
+  leitor. Se a ficha estiver vazia, o app pode estar usando `source` em vez de `fonte`; a
+  correção é um PR separado no `sitio` e a skill deve conferir isso.
 - Não criar campo paralelo de fonte no catálogo; a atribuição canônica mora na série e na
   metodologia. A `descricao` pode citar a fonte em prosa, como já faz hoje.
 - Verificar licença/termos e exigência de atribuição; se houver, registrar na metodologia.

@@ -1,6 +1,6 @@
 # Skill adicionando-indicador Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Criar a skill `.agents/skills/adicionando-indicador/` que conduz um agente a criar um indicador novo com definição, fonte, verificação independente, atribuição correta, JSON no contrato (C1…C15), catálogo e workflow recorrente.
 
@@ -9,6 +9,8 @@
 **Tech Stack:** Agent Skills (Markdown), Python 3.12, `scripts/validar.py`, `pytest`, GitHub Actions YAML, subagentes para teste de comportamento.
 
 **Spec:** `docs/superpowers/specs/2026-11-02-skill-adicionando-indicador-design.md`
+
+> **Execução (2026-11-03):** tarefas 1–6 executadas no worktree `dados-skill`; o PR não foi aberto — integração pendente. O commit de C15 inclui o alinhamento de vocabulário em `docs/metodologia.md` (`percentage`→`percentual`, `monthly`→`mensal`), parte da mesma revisão de contrato.
 
 ## Base e pré-requisitos
 
@@ -49,13 +51,13 @@
 **Interfaces:**
 - Produces: transcrição do baseline e lista de falhas verbatim, usada para escrever o `SKILL.md`.
 
-- [ ] **Step 1: Criar a pasta de evidência**
+- [x] **Step 1: Criar a pasta de evidência**
 
 ```bash
 mkdir -p /tmp/skill-adicionando-indicador
 ```
 
-- [ ] **Step 2: Rodar o cenário sem a skill**
+- [x] **Step 2: Rodar o cenário sem a skill**
 
 Despache um subagente generalista com este prompt, sem mencionar a skill e sem permitir alterações:
 
@@ -71,7 +73,7 @@ nem `docs/superpowers/plans/2026-11-03-skill-adicionando-indicador.md`: eles
 descrevem o comportamento esperado e contaminariam este baseline.
 ```
 
-- [ ] **Step 3: Salvar e avaliar a resposta**
+- [x] **Step 3: Salvar e avaliar a resposta**
 
 Salve a resposta em `/tmp/skill-adicionando-indicador/baseline.md` e marque cada
 critério:
@@ -86,7 +88,7 @@ critério:
 | Atribuição | nomeou todas as fontes e disse o que é cálculo próprio |
 | C15/granularidade | escolheu a granularidade mínima e a data correta |
 
-- [ ] **Step 4: Registrar as falhas**
+- [x] **Step 4: Registrar as falhas**
 
 Anote, verbatim, as frases em que o agente pulou um gate. Essas frases são o
 alvo do `SKILL.md`; não invente falhas que não apareceram. Não há commit nesta
@@ -103,7 +105,7 @@ task.
 - Produces: skill descoberta pelo ID `adicionando-indicador`, com os três gates e o fluxo de 10 passos.
 - Consumes: falhas do baseline; contrato `C1…C15`; design aprovado.
 
-- [ ] **Step 1: Criar o frontmatter e a estrutura**
+- [x] **Step 1: Criar o frontmatter e a estrutura**
 
 O arquivo começa exatamente com:
 
@@ -120,7 +122,7 @@ O corpo tem, nesta ordem: **Overview**, **Quando usar / quando não usar**,
 **Atribuição de fonte(s)**, **Validação**, **Erros comuns / red flags** e
 **Referências**.
 
-- [ ] **Step 2: Escrever os três gates**
+- [x] **Step 2: Escrever os três gates**
 
 O gate de definição pergunta, no mínimo: o que o número mede; unidade e período
 de referência; nominal/real; total/per capita; sazonalidade; geografia; estoque
@@ -137,7 +139,7 @@ O gate de verificação exige fonte independente que já publicou o indicador,
 comparação de níveis e variações, divergência quantificada e explicada; se não
 houver fonte independente, a limitação é declarada.
 
-- [ ] **Step 3: Escrever o fluxo de 10 passos e a tabela de decisão**
+- [x] **Step 3: Escrever o fluxo de 10 passos e a tabela de decisão**
 
 O fluxo é o do desenho: definição → fonte → classificação (família existente,
 família nova, família sem caller) → notebook → JSON → catálogo → workflow →
@@ -155,7 +157,7 @@ A tabela de decisão fixa:
 E lista `medida` (`nivel`, `acumulado-12m`, `variacao-anual`, `estoque`,
 `participacao`), `granularidade` (`diaria`, `mensal`, `anual`) e C15.
 
-- [ ] **Step 4: Escrever workflow, atribuição, validação e erros comuns**
+- [x] **Step 4: Escrever workflow, atribuição, validação e erros comuns**
 
 Workflow: família com caller não ganha outro; família sem caller ganha caller +
 linha na allowlist + linha no `AGENTS.md`; reutilizável ausente → sincronizar a
@@ -171,7 +173,7 @@ Erros comuns: pular definição, usar agregador como produtor, verificar com a
 mesma fonte, criar família sem allowlist, gravar data fora de C15, escrever JSON
 à mão.
 
-- [ ] **Step 5: Conferir frontmatter e ID**
+- [x] **Step 5: Conferir frontmatter e ID**
 
 ```bash
 python3 - <<'PY'
@@ -191,7 +193,7 @@ PY
 
 Expected: `skill ok`.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add .agents/skills/adicionando-indicador/SKILL.md
@@ -212,14 +214,14 @@ git commit -m "docs(dados): adiciona skill de indicador novo"
 - Consumes: `SKILL.md` da Task 2.
 - Produces: detalhes carregados sob demanda; nenhum arquivo repete o contrato inteiro.
 
-- [ ] **Step 1: Escrever `contrato-resumo.md`**
+- [x] **Step 1: Escrever `contrato-resumo.md`**
 
 Conteúdo: caminho do arquivo; chaves de topo; `unidade`; tabela `eixo` ↔
 `unidade.tipo`; `medida`; `granularidade`; ponto `{data, valor}`; C11, C12, C13,
 C15; catálogo `K1…K8`; link para `../sitio/docs/contrato-de-indicadores.md` como
 fonte de verdade. Limite: ~120 linhas. Não copiar C1–C15 inteiro.
 
-- [ ] **Step 2: Escrever `notebook-padrao.md`**
+- [x] **Step 2: Escrever `notebook-padrao.md`**
 
 Conteúdo: células obrigatórias (markdown de fonte/definição/fórmula; raiz
 `DADOS_RAIZ`; `<FAMILIA>_SAIDA`; coleta completa; cálculo visível; filtro de
@@ -227,21 +229,21 @@ período fechado; escrita do JSON inteiro; validação inline). Apontar
 `indicadores/ipca/IPCA.ipynb` como exemplo real. Dizer explicitamente que não há
 template para preencher.
 
-- [ ] **Step 3: Escrever `qualidade-e-fontes.md`**
+- [x] **Step 3: Escrever `qualidade-e-fontes.md`**
 
 Conteúdo: os três gates em detalhe; hierarquia de fontes; produtor vs agregador;
 cobertura 1995/last closed; emenda e sobreposição; verificação independente;
 armadilhas de API (BCB SGS 10 anos/diária, 502, timeout, 200 com HTML); regras
 de atribuição e licença. Este é o arquivo mais longo; pode passar de 120 linhas.
 
-- [ ] **Step 4: Escrever `workflow-recorrente.md`**
+- [x] **Step 4: Escrever `workflow-recorrente.md`**
 
 Conteúdo: anatomía do caller; cron UTC/15:00; `workflow_dispatch` com `seco`;
 `permissions: contents: read`; `concurrency`; `uses`; regra de allowlist;
 família com/sem caller; cadência divergente; reutilizável ausente → sincronizar;
 tabela de cadência do `AGENTS.md`.
 
-- [ ] **Step 5: Conferir caminhos e links**
+- [x] **Step 5: Conferir caminhos e links**
 
 ```bash
 python3 - <<'PY'
@@ -255,7 +257,7 @@ PY
 
 Expected: `references ok`.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add .agents/skills/adicionando-indicador/references
@@ -273,7 +275,7 @@ git commit -m "docs(dados): adiciona referencias da skill de indicador"
 - Consumes: contrato do caller em `origin/main:.github/workflows/atualizar-ipca.yml`.
 - Produces: YAML copiável com placeholders `__FAMILIA__` e `__CRON__`.
 
-- [ ] **Step 1: Criar o caller com placeholders**
+- [x] **Step 1: Criar o caller com placeholders**
 
 ```yaml
 # Workflow da família __FAMILIA__; o notebook e os dados vivem em indicadores/__FAMILIA__/.
@@ -302,7 +304,7 @@ jobs:
       token: ${{ secrets.DADOS_BOT_TOKEN }}
 ```
 
-- [ ] **Step 2: Conferir o YAML e as regras**
+- [x] **Step 2: Conferir o YAML e as regras**
 
 ```bash
 python3 - <<'PY'
@@ -319,7 +321,7 @@ PY
 
 Expected: `caller ok`.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add .agents/skills/adicionando-indicador/assets/atualizar-familia-caller.yml
@@ -338,7 +340,7 @@ git commit -m "docs(dados): adiciona caller modelo da skill"
 - Consumes: skill das Tasks 2–4; baseline da Task 1.
 - Produces: evidência de que a skill fecha as falhas do baseline.
 
-- [ ] **Step 1: Rodar o mesmo cenário com a skill**
+- [x] **Step 1: Rodar o mesmo cenário com a skill**
 
 Despache um subagente novo com o mesmo prompt da Task 1, precedido de:
 
@@ -348,7 +350,7 @@ Leia e siga `.agents/skills/adicionando-indicador/SKILL.md`.
 
 Salve em `/tmp/skill-adicionando-indicador/com-skill.md`.
 
-- [ ] **Step 2: Comparar com o baseline**
+- [x] **Step 2: Comparar com o baseline**
 
 A resposta com skill precisa cumprir a tabela da Task 1 **e**:
 
@@ -362,7 +364,7 @@ A resposta com skill precisa cumprir a tabela da Task 1 **e**:
 
 Registre cada falha restante e a frase do baseline que ela reabre.
 
-- [ ] **Step 3: Rodar o teste de mecânica sem rede**
+- [x] **Step 3: Rodar o teste de mecânica sem rede**
 
 Despache outro subagente com:
 
@@ -376,13 +378,13 @@ A resposta precisa mencionar: JSON no contrato, entrada no catálogo, C15,
 `validar.py`, `pytest`, caller + allowlist + `AGENTS.md` para família nova,
 metodologia e atribuição. Salve em `/tmp/skill-adicionando-indicador/mecanica.md`.
 
-- [ ] **Step 4: Corrigir os buracos e re-testar**
+- [x] **Step 4: Corrigir os buracos e re-testar**
 
 Se o agente pulou um gate, acrescente ao `SKILL.md` um **red flag** explícito e,
 se necessário, um critério no gate correspondente. Rode o cenário de novo. Não
 adicione conteúdo para falhas que não apareceram.
 
-- [ ] **Step 5: Commit das correções**
+- [x] **Step 5: Commit das correções**
 
 ```bash
 git add .agents/skills/adicionando-indicador
@@ -401,7 +403,7 @@ git commit -m "docs(dados): fecha lacunas da skill de indicador"
 - Consumes: todas as tasks anteriores.
 - Produces: branch pronta para PR, sem mudança de dado.
 
-- [ ] **Step 1: Rodar os gates do repo**
+- [x] **Step 1: Rodar os gates do repo**
 
 ```bash
 python3 scripts/validar.py
@@ -419,7 +421,7 @@ git diff --check
 
 Expected: `validar.py` exit 0; `pytest` verde; parse ok; `yaml ok`.
 
-- [ ] **Step 2: Confirmar que nenhum dado mudou**
+- [x] **Step 2: Confirmar que nenhum dado mudou**
 
 ```bash
 git diff --name-only origin/main...HEAD -- indicadores scripts tests
@@ -428,7 +430,7 @@ git diff --name-only origin/main...HEAD -- indicadores scripts tests
 Expected: vazio, exceto se o commit de C15 estiver no mesmo branch. Se C15 for
 um PR separado, este comando precisa sair vazio.
 
-- [ ] **Step 3: Confirmar a descoberta da skill**
+- [x] **Step 3: Confirmar a descoberta da skill**
 
 ```bash
 test -f .agents/skills/adicionando-indicador/SKILL.md
@@ -442,7 +444,7 @@ Em uma sessão/subagente novo, carregue a skill pelo ID `adicionando-indicador`
 aparecer, confira o caminho `.agents/skills/...` e o frontmatter; o ID é o nome
 da pasta.
 
-- [ ] **Step 4: Revisar a evidência do baseline e do GREEN**
+- [x] **Step 4: Revisar a evidência do baseline e do GREEN**
 
 Confirme que `/tmp/skill-adicionando-indicador/baseline.md` e `com-skill.md`
 existem e que a diferença é a esperada. O corpo do PR cita as falhas fechadas.

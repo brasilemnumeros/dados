@@ -106,9 +106,9 @@ O contrato tem **um** `fonte` (texto) e **um** `urlFonte` (URL). Para múltiplas
   mostre a fórmula/insumos na metodologia.
 - Não crie campo paralelo de fonte no catálogo; a atribuição canônica mora na série e na
   metodologia. A `descricao` pode citar a fonte em prosa.
-- **Confira se a ficha exibe a fonte.** Hoje `Ficha.svelte` usa `estado.series.source`, mas a
-  série expõe `fonte`; a linha “Fonte” fica vazia. Se isso acontecer, abra um PR separado no
-  `sitio` para trocar para `estado.series.fonte` e cobrir com teste.
+- **Confira se a ficha exibe a fonte.** Se a linha “Fonte” estiver vazia, o app pode estar
+  usando `estado.series.source` em vez de `fonte`; abra um PR separado no `sitio` para trocar
+  para `estado.series.fonte` e cobrir com teste.
 - Verifique licença/termos e exigência de atribuição; registre na metodologia.
 
 ## Checklist antes do PR

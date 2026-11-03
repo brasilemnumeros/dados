@@ -163,8 +163,8 @@ complementa, não substitui.
 - `urlFonte` é a URL exata do recorte; nunca invente URL. Sem recorte estável, omita e registre
   o motivo na metodologia. Todas as URLs/códigos vão para `docs/metodologia.md`.
 - A atribuição canônica mora na série e na metodologia; não crie campo paralelo no catálogo.
-- **Confira se a ficha exibe a fonte.** Hoje `Ficha.svelte` usa `estado.series.source`, mas a
-  série expõe `fonte`; se a linha estiver vazia, abra um PR separado no `sitio` para corrigir.
+- **Confira se a ficha exibe a fonte.** Se a linha estiver vazia, o app pode estar usando
+  `estado.series.source` em vez de `fonte`; abra um PR separado no `sitio`.
 - Verifique licença/termos e exigência de atribuição.
 
 ## Validação

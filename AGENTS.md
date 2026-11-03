@@ -22,6 +22,9 @@ Arquivos públicos de dados (`*.json`) do **brasilemnumeros**, consumidos pelo a
 Este repositório só o **implementa e referencia** — se a prosa e o código divergirem, o
 documento vale e a divergência é defeito a corrigir no mesmo commit.
 
+- **Indicador novo:** siga `.agents/skills/adicionando-indicador/SKILL.md` — gates de definição,
+  fonte e verificação; série + catálogo no mesmo PR.
+
 - Os arquivos moram em `indicadores/<familia>/<id>.json`; o `id` é igual ao nome do arquivo
   sem `.json` e casa com `[a-z0-9-]+`.
 - Nível superior: `versao: 1` (única), `id`, `unidade` (`tipo`, `simbolo`, `casas`, opcional
