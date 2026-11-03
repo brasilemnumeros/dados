@@ -99,12 +99,12 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           persist-credentials: false
 
       - name: Configurar Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
@@ -217,7 +217,7 @@ jobs:
       - name: Publicar artifact
         if: always()
         continue-on-error: true
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nbexec-${{ inputs.familia }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/nbexec
