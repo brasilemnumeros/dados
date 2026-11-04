@@ -1,6 +1,6 @@
 ---
 name: Adicionando indicador
-description: Use quando for criar ou publicar um indicador novo no repo dados — nova série, novo JSON, entrada no catálogo, notebook de coleta/cálculo ou workflow de atualização.
+description: Use quando for criar, publicar ou revisar um indicador novo no repo dados — nova série, novo JSON, entrada no catálogo, notebook de coleta/cálculo ou workflow de atualização.
 ---
 
 # Adicionando indicador
@@ -17,8 +17,8 @@ O notebook é **público**: começa com o selo do Colab (para qualquer pessoa ro
 caminho absoluto da máquina. `tests/test_notebooks.py` reprova os dois casos; detalhes em
 `references/notebook-padrao.md`.
 
-Esta skill conduz do pedido ao PR com três gates — **definição**, **fonte** e **verificação**.
-Não comece pelo notebook: sem o brief de definição e o mapa de fontes, não há código.
+Esta skill conduz do pedido ao PR com quatro gates — **definição**, **fonte**, **verificação** e
+**revisão**. Não comece pelo notebook: sem o brief de definição e o mapa de fontes, não há código.
 
 ## Quando usar
 
@@ -109,6 +109,28 @@ erro de unidade, base e escala; a segunda medição é outra instituição que c
 O gate exige a publicação externa; se só houver citação, diga na metodologia que não há segunda
 medição.
 
+## Gate de revisão
+
+**Regra:** indicador novo, série nova, família nova ou mudança de fonte **não vai para o PR sem
+revisão independente**. O CI cobre contrato e catálogo, mas não vê fonte errada, data de
+publicação usada como referência, unidade trocada, `descricao` enganosa ou série que parece
+plausível e veio do recorte errado. Esses erros passam verdes.
+
+O revisor é um **subagente de contexto novo**, não o implementador. Ele recebe o pacote — brief
+de definição, mapa de fontes, verificação externa, diff, JSON, notebook e as propostas de
+catálogo/metodologia — e devolve dois veredictos: **Spec compliance** e **Qualidade**, com
+achados `Critical`/`Important`/`Minor`. O prompt e o checklist estão em
+`references/revisor.md`.
+
+- **O implementador corrige; o revisor não edita.** A correção volta para o mesmo implementador;
+  a re-revisão é focada no diff da correção.
+- **O controlador adjudica** divergência com evidência; não aceita “confie no relatório”.
+- **A revisão final do PR inteiro é obrigatória** e acontece depois da integração de catálogo,
+  metodologia, `AGENTS.md` e workflows. Os revisores por série não veem esses arquivos.
+- **Escopo:** obrigatório para indicador/série/família nova ou mudança de fonte; opcional para
+  mudança só de `nome`, `descricao` ou `grupo` no catálogo.
+- **Não substitui o CI.** Rode `validar.py` e `pytest` antes e depois da revisão.
+
 ## Fluxo
 
 1. Gate de definição → brief.
@@ -134,7 +156,9 @@ medição.
 8. Documente a metodologia com todas as fontes, URLs, fórmula, evidência, caveats e verificação,
    e confira que a `descricao` do catálogo conta a mesma história que a metodologia.
 9. Rode o gate de verificação (busca por publicação externa incluída) e registre a evidência.
-10. Valide, revise o diff e abra o PR.
+10. Rode o gate de revisão independente (`references/revisor.md`): implementador e revisor
+    separados; corrija o que for `Critical`/`Important` e faça a re-revisão focada.
+11. Valide, revise o diff e abra o PR; a revisão final do PR inteiro fecha o gate.
 
 ## Tabela de decisão
 
@@ -249,12 +273,22 @@ gerado com o publicado, revise o diff numérico e confirme K1/K2.
   commitadas e o `tests/test_notebooks.py` reprova.
 - Deixar a `descricao` falando do cálculo antigo depois de revisar a fórmula.
 - Mudar valor existente sem pedido e aval.
+- Deixar o implementador revisar o próprio diff.
+- Mandar o revisor olhar só o diff, sem brief, mapa de fontes e verificação externa.
+- Deixar o revisor corrigir em vez de reportar.
+- Tratar CI verde como revisão: contrato e catálogo passam, fonte errada e definição enganosa não.
+- Pular a revisão final do PR inteiro porque cada série já teve a sua.
+- Dar ao revisor o histórico da sessão do implementador: o viés que se quer evitar vai junto.
 
 | Racionalização | Realidade |
 |---|---|
 | “O release do produtor já confere.” | É o mesmo produtor; não é publicação externa. |
 | “Não achei fonte independente.” | Só vale com a busca registrada (o que, onde, quando). |
 | “A verificação é ad hoc.” | Ad hoc é o método; a busca continua obrigatória. |
+| “O CI já cobre contrato e catálogo.” | CI não vê fonte, definição, unidade ou `descricao` enganosa; foi assim que um cron inválido e um fallback que publicaria estimativa passaram verdes. |
+| “O implementador revisou o próprio diff.” | Não é independente; o objetivo é justamente o olhar sem o viés da execução. |
+| “Cada série teve revisão; a final é redundante.” | A final vê catálogo, metodologia, `AGENTS.md` e workflows integrados, que os revisores por série não veem. |
+| “O revisor não achou nada; então está tudo certo.” | Revisão sem evidência não é atestado; o pacote precisa de fonte, amostra e gates executados. |
 
 ## Referências
 
@@ -262,4 +296,5 @@ gerado com o publicado, revise o diff numérico e confirme K1/K2.
 - `references/notebook-padrao.md` — células obrigatórias e exemplo real.
 - `references/qualidade-e-fontes.md` — gates, hierarquia de fontes, emenda e verificação.
 - `references/workflow-recorrente.md` — caller, allowlist, cadência e família.
+- `references/revisor.md` — prompt, pacote e checklist do revisor independente.
 - `assets/atualizar-familia-caller.yml` — caller copiável.
