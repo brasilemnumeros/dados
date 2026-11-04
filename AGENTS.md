@@ -168,6 +168,14 @@ reutilizável `atualizar-familia.yml`. A cadência segue a fonte (UTC):
 - O `schedule` roda a partir de `main` e é desativado após 60 dias sem atividade; mergeie
   os PRs com regularidade.
 - O notebook executado fica no artifact do run, não no repositório.
+- O cron da família é a **união das janelas de divulgação** das séries dela; a série mais
+  lenta é reexecutada nas outras datas e não gera PR quando o diff fica vazio. Exemplo: o PIB
+  roda trimestralmente para pegar a primeira taxa do ano (março) e a revisão das Contas
+  Nacionais Anuais (novembro), mas as três séries são anuais.
+- `tests/test_workflows.py` fecha o buraco do agendamento: reprova família em `indicadores/`
+  sem `atualizar-<familia>.yml`, caller fora da allowlist, caller apontando para pasta
+  inexistente, caller sem `cron` ou sem o workflow reutilizável. Família nova sem caller
+  passaria no contrato e nunca atualizaria; agora reprova no CI.
 
 ## Antes de commitar
 
