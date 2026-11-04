@@ -1,0 +1,128 @@
+{
+  "versao": 1,
+  "id": "pib-per-capita-real",
+  "unidade": {
+    "tipo": "moeda",
+    "simbolo": "R$",
+    "casas": 2
+  },
+  "eixo": "reais",
+  "medida": "nivel",
+  "granularidade": "anual",
+  "fonte": "IBGE (Contas Nacionais Anuais, SIDRA 6784, PIB per capita corrente e variação em volume); cálculo do site (R$ de 2023)",
+  "urlFonte": "https://apisidra.ibge.gov.br/values/t/6784/n1/all/v/all/p/all?formato=json",
+  "dados": [
+    {
+      "data": "1996-01-01",
+      "valor": 37261.36
+    },
+    {
+      "data": "1997-01-01",
+      "valor": 37969.32
+    },
+    {
+      "data": "1998-01-01",
+      "valor": 37551.66
+    },
+    {
+      "data": "1999-01-01",
+      "valor": 37176.15
+    },
+    {
+      "data": "2000-01-01",
+      "valor": 37994.02
+    },
+    {
+      "data": "2001-01-01",
+      "valor": 38032.01
+    },
+    {
+      "data": "2002-01-01",
+      "valor": 38716.59
+    },
+    {
+      "data": "2003-01-01",
+      "valor": 38677.87
+    },
+    {
+      "data": "2004-01-01",
+      "valor": 40457.06
+    },
+    {
+      "data": "2005-01-01",
+      "valor": 41306.66
+    },
+    {
+      "data": "2006-01-01",
+      "valor": 42463.24
+    },
+    {
+      "data": "2007-01-01",
+      "valor": 44586.4
+    },
+    {
+      "data": "2008-01-01",
+      "valor": 46414.45
+    },
+    {
+      "data": "2009-01-01",
+      "valor": 45903.89
+    },
+    {
+      "data": "2010-01-01",
+      "valor": 48979.45
+    },
+    {
+      "data": "2011-01-01",
+      "valor": 50546.79
+    },
+    {
+      "data": "2012-01-01",
+      "valor": 51102.8
+    },
+    {
+      "data": "2013-01-01",
+      "valor": 52227.07
+    },
+    {
+      "data": "2014-01-01",
+      "valor": 52070.39
+    },
+    {
+      "data": "2015-01-01",
+      "valor": 49831.36
+    },
+    {
+      "data": "2016-01-01",
+      "valor": 47838.1
+    },
+    {
+      "data": "2017-01-01",
+      "valor": 48125.13
+    },
+    {
+      "data": "2018-01-01",
+      "valor": 48606.38
+    },
+    {
+      "data": "2019-01-01",
+      "valor": 48898.02
+    },
+    {
+      "data": "2020-01-01",
+      "valor": 46991.0
+    },
+    {
+      "data": "2021-01-01",
+      "valor": 49011.61
+    },
+    {
+      "data": "2022-01-01",
+      "valor": 50285.91
+    },
+    {
+      "data": "2023-01-01",
+      "valor": 51693.92
+    }
+  ]
+}

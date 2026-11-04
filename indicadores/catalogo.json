@@ -47,6 +47,24 @@
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pib/PIB.ipynb"
     },
     {
+      "id": "pib-per-capita-nominal",
+      "nome": "PIB per capita (R$ correntes)",
+      "grupo": "crescimento",
+      "arquivo": "pib/pib-per-capita-nominal.json",
+      "escala": "moeda",
+      "descricao": "PIB por habitante a preços correntes, em reais do próprio ano, de 1996 a 2023 — o número oficial das Contas Nacionais Anuais (IBGE). É nominal: o crescimento ao longo do tempo mistura inflação e não mede poder de compra.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pib/PIB.ipynb"
+    },
+    {
+      "id": "pib-per-capita-real",
+      "nome": "PIB per capita (R$ de 2023)",
+      "grupo": "crescimento",
+      "arquivo": "pib/pib-per-capita-real.json",
+      "escala": "moeda",
+      "descricao": "PIB por habitante em reais constantes de 2023, calculado pelo site a partir do PIB per capita corrente (SIDRA 6784, variável 9812) e da variação em volume oficial do PIB per capita (9814), com ano-base fixo em 2023. Mede a evolução do poder de compra médio; não é o valor nominal divulgado pelo IBGE.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pib/PIB.ipynb"
+    },
+    {
       "id": "mvgr-nominal",
       "nome": "MVG-R — valor mediano de garantia (R$ correntes)",
       "grupo": "imobiliario",
@@ -98,6 +116,15 @@
       "arquivo": "pnad/pnad-nivel-ocupacao.json",
       "escala": "percentual",
       "descricao": "Percentual das pessoas de 14 anos ou mais que estavam ocupadas no trimestre móvel encerrado no mês, segundo a PNAD Contínua (IBGE). Cada ponto é o trimestre móvel, não o mês isolado.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pnad/PNAD.ipynb"
+    },
+    {
+      "id": "pnad-rendimento-real",
+      "nome": "Rendimento Médio Real (R$)",
+      "grupo": "trabalho",
+      "arquivo": "pnad/pnad-rendimento-real.json",
+      "escala": "moeda",
+      "descricao": "Rendimento médio mensal real (deflacionado pelo INPC), habitualmente recebido em todos os trabalhos pelas pessoas de 14 anos ou mais ocupadas com rendimento, no trimestre móvel encerrado no mês, segundo a PNAD Contínua (IBGE). Não é renda domiciliar per capita nem o rendimento efetivamente recebido no mês.",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pnad/PNAD.ipynb"
     },
     {

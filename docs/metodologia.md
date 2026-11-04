@@ -189,6 +189,55 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
   publica taxa a partir de 1996.
 - **Decisão pendente:** não — aprovada pelo usuário em 2026-11-01.
 
+## pib-per-capita-nominal
+
+- **Definição:** PIB por habitante a preços correntes, em reais do próprio ano, ano civil.
+  `moeda` (`R$`, 2 casas), `eixo: reais`, `medida: nivel`, `granularidade: anual`, data em
+  `AAAA-01-01`.
+- **Fonte e código:** IBGE, Contas Nacionais Anuais, tabela SIDRA **6784**, variável **9812**
+  ("PIB per capita - valores correntes"), Brasil (N1). Endpoint:
+  `https://apisidra.ibge.gov.br/values/t/6784/n1/all/v/all/p/all?formato=json` (o notebook lê
+  a tabela inteira e usa as variáveis 9811, 9812, 9813 e 9814).
+- **Fórmula:** nenhuma — o IBGE publica o nível. Cobertura `1996`–`2023` (28 pontos), os anos
+  fechados das Contas Nacionais Anuais nesta edição.
+- **Evidência:** `1996` R$ 5.219,36; `2023` R$ 51.693,92; mínimo R$ 5.219,36 (1996); máximo
+  R$ 51.693,92 (2023). Crescimento nominal de **890,4%** no período.
+- **Verificação independente:** a Carta Capital de 06/11/2025 cita "PIB per capita de 2023
+  foi equivalente a 51.693,92 reais"
+  (`https://www.cartacapital.com.br/economia/ibge-confirma-crescimento-de-32-da-economia-em-2023/`);
+  o DComércio cita o mesmo valor
+  (`https://dcomercio.com.br/publicacao/s/pib-cresce-3-2-em-2023-e-soma-r-10-9-tri-mostram-dados-definitivos-do-ibge`).
+  As duas citam o IBGE; não há segunda medição.
+- **Caveats:** é nominal — o crescimento ao longo do tempo mistura inflação e não mede poder
+  de compra; anual; para 2024 e 2025 não há nível per capita publicado.
+
+## pib-per-capita-real
+
+- **Definição:** PIB por habitante em reais constantes de **2023**, ano civil. `moeda`
+  (`R$`, 2 casas), `eixo: reais`, `medida: nivel`, `granularidade: anual`, data em
+  `AAAA-01-01`. Série derivada, não publicada pelo IBGE.
+- **Fonte e código:** IBGE, Contas Nacionais Anuais, tabela SIDRA **6784**, variáveis **9812**
+  (PIB per capita corrente) e **9814** (PIB per capita — variação em volume); cálculo do
+  site. Endpoint: o mesmo da tabela 6784.
+- **Fórmula:** `L_2023 = 9812_2023`; para cada ano anterior,
+  `L_t = L_{t+1} / (1 + 9814_{t+1}/100)`. O ano-base 2023 é o último ano fechado; a base é
+  fixa e não é rebaseada automaticamente.
+- **Evidência:** 28 pontos, `1996`–`2023`; `1996` R$ 37.261,36; `2023` R$ 51.693,92;
+  crescimento real de **38,7%** contra **890,4%** do nominal. O deflator implícito do PIB
+  acumulou **7,12×** no período.
+- **Conferência do cálculo:** o notebook reconstrói a série por três rotas independentes da
+  mesma tabela — a variação em volume oficial (9814, rota publicada), o deflator implícito
+  encadeado (9811) e o PIB per capita a preços do ano anterior encadeado (9813). O desvio
+  máximo medido entre elas é de **0,30%** (R$ 140 em 2008), compatível com o arredondamento
+  de 1–2 casas da fonte; a tolerância do notebook é 0,5%.
+- **Verificação independente:** não há publicação de terceiro com esta série em reais de
+  2023 — a busca encontrou apenas o nível nominal (Carta Capital, DComércio, acima) e séries
+  internacionais de PIB per capita em US$ (Banco Mundial/FMI), que usam outra moeda, outra
+  base e, às vezes, PPP. A conferência é interna, contra as três variáveis oficiais da 6784.
+- **Caveats:** é uma série **derivada** (o número em R$ de 2023 não é o que o IBGE divulga);
+  o ano-base é escolha de apresentação; a cobertura para em 2023; não deve ser comparada
+  numericamente com PIB per capita em US$ de organismos internacionais.
+
 ## mvgr-nominal
 
 - **Definição:** **MVG-R** (Mediana dos Valores de Garantia de Imóveis Residenciais
@@ -551,11 +600,40 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
   `https://dadobruto.com/analises/mercado-de-trabalho`) cita `59,0%` em nov/2025 e `58,9%`
   em jun–ago/2026, iguais aos pontos `2025-11` e `2026-08`.
 
+## pnad-rendimento-real
+
+- **Definição:** rendimento médio mensal real das pessoas de 14 anos ou mais ocupadas na
+  semana de referência com rendimento de trabalho, **habitualmente recebido em todos os
+  trabalhos**, no trimestre móvel encerrado no mês. `moeda` (`R$`, 0 casas), `eixo: reais`,
+  `medida: nivel`, `granularidade: mensal`.
+- **Fonte e código:** IBGE, PNAD Contínua mensal, tabela SIDRA **6390**, variável **5933**,
+  Brasil (N1). Endpoint:
+  `https://apisidra.ibge.gov.br/values/t/6390/n1/all/v/5933/p/all?formato=json`.
+- **Fórmula:** nenhuma — a série já vem deflacionada pelo IBGE (INPC): o valor está em reais
+  de poder de compra, não em reais correntes. O notebook só busca, recorta o último trimestre
+  fechado e formata. Não é a
+  série efetivamente recebida (tabela 6387): a habitual é a manchete da divulgação mensal e
+  é a que as publicações externas citam.
+- **Evidência:** 175 pontos, `2012-03` a `2026-09`; primeiro `3.179`; último `3.790`; mínimo
+  `3.074` (out–nov–dez/2021); máximo `3.811` (jan–fev–mar/2026). No último trimestre,
+  `3.790` está abaixo do pico de 2026-03, e o piso da série é a pandemia.
+- **Verificação independente:** a Folha de S.Paulo de 30/10/2026 cita "renda média do
+  trabalho em R$ 3.790 por mês no trimestre até setembro"
+  (`https://www1.folha.uol.com.br/mercado/2026/10/desemprego-fica-em-52-e-tem-menor-taxa-ate-setembro-na-serie-historica.shtml`);
+  o UOL
+  (`https://economia.uol.com.br/noticias/estadao-conteudo/2026/10/30/taxa-de-desemprego-no-brasil-cai-para-52-no-trimestre-ate-setembro-mostra-ibge.htm`)
+  e O Globo citam o mesmo `R$ 3.790` para jul–ago–set/2026, igual ao ponto `2026-09`. As
+  três citam o IBGE; não há segunda medição.
+- **Caveats:** é rendimento do trabalho das pessoas ocupadas **com rendimento**, não renda
+  domiciliar per capita; é habitual, não efetivamente recebido; é média (não mediana) e não
+  tem recorte regional nem ajuste sazonal; o trimestre móvel é lido como mês de encerramento.
+
 ## Pendentes
 
 Revisão concluída para as 13 séries em 2026-11-01. **Não há pendência de dado nem de forma.**
-As três séries da PNAD (`pnad-*`) foram publicadas em 2026-11-03 e têm seção própria acima;
-elas não fazem parte da contagem das 13.
+As quatro séries da PNAD (`pnad-*`) têm seção própria acima — três publicadas em 2026-11-03 e
+o rendimento em 2026-11-04 —, assim como as duas de PIB per capita; elas não fazem parte da
+contagem das 13.
 
 Fora deste repo, o post do `sitio` sobre o MVG-R foi alinhado ao catálogo em 2026-11-03: não
 fala mais em "valor médio", "preço de etiqueta" nem "valor real dos imóveis", e os números do
