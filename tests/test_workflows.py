@@ -144,3 +144,17 @@ def test_guarda_aceita_familia_com_caller_completo(tmp_path):
     )
 
     assert problemas == [], problemas
+
+
+def test_cron_tem_cinco_campos():
+    """GitHub Actions usa POSIX cron de 5 campos; um sexto campo nunca dispara."""
+    for caminho in sorted(WORKFLOWS.glob("atualizar-*.yml")):
+        if caminho.name == "atualizar-familia.yml":
+            continue
+        texto = caminho.read_text(encoding="utf-8")
+        crons = re.findall(r"^\s*-\s*cron:\s*'([^']+)'", texto, re.MULTILINE)
+        assert crons, f"{caminho.name}: sem cron"
+        for cron in crons:
+            assert len(cron.split()) == 5, (
+                f"{caminho.name}: cron com {len(cron.split())} campos: {cron!r}"
+            )

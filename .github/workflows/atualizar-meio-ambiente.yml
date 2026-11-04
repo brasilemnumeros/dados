@@ -1,0 +1,26 @@
+# Workflow da família Meio Ambiente; o notebook e os dados vivem em
+# indicadores/meio-ambiente/. O PRODES consolida a taxa no primeiro semestre; outubro
+# é a primeira janela segura depois da consolidação e antes do ciclo seguinte.
+name: atualizar meio-ambiente
+on:
+  schedule:
+    - cron: '0 15 15 10 *'
+  workflow_dispatch:
+    inputs:
+      seco:
+        description: Executar sem publicar
+        type: boolean
+        default: true
+permissions:
+  contents: read
+concurrency:
+  group: atualizar-meio-ambiente
+  cancel-in-progress: false
+jobs:
+  atualizar:
+    uses: ./.github/workflows/atualizar-familia.yml
+    with:
+      familia: meio-ambiente
+      seco: ${{ inputs.seco == true }}
+    secrets:
+      token: ${{ secrets.DADOS_BOT_TOKEN }}

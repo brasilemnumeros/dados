@@ -1,7 +1,7 @@
 # Quatro indicadores complementares — design
 
 - **Data:** 2026-11-04
-- **Estado:** proposto (aguardando aval)
+- **Estado:** aprovado (2026-11-04)
 - **Escopo:** quatro séries novas — dívida líquida, renda domiciliar per capita, desmatamento e câmbio — com as famílias, catálogo, workflows e metodologia correspondentes.
 - **Fora de escopo:** mudar valor de série existente, mudar o contrato (`C1…C15`), criar o eixo `taxa`, publicar a estimativa de desmatamento de 2026, emendar PNAD antiga, calcular câmbio real efetivo.
 
@@ -88,8 +88,8 @@ biomas só em 2024). Publicar “Brasil” produziria 2–3 pontos ou uma emenda
 é ano-calendário, não é o Brasil inteiro, não é o DETER (alertas mensais) e não é queimada.
 
 **Corte de segurança:** o arquivo da fonte (`rates<ano>.json`) mistura a estimativa do ano
-corrente com as taxas consolidadas, sem marcador. O notebook corta em **ano civil corrente − 1**
-e o workflow roda em **abril e outubro**; a estimativa de 2026 (3.335 km²) não entra. O nome do
+corrente com as taxas consolidadas, sem marcador. O notebook corta em **ano do arquivo − 1**
+e o workflow roda em **outubro**, depois da consolidação; a estimativa de 2026 (3.335 km²) não entra. O nome do
 arquivo gira todo ano (`rates2025.json` já dá 404); o notebook resolve o nome pelo bundle do
 TerraBrasilis, com fallback para `rates<ano>.json` e `rates<ano−1>.json`.
 
@@ -143,7 +143,7 @@ frouxa. Um `eixo: taxa` é candidato a uma próxima versão do contrato, não de
 | Família | Arquivo | Cron (UTC) | Variável de ensaio |
 |---|---|---|---|
 | `fiscal` | `atualizar-fiscal.yml` | `0 15 4,20 * *` | `FISCAL_SAIDA` |
-| `meio-ambiente` | `atualizar-meio-ambiente.yml` | `0 15 15 4,10 * *` | `MEIO_AMBIENTE_SAIDA` |
+| `meio-ambiente` | `atualizar-meio-ambiente.yml` | `0 15 15 10 *` | `MEIO_AMBIENTE_SAIDA` |
 | `cambio` | `atualizar-cambio.yml` | `0 15 3 * *` | `CAMBIO_SAIDA` |
 | `pnad` | já existe | — | `PNAD_SAIDA` |
 
@@ -271,4 +271,4 @@ absoluto da máquina.
 5. Confirma os nomes/posições **🏛️ Fiscal** (depois de Crescimento) e **🌳 Meio Ambiente**
    (último)?
 
-Com o aval, a Fase B começa.
+Aprovado em 2026-11-04; em execução.
