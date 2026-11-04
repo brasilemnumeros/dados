@@ -1,0 +1,24 @@
+# Workflow da família Câmbio; o notebook e os dados vivem em indicadores/cambio/.
+name: atualizar cambio
+on:
+  schedule:
+    - cron: '0 15 3 * *'
+  workflow_dispatch:
+    inputs:
+      seco:
+        description: Executar sem publicar
+        type: boolean
+        default: true
+permissions:
+  contents: read
+concurrency:
+  group: atualizar-cambio
+  cancel-in-progress: false
+jobs:
+  atualizar:
+    uses: ./.github/workflows/atualizar-familia.yml
+    with:
+      familia: cambio
+      seco: ${{ inputs.seco == true }}
+    secrets:
+      token: ${{ secrets.DADOS_BOT_TOKEN }}

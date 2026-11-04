@@ -20,6 +20,15 @@
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/selic/Selic.ipynb"
     },
     {
+      "id": "cambio-media-mensal",
+      "nome": "Câmbio — dólar comercial (R$/US$)",
+      "grupo": "monetario",
+      "arquivo": "cambio/cambio-media-mensal.json",
+      "escala": "moeda",
+      "descricao": "Taxa de câmbio nominal do dólar americano (PTAX venda, mercado livre), em reais por dólar, média das cotações diárias do mês. É nominal: a alta da série mistura inflação e não mede competitividade, não é câmbio real efetivo nem o dólar à vista do fechamento.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/cambio/Cambio.ipynb"
+    },
+    {
       "id": "ipca-acum-12m",
       "nome": "IPCA (%)",
       "grupo": "inflacao",
@@ -63,6 +72,15 @@
       "escala": "moeda",
       "descricao": "PIB por habitante em reais constantes de 2023, calculado pelo site a partir do PIB per capita corrente (SIDRA 6784, variável 9812) e da variação em volume oficial do PIB per capita (9814), com ano-base fixo em 2023. Mede a evolução do poder de compra médio; não é o valor nominal divulgado pelo IBGE.",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pib/PIB.ipynb"
+    },
+    {
+      "id": "divida-liquida-pib",
+      "nome": "Dívida Líquida do Setor Público (% do PIB)",
+      "grupo": "fiscal",
+      "arquivo": "fiscal/divida-liquida-pib.json",
+      "escala": "percentual",
+      "descricao": "Razão entre a dívida líquida do setor público consolidado no fim do mês — descontados os ativos financeiros, inclusive as reservas internacionais — e o PIB acumulado em 12 meses. A dívida bruta do governo geral (DBGG) é outra medida, com universo diferente; meses recentes são preliminares e o histórico muda quando o IBGE revisa o PIB.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/fiscal/Divida-Liquida.ipynb"
     },
     {
       "id": "mvgr-nominal",
@@ -128,6 +146,15 @@
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pnad/PNAD.ipynb"
     },
     {
+      "id": "pnad-renda-domiciliar-per-capita-real",
+      "nome": "Renda Domiciliar per capita real (R$)",
+      "grupo": "trabalho",
+      "arquivo": "pnad/pnad-renda-domiciliar-per-capita-real.json",
+      "escala": "moeda",
+      "descricao": "Renda domiciliar per capita média, em reais constantes: rendimento mensal do domicílio (trabalho e outras fontes) dividido pelo número de moradores, média dos quatro trimestres do ano, segundo a PNAD Contínua (IBGE). É a renda de todos os moradores, não o rendimento individual de quem trabalha, nem o valor nominal do FPE/TCU divulgado pela imprensa; o IBGE reexpressa a série inteira a preços médios do último ano a cada divulgação.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pnad/RendaDomiciliar.ipynb"
+    },
+    {
       "id": "populacao-total-anual",
       "nome": "População Total",
       "grupo": "demografia",
@@ -171,6 +198,15 @@
       "escala": "percentual",
       "descricao": "Proporção de homicídios cometidos por armas de fogo em relação ao total de homicídios no Brasil. 2014–2024 usam as contagens revisadas do Atlas da Violência 2026 (Tabela 11.1); 1995–2013 usam a série 31 do Ipea (safra anterior).",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/homicidios/Homicidios.ipynb"
+    },
+    {
+      "id": "desmatamento-amazonia-legal-anual",
+      "nome": "Desmatamento na Amazônia Legal (km²)",
+      "grupo": "meio-ambiente",
+      "arquivo": "meio-ambiente/desmatamento-amazonia-legal-anual.json",
+      "escala": "numero",
+      "descricao": "Área de vegetação nativa suprimida por corte raso na Amazônia Legal no ano Prodes (1º de agosto a 31 de julho), em km², taxa consolidada e soma dos 9 estados calculada pelo TerraBrasilis (INPE). Vai de 1988 até o último ano consolidado; não inclui a estimativa do ano corrente. Não é o Brasil inteiro, ano-calendário, DETER nem queimada.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/meio-ambiente/Desmatamento.ipynb"
     }
   ],
   "grupos": {
@@ -183,6 +219,9 @@
     "crescimento": {
       "nome": "📊 Crescimento Econômico"
     },
+    "fiscal": {
+      "nome": "🏛️ Fiscal"
+    },
     "imobiliario": {
       "nome": "🏠 Mercado Imobiliário"
     },
@@ -194,6 +233,9 @@
     },
     "seguranca-publica": {
       "nome": "🚨 Segurança Pública"
+    },
+    "meio-ambiente": {
+      "nome": "🌳 Meio Ambiente"
     }
   }
 }

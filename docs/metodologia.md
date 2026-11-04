@@ -5,8 +5,10 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
 
 > **Escopo:** as 13 séries foram revisadas e publicadas em 2026-11-01. O IPCA foi o piloto
 > (`ipca-acum-12m`); o IGP-M veio em seguida; as outras seis famílias fecharam a rodada.
-> As três séries da PNAD Contínua (`pnad-*`) foram publicadas em 2026-11-03 e têm seção
-> própria abaixo; elas não fazem parte da contagem das 13.
+> As séries da PNAD Contínua (`pnad-*`) foram publicadas em 2026-11-03 e 2026-11-04 e
+> têm seção própria abaixo; elas não fazem parte da contagem das 13. Em 2026-11-04 entraram
+> mais quatro séries — dívida líquida, renda domiciliar per capita, desmatamento da Amazônia
+> Legal e câmbio —, também com seção própria.
 
 ## ipca-acum-12m
 
@@ -628,12 +630,179 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
   domiciliar per capita; é habitual, não efetivamente recebido; é média (não mediana) e não
   tem recorte regional nem ajuste sazonal; o trimestre móvel é lido como mês de encerramento.
 
+## divida-liquida-pib
+
+- **Definição:** razão entre a dívida líquida do setor público consolidado no fim do mês —
+  dívida do setor público (União, INSS, estados, municípios, estatais, exceto Petrobras e
+  Eletrobras, e Banco Central) descontados os ativos financeiros, inclusive as reservas
+  internacionais — e o PIB nominal acumulado nos 12 meses encerrados naquele mês, em %.
+  `percentual` (`%`, 1 casa), `eixo: percentual`, `medida: nivel`, granularidade `mensal`. Não é
+  a dívida bruta do governo geral (DBGG), que tem outro universo (sem BCB e estatais).
+- **Fonte e código:** Banco Central do Brasil — Estatísticas Fiscais, SGS **4513** (“Dívida
+  líquida do setor público consolidado, % do PIB”). Endpoint:
+  `https://api.bcb.gov.br/dados/serie/bcdata.sgs.4513/dados?formato=json`. O SGS entrega `data`
+  em `DD/MM/AAAA` e `valor` como texto; o notebook converte para `float` e não arredonda. O mês
+  corrente é descartado.
+- **Cobertura:** dez/2001–set/2026, **298 pontos**, sem lacuna. A série começa em dez/2001 no
+  SGS; não é emendada com o IPEADATA (`PAN12_DTSPY12`, desde 1991), que é a mesma série
+  transcrita por outro canal e exigiria uma emenda de safra.
+- **Fórmula:** nenhuma. A série é oficial e já calculada; o notebook busca, corta o mês aberto e
+  normaliza a data para o primeiro dia do mês (C15).
+- **Evidência:** primeiro ponto `2001-12 = 51,49%`; último `2026-09 = 69,98%`. Os valores
+  conferem com a tabela oficial do BCB (Tabela 4 das Estatísticas Fiscais). O denominador é o
+  PIB corrente de 12 meses estimado pelo BCB; quando o IBGE revisa as Contas Nacionais, a série
+  inteira pode mudar — é revisão da fonte, não erro de fórmula. Meses recentes são preliminares.
+- **Caveats:** a DLSP inclui o Banco Central e as estatais (exceto Petrobras e Eletrobras) e
+  desconta ativos; não é a DBGG (governo geral, sem BCB e estatais) nem a dívida pública federal
+  do Tesouro. A variação mensal é dominada por juros, câmbio e PIB nominal, não só pelo resultado
+  primário; uma queda pode refletir valorização cambial ou crescimento nominal, não austeridade.
+- **Verificação independente:** a Agência Brasil publicou em 29/10/2026 que a dívida líquida
+  ficou em **70% do PIB** em setembro, alta de **0,7 p.p.** no mês e de **4,7 p.p.** no ano
+  (`https://agenciabrasil.ebc.com.br/economia/noticia/2026-10/divida-publica-fica-em-829-do-pib-e-deficit-soma-r-55-bilhoes`);
+  a série dá 69,98%, +0,71 p.p. e +4,74 p.p. — diferença de arredondamento. O Poder360
+  (`https://www.poder360.com.br/poder-economia/divida-bruta-fica-em-829-do-pib-diz-banco-central/`)
+  e a UOL conferem agosto/setembro. Não há segunda medição: a imprensa cita o BCB. Divergências
+  em janelas antigas (2020, 2025) são revisões do PIB denominador, não erro de unidade.
+- **Veredito:** publicar como série nova.
+- **Impacto:** nenhuma série existente muda; a família `fiscal` e o grupo “🏛️ Fiscal” entram
+  com esta série.
+- **Decisão pendente:** não — aprovada em 2026-11-04, com recorte em dez/2001 e `medida: nivel`.
+
+## pnad-renda-domiciliar-per-capita-real
+
+- **Definição:** média, por morador, do rendimento mensal do domicílio — rendimento habitual do
+  trabalho das pessoas de 14 anos ou mais mais as outras fontes —, média dos quatro trimestres
+  do ano, em reais constantes. `moeda` (`R$`, 0 casas), `eixo: reais`, `medida: nivel`,
+  `granularidade: anual` (C15: `AAAA-01-01`). É a renda de todos os moradores, não o rendimento
+  individual de quem trabalha.
+- **Fonte e código:** IBGE, PNAD Contínua — Rendimento de todas as fontes, SIDRA **7533**,
+  variável **10816**, classificação **1019 = 49243** (`Total`), Brasil (N1). Endpoint:
+  `https://apisidra.ibge.gov.br/values/t/7533/n1/all/v/10816/p/all/c1019/49243?formato=json`.
+  A **tabela 7395** (variável 4196) foi descartada: apesar do nome parecido, é do módulo TIC,
+  começa em 2016, não tem 2020 e dá valores diferentes conforme o ano.
+- **Fórmula:** nenhuma — a série é publicada pelo IBGE já **real**, deflacionada pelo IPCA e
+  reexpressa a preços médios do último ano. O notebook não deflaciona de novo; o ano-base do
+  campo `fonte` sai do último ano da série, nunca fixo no código. A cada divulgação o IBGE
+  reexpressa a série inteira na nova base; a `descricao` do catálogo não fixa o ano.
+- **Evidência:** 14 pontos, 2012–2025, sem lacuna. Primeiro `R$ 1.782` (2012); último
+  `R$ 2.264` (2025, máximo); mínimo `R$ 1.692` (2021); `2020 = R$ 1.820`. O valor de 2025 cresce
+  6,9% em relação a 2024 (`R$ 2.118`). O IBGE reexpressou a série inteira em 2025 (nova base de
+  preços e reponderação); o histórico publicado hoje não é o mesmo que a edição de 2021 mostrava.
+- **Cobertura:** 2012–2025, 14 pontos anuais; a PNAD Contínua anual começa em 2012. A PNAD antiga
+  (1995–2015) não é emendada: questionário e conceito de renda diferentes.
+- **Caveats:** é renda domiciliar per capita, não rendimento individual; é real (IPCA, base
+  móvel), não nominal; a média não é mediana; em 2020–2022 a coleta usou quintas visitas
+  (pandemia) e a edição de 2025 trouxe reponderação — quebras de comparabilidade declaradas. O
+  número nominal do FPE/TCU (R$ 2.316 em 2025) é outro produto.
+- **Verificação independente:** o Blog do IBRE/FGV publicou em 15/06/2026 que a renda domiciliar
+  per capita de 2025 foi **R$ 2.264**, +6,9%, e a série 2012–2025
+  (`https://blogdoibre.fgv.br/posts/renda-cresce-e-pobreza-cai-mas-brasil-segue-marcado-por-desigualdades-regionais`);
+  Metrópoles (08/05/2026,
+  `https://www.metropoles.com/negocios/sp-tem-2a-maior-renda-domiciliar-per-capita-diz-ibge-veja-o-ranking`)
+  e O Informante (08/05/2026,
+  `https://portaloinformante.com.br/noticias/2026/05/renda-media-das-familias-brasileiras-bate-recorde-e-chega-a-r-2264-diz-ibge/`)
+  publicam o mesmo nível. O número nominal
+  do FPE/TCU divulgado em fevereiro (R$ 2.316 em 2025) é **outro produto**: nominal, universo do
+  FPE/TCU (inclui pensionistas e empregados domésticos) e rendimento efetivo; a diferença de
+  2,3% é de conceito, não de erro. Não há segunda medição: o IBRE/FGV analisa os microdados do
+  IBGE.
+- **Veredito:** publicar como série nova.
+- **Impacto:** nenhuma série existente muda; a família `pnad` ganha um notebook anual, sem novo
+  caller (o `atualizar-pnad.yml` roda todos os `.ipynb` da pasta).
+- **Decisão pendente:** não — aprovada em 2026-11-04, com recorte em 2012+ e série oficial real.
+
+## desmatamento-amazonia-legal-anual
+
+- **Definição:** área de vegetação nativa suprimida por corte raso na Amazônia Legal, no ano
+  Prodes (1º de agosto a 31 de julho), em km². `numero` (`km²`, 0 casas), `eixo: contagem`,
+  `medida: nivel`, granularidade `anual` (C15: `AAAA-01-01`). É fluxo anual, não estoque
+  acumulado.
+- **Fonte e código:** INPE — PRODES/BiomasBR, via TerraBrasilis:
+  `https://terrabrasilis.dpi.inpe.br/app/dashboard/deforestation/biomes/legal_amazon/rates`.
+  O notebook baixa o arquivo `rates<ano>.json` vigente (nome resolvido no bundle `app.*.js`;
+  fallback para `rates<ano civil>.json` e `rates<ano civil − 1>.json`), soma
+  `features[].areas[].area` dos 9 estados de cada período e rotula o ponto pelo `endDate.year`
+  do ano Prodes, com data C15 `AAAA-01-01`. O valor é a soma dos 9 estados calculada pelo site;
+  não há recálculo de área.
+- **Cobertura e corte:** 1988–2025, **38 pontos**, sem lacuna. O ano do arquivo é descartado
+  porque o mesmo arquivo mistura a estimativa do ano do arquivo com as taxas consolidadas, sem
+  marcador. Em 2026 isso exclui o período 2025-08-01–2026-07-31 (3.335 km², estimativa). A taxa
+  consolidada substitui a estimativa no primeiro semestre seguinte; o workflow roda em
+  **outubro**, depois da consolidação, e o notebook corta em ano do arquivo − 1. A fonte reescreve a
+  série inteira, sem changelog; uma mudança de valor é revisão da fonte, não erro de fórmula.
+- **Fórmula:** soma das áreas de todos os `features` do período; o ponto é o `endDate.year`.
+  Nenhum ajuste, interpolação ou preenchimento.
+- **Evidência:** 1988 = 21.050 km²; 1995 = 29.059 km² (máximo); 2004 = 27.772 km² (pico da
+  década de 2000, não da série); 2012 = 4.571 km² (mínimo); 2024 = 6.518 km²; 2025 = 5.731 km²,
+  queda de 12,07% sobre 2024. 1993 e 1994 são ambos 14.896 km² na fonte; não é duplicata.
+- **Caveats:** a série nacional de desmatamento não existe: os biomas têm inícios e métodos
+  diferentes (Amazônia em 1988, Cerrado em 2001, três biomas só em 2024). Por isso o recorte é a
+  Amazônia Legal, não “Brasil”. O número não é ano-calendário, não é o DETER (alertas mensais) e
+  não é queimada. A partir de 2024 o PRODES usa radar e observa 100% dos tiles; a comparação com
+  a série anterior não isola política de mudança de método. A imprensa às vezes troca a
+  estimativa (5.796 km² em 2025) pela consolidada (5.731 km²); são produtos diferentes.
+- **Licença e atribuição:** dados do TerraBrasilis/INPE sob **CC BY-SA 4.0**; atribuição ao
+  INPE/TerraBrasilis.
+- **Verificação independente:** a Agência Brasil (16/10/2026,
+  `https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-10/desmatamento-caiu-418-na-amazonia-e-238-no-cerrado-em-um-ano`)
+  noticia 5.731 km² em 2025 e 3.335 km² em 2026 (queda de 41,8%); a Geocracia (25/08/2026,
+  `https://geocracia.com/prodes-aponta-5-731-km%c2%b2-desmatados-na-amazonia-e-alta-de-2673-em-mato-grosso/`)
+  e o PNB Online (18/08/2026,
+  `https://pnbonline.com.br/mt-e-unico-estado-da-amazonia-legal-com-alta-no-desmatamento-em-2025/`)
+  noticiam 5.731 km² em 2025 e −12,07% sobre 6.518 km². Os níveis e a variação de 2025 batem com
+  a série. Não há segunda medição: o MapBiomas Alerta usa outro método e o próprio relatório
+  declara incomparabilidade.
+- **Veredito:** publicar como série nova.
+- **Impacto:** nenhuma série existente muda; entram a família `meio-ambiente` e o grupo
+  “🌳 Meio Ambiente”.
+- **Decisão pendente:** não — aprovada em 2026-11-04, com recorte na Amazônia Legal e somente
+  taxa consolidada.
+
+## cambio-media-mensal
+
+- **Definição:** taxa de câmbio **nominal** do dólar americano, mercado livre/comercial,
+  cotação de **venda** (PTAX), em reais por dólar, **média aritmética das cotações diárias** do
+  mês. `moeda` (`R$/US$`, 4 casas), `eixo: reais`, `medida: nivel`, granularidade `mensal`
+  (C15: `AAAA-MM-01`).
+- **Fonte e código:** Banco Central do Brasil, SGS **3698** — “Taxa de câmbio livre - Dólar
+  americano (venda) - média de período - mensal” (PTAX venda), série oficial já agregada.
+  Endpoint: `https://api.bcb.gov.br/dados/serie/bcdata.sgs.3698/dados?formato=json`. O notebook
+  busca a série inteira, corta em `1995-01-01`, descarta o mês corrente (aberto) e grava o valor
+  sem arredondamento novo; `casas: 4` é só exibição.
+- **Cobertura:** jan/1995–out/2026, **382 meses**, sem lacuna. A fonte tem 885 leituras desde
+  fev/1953 e, antes de jul/1994, atravessa cruzeiro, cruzado, cruzado novo, cruzeiro e cruzeiro
+  real, com saltos de unidade entre jul/1993 e ago/1993 e entre jun/1994 e jul/1994. Publicar a
+  série antes de 1995 misturaria moedas e regimes cambiais; o recorte começa em jan/1995, a
+  mesma janela de IPCA e IGP-M.
+- **Fórmula:** nenhuma — o BCB publica a média já calculada.
+- **Evidência:** primeiro `1995-01 = 0,8471`; último `2026-10 = 5,1294`; máximo nominal
+  `2024-12 = 6,0970`; mínimo `1995-02 = 0,8408`. A média mensal difere do fechamento: em
+  jan/1999, o fechamento (1,9832) fica 32% acima da média (1,5019); em out/2026, a média é
+  5,1294 e o fechamento, 5,4212. Não é o dólar à vista.
+- **Caveats:** é nominal; a alta da série mistura inflação brasileira e não mede
+  competitividade. O câmbio real efetivo é outro indicador (índice, com deflatores e cestas de
+  parceiros) e não é obtido dividindo esta série pelo IPCA. A PTAX é a referência do mercado
+  interbancário; não é dólar paralelo nem turismo.
+- **Verificação independente:** a FAESP/SENAR-SP (Radar Macroeconômico nº 32, out/2026,
+  `https://faespsenar.com.br/wp-content/uploads/2026/10/2026.10-Radar-Macroeconomico.pdf`)
+  publica R$ 5,14 em setembro e R$ 5,15 em agosto; a série dá 5,1447 e 5,1532. O ValorFinal
+  (`https://valorfinal.com.br/custo-de-vida/dolar-por-governo`) e o MeusRepresentantes
+  (`https://meusrepresentantes.com.br/indicadores/dolar`) publicam a média de outubro em
+  R$ 5,13 e citam a SGS 3698. O Apurômetro publica 5,09 porque mediu outubro até 27/10 (mês
+  aberto), não o mês fechado — é o erro que o corte de período fechado impede. Não há segunda
+  medição: as publicações citam o BCB.
+- **Veredito:** publicar como série nova.
+- **Impacto:** nenhuma série existente muda; a família `cambio` entra no grupo `monetario`.
+- **Decisão pendente:** não — aprovada em 2026-11-04, com média mensal e recorte em 1995.
+
 ## Pendentes
 
 Revisão concluída para as 13 séries em 2026-11-01. **Não há pendência de dado nem de forma.**
-As quatro séries da PNAD (`pnad-*`) têm seção própria acima — três publicadas em 2026-11-03 e
+As quatro séries originais da PNAD (`pnad-*`) têm seção própria acima — três publicadas em 2026-11-03 e
 o rendimento em 2026-11-04 —, assim como as duas de PIB per capita; elas não fazem parte da
-contagem das 13.
+contagem das 13. As quatro séries novas de 2026-11-04 — `divida-liquida-pib`,
+`pnad-renda-domiciliar-per-capita-real`, `desmatamento-amazonia-legal-anual` e
+`cambio-media-mensal` — também têm seção própria e não fazem parte da contagem das 13.
 
 Fora deste repo, o post do `sitio` sobre o MVG-R foi alinhado ao catálogo em 2026-11-03: não
 fala mais em "valor médio", "preço de etiqueta" nem "valor real dos imóveis", e os números do

@@ -1,0 +1,168 @@
+{
+  "versao": 1,
+  "id": "desmatamento-amazonia-legal-anual",
+  "unidade": {
+    "tipo": "numero",
+    "simbolo": "km²",
+    "casas": 0
+  },
+  "eixo": "contagem",
+  "medida": "nivel",
+  "granularidade": "anual",
+  "fonte": "INPE — PRODES/BiomasBR (TerraBrasilis), taxa consolidada da Amazônia Legal, soma dos 9 estados calculada pelo site",
+  "urlFonte": "https://terrabrasilis.dpi.inpe.br/app/dashboard/deforestation/biomes/legal_amazon/rates",
+  "dados": [
+    {
+      "data": "1988-01-01",
+      "valor": 21050
+    },
+    {
+      "data": "1989-01-01",
+      "valor": 17770
+    },
+    {
+      "data": "1990-01-01",
+      "valor": 13730
+    },
+    {
+      "data": "1991-01-01",
+      "valor": 11030
+    },
+    {
+      "data": "1992-01-01",
+      "valor": 13786
+    },
+    {
+      "data": "1993-01-01",
+      "valor": 14896
+    },
+    {
+      "data": "1994-01-01",
+      "valor": 14896
+    },
+    {
+      "data": "1995-01-01",
+      "valor": 29059
+    },
+    {
+      "data": "1996-01-01",
+      "valor": 18161
+    },
+    {
+      "data": "1997-01-01",
+      "valor": 13227
+    },
+    {
+      "data": "1998-01-01",
+      "valor": 17383
+    },
+    {
+      "data": "1999-01-01",
+      "valor": 17259
+    },
+    {
+      "data": "2000-01-01",
+      "valor": 18226
+    },
+    {
+      "data": "2001-01-01",
+      "valor": 18165
+    },
+    {
+      "data": "2002-01-01",
+      "valor": 21650
+    },
+    {
+      "data": "2003-01-01",
+      "valor": 25396
+    },
+    {
+      "data": "2004-01-01",
+      "valor": 27772
+    },
+    {
+      "data": "2005-01-01",
+      "valor": 19014
+    },
+    {
+      "data": "2006-01-01",
+      "valor": 14286
+    },
+    {
+      "data": "2007-01-01",
+      "valor": 11651
+    },
+    {
+      "data": "2008-01-01",
+      "valor": 12911
+    },
+    {
+      "data": "2009-01-01",
+      "valor": 7464
+    },
+    {
+      "data": "2010-01-01",
+      "valor": 7000
+    },
+    {
+      "data": "2011-01-01",
+      "valor": 6418
+    },
+    {
+      "data": "2012-01-01",
+      "valor": 4571
+    },
+    {
+      "data": "2013-01-01",
+      "valor": 5891
+    },
+    {
+      "data": "2014-01-01",
+      "valor": 5012
+    },
+    {
+      "data": "2015-01-01",
+      "valor": 6207
+    },
+    {
+      "data": "2016-01-01",
+      "valor": 7893
+    },
+    {
+      "data": "2017-01-01",
+      "valor": 6947
+    },
+    {
+      "data": "2018-01-01",
+      "valor": 7536
+    },
+    {
+      "data": "2019-01-01",
+      "valor": 10129
+    },
+    {
+      "data": "2020-01-01",
+      "valor": 10851
+    },
+    {
+      "data": "2021-01-01",
+      "valor": 13038
+    },
+    {
+      "data": "2022-01-01",
+      "valor": 11594
+    },
+    {
+      "data": "2023-01-01",
+      "valor": 9064
+    },
+    {
+      "data": "2024-01-01",
+      "valor": 6518
+    },
+    {
+      "data": "2025-01-01",
+      "valor": 5731
+    }
+  ]
+}

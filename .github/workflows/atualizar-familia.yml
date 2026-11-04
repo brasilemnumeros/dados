@@ -43,7 +43,7 @@ jobs:
         run: |
           set -euo pipefail
           case "$FAMILIA" in
-            ipca|igp-m|selic|caged|mvgr|pib|populacao|homicidios|pnad) ;;
+            ipca|igp-m|selic|caged|mvgr|pib|populacao|homicidios|pnad|fiscal|meio-ambiente|cambio) ;;
             *) echo "::error::família inválida: $FAMILIA"; exit 1 ;;
           esac
 

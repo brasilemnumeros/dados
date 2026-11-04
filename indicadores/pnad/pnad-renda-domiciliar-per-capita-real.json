@@ -1,0 +1,72 @@
+{
+  "versao": 1,
+  "id": "pnad-renda-domiciliar-per-capita-real",
+  "unidade": {
+    "tipo": "moeda",
+    "simbolo": "R$",
+    "casas": 0
+  },
+  "eixo": "reais",
+  "medida": "nivel",
+  "granularidade": "anual",
+  "fonte": "IBGE (PNAD Contínua — Rendimento de todas as fontes, SIDRA 7533, variável 10816; a preços médios de 2025)",
+  "urlFonte": "https://apisidra.ibge.gov.br/values/t/7533/n1/all/v/10816/p/all/c1019/49243?formato=json",
+  "dados": [
+    {
+      "data": "2012-01-01",
+      "valor": 1782.0
+    },
+    {
+      "data": "2013-01-01",
+      "valor": 1840.0
+    },
+    {
+      "data": "2014-01-01",
+      "valor": 1891.0
+    },
+    {
+      "data": "2015-01-01",
+      "valor": 1830.0
+    },
+    {
+      "data": "2016-01-01",
+      "valor": 1806.0
+    },
+    {
+      "data": "2017-01-01",
+      "valor": 1811.0
+    },
+    {
+      "data": "2018-01-01",
+      "valor": 1879.0
+    },
+    {
+      "data": "2019-01-01",
+      "valor": 1904.0
+    },
+    {
+      "data": "2020-01-01",
+      "valor": 1820.0
+    },
+    {
+      "data": "2021-01-01",
+      "valor": 1692.0
+    },
+    {
+      "data": "2022-01-01",
+      "valor": 1809.0
+    },
+    {
+      "data": "2023-01-01",
+      "valor": 2018.0
+    },
+    {
+      "data": "2024-01-01",
+      "valor": 2118.0
+    },
+    {
+      "data": "2025-01-01",
+      "valor": 2264.0
+    }
+  ]
+}
