@@ -1,0 +1,24 @@
+# Workflow da família PNAD; o notebook e os dados vivem em indicadores/pnad/.
+name: atualizar pnad
+on:
+  schedule:
+    - cron: '0 15 5,28 * *'
+  workflow_dispatch:
+    inputs:
+      seco:
+        description: Executar sem publicar
+        type: boolean
+        default: true
+permissions:
+  contents: read
+concurrency:
+  group: atualizar-pnad
+  cancel-in-progress: false
+jobs:
+  atualizar:
+    uses: ./.github/workflows/atualizar-familia.yml
+    with:
+      familia: pnad
+      seco: ${{ inputs.seco == true }}
+    secrets:
+      token: ${{ secrets.DADOS_BOT_TOKEN }}

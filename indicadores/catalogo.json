@@ -74,6 +74,33 @@
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/caged/CAGED.ipynb"
     },
     {
+      "id": "pnad-desocupacao",
+      "nome": "Taxa de Desocupação — trimestre móvel (%)",
+      "grupo": "trabalho",
+      "arquivo": "pnad/pnad-desocupacao.json",
+      "escala": "percentual",
+      "descricao": "Percentual da força de trabalho (pessoas de 14 anos ou mais) que estava desocupada no trimestre móvel encerrado no mês, segundo a PNAD Contínua (IBGE). Cada ponto é o trimestre móvel, não o mês isolado.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pnad/PNAD.ipynb"
+    },
+    {
+      "id": "pnad-participacao",
+      "nome": "Taxa de Participação — trimestre móvel (%)",
+      "grupo": "trabalho",
+      "arquivo": "pnad/pnad-participacao.json",
+      "escala": "percentual",
+      "descricao": "Percentual das pessoas de 14 anos ou mais que estavam na força de trabalho (ocupadas ou desocupadas) no trimestre móvel encerrado no mês, segundo a PNAD Contínua (IBGE). Cada ponto é o trimestre móvel, não o mês isolado.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pnad/PNAD.ipynb"
+    },
+    {
+      "id": "pnad-nivel-ocupacao",
+      "nome": "Nível de Ocupação — trimestre móvel (%)",
+      "grupo": "trabalho",
+      "arquivo": "pnad/pnad-nivel-ocupacao.json",
+      "escala": "percentual",
+      "descricao": "Percentual das pessoas de 14 anos ou mais que estavam ocupadas no trimestre móvel encerrado no mês, segundo a PNAD Contínua (IBGE). Cada ponto é o trimestre móvel, não o mês isolado.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pnad/PNAD.ipynb"
+    },
+    {
       "id": "populacao-total-anual",
       "nome": "População Total",
       "grupo": "demografia",
