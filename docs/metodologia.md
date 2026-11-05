@@ -8,7 +8,9 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
 > As séries da PNAD Contínua (`pnad-*`) foram publicadas em 2026-11-03 e 2026-11-04 e
 > têm seção própria abaixo; elas não fazem parte da contagem das 13. Em 2026-11-04 entraram
 > mais quatro séries — dívida líquida, renda domiciliar per capita, desmatamento da Amazônia
-> Legal e câmbio —, também com seção própria.
+> Legal e câmbio —, também com seção própria. Em 2026-11-05 entraram as quatro séries
+> sociais — mortalidade infantil, esgoto, Ideb e mortes no trânsito —, com seção própria e
+> quatro famílias/grupos novos (`saude`, `saneamento`, `educacao`, `mobilidade`).
 
 ## ipca-acum-12m
 
@@ -795,6 +797,205 @@ e contra a matemática do próprio indicador — nunca contra o código atual.
 - **Impacto:** nenhuma série existente muda; a família `cambio` entra no grupo `monetario`.
 - **Decisão pendente:** não — aprovada em 2026-11-04, com média mensal e recorte em 1995.
 
+## mortalidade-infantil-anual
+
+- **Definição:** óbitos de menores de 1 ano por mil nascidos vivos no ano-calendário, por
+  local de residência, no Brasil. `numero` (`por mil`, 1 casa), `eixo: por-mil`,
+  `medida: nivel`, granularidade `anual` (C15: `AAAA-01-01`). É a taxa **direta** —
+  `1000 × óbitos ÷ nascidos vivos` —, **sem correção de sub-registro**.
+- **Fonte e código:** MS/SVSA — microdados do SIM (`DOINF{AA}.dbc`, óbitos de menores de 1
+  ano) em `dissemin/publicos/SIM/CID10/DOFET/` e do SINASC (`DNBR{AAAA}.dbc`, nascidos
+  vivos) em `dissemin/publicos/SINASC/1996_/Dados/DNRES/`, ambos no FTP do DATASUS
+  (`ftp.datasus.gov.br`). O notebook baixa apenas o cabeçalho de cada `.dbc` (que não é
+  comprimido) e lê o total de registros; a equivalência com a varredura do arquivo inteiro
+  foi conferida nos 29 anos, com zero divergência. A taxa pronta do TabNet
+  (`sim/cnv/inf10uf.def`) não está scriptável hoje — o servidor devolve "Tabela de
+  conversao nao encontrada" —, por isso o cálculo é próprio.
+- **Fórmula:** `taxa = 1000 × óbitos_de_menores_de_1_ano ÷ nascidos_vivos`, por ano.
+- **Cobertura:** 1996–2024, **29 pontos**. Um ano só entra quando SIM e SINASC o publicam
+  no diretório de dados **finais**; 2025 fica fora porque o SIM 2025 já é final mas o
+  SINASC 2025 ainda está em `SINASC/PRELIM`. Primeiro ponto 25,47 (1996: 75.024 ÷
+  2.945.425); último 12,56 (2024: 30.020 ÷ 2.389.325).
+- **Revisão:** o SIM e o SINASC consolidam declarações com atraso e revisam o histórico. O
+  `DNBR2024` foi gravado no FTP em 23/12/2025, e a RIPSA anota dados finais até 2024
+  atualizados em 02/12/2025. Reexecutar só muda valor em revisão da fonte; as âncoras da
+  validação inline falham nesse caso, e a revisão tem de ser registrada aqui antes de
+  publicar.
+- **`urlFonte` ausente:** o recorte é um caminho `ftp://`, que C7.1 não aceita; o portal de
+  transferência (`https://datasus.saude.gov.br/transferencia-de-arquivos/`) não é o
+  recorte. Os caminhos exatos estão acima e no markdown do notebook.
+- **Caveats:** a taxa direta fica **abaixo** da estimativa indireta do IBGE (série CD100,
+  2000–2016), que corrige o sub-registro a partir do Censo: a diferença é de ~7,7 por mil
+  em 2000 (21,27 contra 29,0) e ~0,6 em 2016 (12,72 contra 13,3). Não é a taxa corrigida,
+  a neonatal nem a de menores de 5 anos. A cobertura depende da captação de óbitos e
+  nascidos vivos: onde ela é pior, o número é menor que o real. O valor de 2024 (12,56) é o
+  cálculo deste notebook; 12,6 é a estimativa da Fundação Abrinq e 12,62 (2023) é o
+  boletim da SES/RS, os dois na mesma construção direta.
+- **Verificação independente:** Fundação Abrinq, *Cenário da Infância e Adolescência no
+  Brasil 2026* (30/03/2026, `https://fadc.org.br/noticias/mortalidade-infantil-brasil`),
+  publica **12,6 por mil em 2024** — o cálculo daqui dá 12,56; SES/RS, *Boletim
+  Epidemiológico MMIF 2025* (Tabela 22, Brasil,
+  `https://saude.rs.gov.br/upload/arquivos/202507/04110055-boletim-mmif-2025-10.pdf`),
+  publica **12,62 em 2023** — o cálculo daqui dá 12,62 (32.017 ÷ 2.537.576). O IBGE (CD100,
+  2000–2016) foi conferido e diverge **de propósito**: é a taxa indireta, não a direta. As
+  publicações citam o MS/SIM; não há segunda medição.
+
+## esgoto-rede-coletora-total
+
+- **Definição:** percentual da população residente do Brasil atendida por rede coletora de
+  esgoto, urbana e rural somadas. `percentual` (`%`, 1 casa), `eixo: percentual`,
+  `medida: nivel`, `anual` (C15: `AAAA-01-01`). Não é esgoto tratado: mede quem tem coleta,
+  não quem tem tratamento.
+- **Fonte:** SNIS — Série Histórica, base municipal consolidada, informação **ES001**
+  (população total atendida com esgotamento sanitário), 1995–2022; e Sinisa — planilhas do
+  módulo Esgotamento Sanitário, `GTE0001 + GTE0002` da linha `TOTAL NACIONAL` (ou `Brasil`)
+  do consolidado UF/MR/Brasil, para 2023. O SNIS fez a última coleta em 2023 (dados de
+  2022); o Sinisa começou em 2023. O notebook descobre o arquivo do Sinisa nas páginas de
+  resultados do programa e imprime o nome do arquivo usado.
+- **`urlFonte`:** `https://app4.cidades.gov.br/serieHistorica/`, a página da Série Histórica
+  do SNIS, que cobre 28 dos 29 pontos (1995–2022) e é o endereço estável da fonte
+  principal. O Sinisa não tem URL única de série: o notebook descobre o arquivo do ano nas
+  páginas de resultados.
+- **Fórmula:** `100 × população total atendida ÷ população residente do Brasil (IBGE)`. O
+  denominador é a informação **POP_TOT** da Série Histórica somada sobre todos os
+  municípios (reproduz 169.799.170 em 2000 e 190.755.799 em 2010; em 2022, 203.080.756 é a
+  estimativa do ano, 0,009% acima do Censo de 203.062.512).
+- **Cobertura:** 1995–2023, **29 pontos** anuais. Primeiro ponto 5,57% (1995); último
+  54,83% (2023).
+- **Quem não reporta entra como não atendido.** O numerador soma apenas a população que os
+  prestadores declararam atender; município sem declaração não entra. A série é um **piso**.
+- **Começo da série (1995–1999).** A alta de 5,57% para 28,95% (5,5× até 2000, com
+  +13,85 p.p. só de 1995 para 1996) é a **rampa de entrada de municípios na amostra do
+  SNIS**, não crescimento de cobertura. O denominador é o país inteiro, mas o numerador só
+  conta quem declarou; ler o começo como "obras" superestima o avanço.
+- **Emenda SNIS → Sinisa.** Não há ano de sobreposição: o SNIS termina em 2022 e o Sinisa
+  começa em 2023. O critério de 0,1 p.p. vale para o mesmo ano medido pelas duas fontes e
+  **não se aplica**; a emenda entra com a quebra declarada. O degrau 2022 → 2023 com o
+  mesmo denominador é **−0,71 p.p.** (55,54% → 54,83%) e é **diagnóstico**, não gate:
+  mistura troca de sistema, movimento do ano e mudança de amostra (o Sinisa 2023 cobre
+  186,5 milhões de habitantes, contra 201,4 milhões na base de água do SNIS 2022).
+- **2024 fica fora.** O IBGE muda a base populacional em 2024 (212,58 milhões contra 203,08
+  milhões em 2022), um degrau de ~4,6% no denominador. A série entra em 2024 quando houver
+  população nacional comparável. Enquanto isso, o notebook avisa na saída quando o Sinisa
+  publica ano mais novo que o fim da série.
+- **2023 usa a população de 2022.** O IBGE não publicou estimativa de 2023 na base do Censo
+  (a publicação do DOU de 2023 trouxe 2022; a revisão de 2024 muda de base). Usar
+  203.080.756 em 2023 **superestima** a taxa em cerca de **0,25–0,3 p.p.**, o crescimento
+  populacional de 2022 para 2023. Não é 0,005 p.p.: esse é outro efeito, a diferença entre
+  a estimativa de 2022 e o Censo de 2022, que afeta o ponto de 2022.
+- **Diferença para o índice oficial.** O SNIS 2022 publica IN056 = 56,0% e o Sinisa 2023
+  publica IES0001 = 59,7%. Os dois usam como denominador a população dos municípios que
+  declararam; esta série divide a mesma população atendida pelo país inteiro (203,1 milhões
+  em 2023), o que dá 54,83% — 4,9 p.p. abaixo do índice da amostra.
+- **Revisão.** O SNIS revisa a base e o IBGE revisa a população. Reexecutar só muda valor se
+  a fonte revisar; nesse caso as âncoras do notebook falham e a revisão precisa ser
+  registrada aqui antes de publicar.
+- **Verificação independente.** SNIS, *Diagnóstico Temático Água e Esgoto — Visão Geral,
+  SNIS 2023* (dados de 2022), p. 70–71: 112,8 milhões atendidos e IN056 = 56,0% — o
+  notebook reproduz 112.795.436 e 56,00%. Sinisa, *Relatório dos Serviços de Esgotamento
+  Sanitário, SINISA 2024* (referência 2023): IES0001 = 59,7% (111,3 milhões) — o notebook
+  reproduz 111.344.129 e 59,70% da planilha. Trata Brasil, *Ranking do Saneamento 2024*
+  (base 2022): cerca de 90 milhões sem coleta (203,1 − 112,8 = 90,3 milhões). Consulta em
+  2026-11-05. As três publicações citam o SNIS/Sinisa; não há segunda medição.
+
+## ideb-anos-iniciais
+
+- **Definição:** Índice de Desenvolvimento da Educação Básica (Ideb) do Brasil para os anos
+  iniciais (1º ao 5º ano) do ensino fundamental regular, rede total (pública + privada).
+  Escala de 0 a 10. `numero` (`índice`, 1 casa), `eixo: contagem`, `medida: nivel`,
+  granularidade `bienal` (C15: `AAAA-01-01`).
+- **Fórmula:** `Ideb = N × P`, em que `N` é a nota média padronizada do Saeb (Língua
+  Portuguesa e Matemática) e `P` é o indicador de rendimento (taxa de aprovação do Censo
+  Escolar). O índice é calculado pelo Inep; a série lê a coluna `VL_OBSERVADO_AAAA` da
+  planilha oficial e **não recalcula** o valor.
+- **Fonte:** Inep — planilha Brasil da edição vigente do Ideb
+  (`https://download.inep.gov.br/ideb/resultados/divulgacao_brasil_ideb_AAAA.zip`, aba
+  "Brasil (Anos Iniciais)", linha `Brasil`/`Total`). O notebook descobre a edição vigente na
+  página de resultados
+  (`https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb/resultados`),
+  confere o md5 do XLSX e falha se o link não estiver lá. `urlFonte` é essa página estável
+  de resultados — nem a aba da edição nem o zip, cujos nomes mudam a cada ciclo.
+- **Periodicidade e paridade.** O Saeb é bienal e o Ideb só existe nas edições ímpares; a
+  série declara `bienal` e **todos os 11 pontos caem em anos ímpares** (2005, 2007, …,
+  2025). Não há ponto em ano par nem interpolação: se o Inep publicar um ano par, o notebook
+  falha em vez de descartar o ano, porque mudar a periodicidade é decisão de contrato.
+- **O que o número é — e o que não é.** É o Ideb observado da rede total do país nos anos
+  iniciais. Não é percentual de aprendizado (é índice composto de proficiência e fluxo),
+  não é nota de escola/município/estado (é o agregado nacional), não é anos finais nem
+  ensino médio e não é a meta (`VL_PROJECAO_AAAA`), que é projeção pactuada, não valor
+  observado.
+- **Cobertura:** 2005–2025, **11 pontos**. Primeiro 3,8 (2005); 2021 5,8 (queda sobre 5,9 em
+  2019, efeito da pandemia); 2023 6,0; último 6,3 (2025, máximo da série). O Inep publicou
+  nota informativa sobre o impacto da pandemia no Ideb de 2021 — a leitura 2019→2021 não é
+  a de um biênio normal.
+- **TLS do Inep.** O servidor de downloads entrega só o certificado do site, sem o
+  intermediário da cadeia (RNP ICPEdu), e o bundle de raízes do `requests` não o tem. O
+  notebook tenta a conexão normal e, se ela falhar, baixa o intermediário público no
+  endereço AIA do próprio certificado e refaz a sessão com raízes + intermediário. A
+  verificação TLS continua ligada de ponta a ponta — o intermediário é validado contra a
+  raiz GlobalSign na mesma conexão; o TLS nunca é desligado.
+- **Revisão.** Os valores são os publicados pelo Inep; reexecutar o notebook só muda número
+  se o Inep republicar a planilha. Nesse caso a revisão é registrada aqui antes de publicar,
+  e as âncoras de valor da validação são o alarme.
+- **Verificação independente.** O Inep divulgou **6,3** em 05/08/2026
+  (`https://www.gov.br/inep/pt-br/centrais-de-conteudo/noticias/ideb/ideb-avanca-em-todas-as-etapas-da-educacao-basica`);
+  a CNN Brasil
+  (`https://www.cnnbrasil.com.br/educacao/dados-do-ideb-mostram-disparidade-de-ensino-entre-estados-brasileiros/`),
+  o Valor Econômico
+  (`https://valor.globo.com/brasil/noticia/2026/08/05/indicador-de-qualidade-da-educacao-atinge-os-melhores-resultados-da-serie-historica.ghtml`),
+  o Exame e O Globo (05–06/08/2026) publicaram o mesmo 6,3 para os anos iniciais, e a
+  Agência Secom registra a rede pública em 6,1. A planilha é a fonte; as publicações são a
+  conferência de que o número é o que o país leu. Não há segunda medição: todas citam o
+  Inep.
+
+## mortes-transito-anual
+
+- **Definição:** óbitos por acidentes de transporte (CID-10 V01–V99) por 100 mil habitantes,
+  por local de residência, no ano-calendário. Inclui todos os modos — pedestre, ciclista,
+  motocicleta, automóvel, caminhão, ônibus, aquaviário e aéreo — em vias urbanas e
+  rodovias. `numero` (`por 100 mil`, 2 casas), `eixo: por-100-mil`, `medida: nivel`,
+  granularidade `anual` (C15: `AAAA-01-01`).
+- **Fonte e código:** MS/SIM/Datasus, microdados de causas externas `DOEXT{AA}.dbc` em
+  `dissemin/publicos/SIM/CID10/DOFET/` (dados finais, um por ano). O notebook baixa o
+  `.dbc` inteiro, descomprime com `pyreaddbc` (PKWare DCL) e conta os registros com
+  `CAUSABAS` em V01–V99; códigos de três caracteres entram. Y10–Y34 (intenção
+  indeterminada) e Y85+ (sequelas) ficam de fora. Os registros marcados como apagados não
+  são contados.
+- **Denominador:** população residente, série IPEADATA `AVIOL12_VIOLPOP` — a mesma de
+  `homicidios`, para que as taxas sejam comparáveis. 2022 e 2023 são interpolação
+  exponencial entre 2021 e 2024, conforme a metadata da série; é a limitação conhecida do
+  denominador.
+- **Fórmula:** `taxa = 100000 × óbitos V01–V99 ÷ população`, por ano. Sem média móvel e sem
+  taxa herdada.
+- **Cobertura/atualização:** 1996–2025, **30 pontos**. O notebook exclui o ano corrente e
+  exige os 12 meses do último ano antes de publicar. Primeiro ponto 22,63 (1996: 35.545 ÷
+  157.070.163); último 17,78 (2025: 37.954 ÷ 213.415.160). Reexecução só muda valor em
+  revisão de fonte, registrada aqui.
+- **`urlFonte` ausente:** o recorte é um caminho `ftp://`, que C7.1 não aceita; o portal de
+  transferência do Datasus não é o recorte. O caminho exato está acima e no markdown do
+  notebook.
+- **O que não é:** número de sinistros (um sinistro pode ter várias vítimas), de feridos, de
+  multas ou de veículos; não é o recorte de rodovias federais da PRF.
+- **V01–V99 não é V01–V89.** A série publicada inclui aquaviário (V90–V94), aéreo (V95–V97)
+  e os residuais V98–V99 — 1.103 óbitos a mais que o V01–V89 em 2024 (2,9%). Por isso a
+  taxa de 2024 é 17,99, e não 17,48 (o V01–V89 com a mesma população). As publicações de
+  terceiro usam V01–V89; a comparação de nível só é justa no mesmo recorte, e o notebook
+  imprime a conferência nos dois.
+- **Limitação:** a série usa CID-10 desde 1996, sem emenda com a CID-9; 1996–1997 têm
+  contagem mais alta (35,5 mil) e ela cai para ~30 mil em 1998–2000, e 2010 tem salto de
+  +14% sobre 2009 — mudanças de cobertura/codificação do SIM que não são corrigidas aqui.
+- **Verificação independente:** as contagens de transporte terrestre (V01–V89) reproduzem as
+  do ONSV — *Dados Consolidados de Óbitos no Trânsito Brasileiro – 2024*, divulgado em
+  14/01/2026 e analisado em 31/07/2026
+  (`https://onsv.github.io/analise-datasus-2024/datasus2024.html`) — em 2019–2024: 31.945,
+  32.716, 33.813, 33.894, 34.881 e 37.150, **exatas**. A taxa de 2023 do Atlas da Violência
+  (G1, 12/05/2025,
+  `https://g1.globo.com/politica/noticia/2025/05/12/mortes-transportes-terrestres-atlas-da-violencia.ghtml`)
+  é 16,2; o mesmo recorte aqui dá 16,41, porque o denominador do Atlas é outro (215,3
+  milhões implícitos contra 212,57 milhões da VIOLPOP). A OMS estima 16 por 100 mil em 2021
+  (aqui: 16,42 em V01–V99; 15,85 em V01–V89). Nenhuma é segunda medição: todas usam o
+  SIM/Datasus.
+
 ## Pendentes
 
 Revisão concluída para as 13 séries em 2026-11-01. **Não há pendência de dado nem de forma.**
@@ -802,7 +1003,10 @@ As quatro séries originais da PNAD (`pnad-*`) têm seção própria acima — t
 o rendimento em 2026-11-04 —, assim como as duas de PIB per capita; elas não fazem parte da
 contagem das 13. As quatro séries novas de 2026-11-04 — `divida-liquida-pib`,
 `pnad-renda-domiciliar-per-capita-real`, `desmatamento-amazonia-legal-anual` e
-`cambio-media-mensal` — também têm seção própria e não fazem parte da contagem das 13.
+`cambio-media-mensal` — também têm seção própria e não fazem parte da contagem das 13. As
+quatro séries sociais de 2026-11-05 — `mortalidade-infantil-anual`,
+`esgoto-rede-coletora-total`, `ideb-anos-iniciais` e `mortes-transito-anual` — também têm
+seção própria e não fazem parte da contagem das 13.
 
 Fora deste repo, o post do `sitio` sobre o MVG-R foi alinhado ao catálogo em 2026-11-03: não
 fala mais em "valor médio", "preço de etiqueta" nem "valor real dos imóveis", e os números do

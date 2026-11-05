@@ -76,7 +76,7 @@ runtime (`${__BASE_DADOS__}/catalogo.json`, ao lado das séries).
 ## Editar ou regenerar dados
 
 - **Nunca altere valores ao mudar a forma.** Correção de fórmula é revisão histórica: registre definição, fonte e impacto em `docs/metodologia.md` e peça aval antes.
-- Os notebooks escrevem o **formato inteiro** (`versao`, `id`, `unidade`, `eixo`, `medida`, `granularidade`, `fonte`, `urlFonte`, `dados`) direto em `indicadores/<familia>/` — campos de apresentação não entram. Cada um aceita uma variável de ambiente (`IPCA_SAIDA`, `IGPM_SAIDA`, `SELIC_SAIDA`, `PIB_SAIDA`, `MVGR_SAIDA`, `CAGED_SAIDA`, `POPULACAO_SAIDA`, `HOMICIDIOS_SAIDA`, `PNAD_SAIDA`, `FISCAL_SAIDA`, `MEIO_AMBIENTE_SAIDA`, `CAMBIO_SAIDA`) para gravar num diretório de ensaio em vez do arquivo publicado.
+- Os notebooks escrevem o **formato inteiro** (`versao`, `id`, `unidade`, `eixo`, `medida`, `granularidade`, `fonte`, `urlFonte`, `dados`) direto em `indicadores/<familia>/` — campos de apresentação não entram. Cada um aceita uma variável de ambiente (`IPCA_SAIDA`, `IGPM_SAIDA`, `SELIC_SAIDA`, `PIB_SAIDA`, `MVGR_SAIDA`, `CAGED_SAIDA`, `POPULACAO_SAIDA`, `HOMICIDIOS_SAIDA`, `PNAD_SAIDA`, `FISCAL_SAIDA`, `MEIO_AMBIENTE_SAIDA`, `CAMBIO_SAIDA`, `SAUDE_SAIDA`, `SANEAMENTO_SAIDA`, `EDUCACAO_SAIDA`, `MOBILIDADE_SAIDA`) para gravar num diretório de ensaio em vez do arquivo publicado.
 - Toda execução deve recalcular a série inteira; não há modo incremental.
 - O endpoint de metadados do SIDRA (`servicodados.ibge.gov.br/api/v3/agregados/6579/periodos`)
   pode não responder de dentro do GitHub Actions. O notebook da População cai para a conferência
@@ -148,11 +148,18 @@ reutilizável `atualizar-familia.yml`. A cadência segue a fonte (UTC):
 | mvgr | `0 15 5 * *` | mensal, defasagem de ~3 meses |
 | pib | `0 15 10 3,6,9,12 *` + `0 15 20 3 *` | trimestral, com Q4 em março |
 | fiscal | `0 15 4,20 * *` | mensal, após a divulgação das estatísticas fiscais |
+| saude | `0 15 10 6 *` | anual, após o fechamento do SIM e do SINASC |
+| saneamento | `0 15 10 4 *` | anual, após a publicação do Sinisa |
+| educacao | `0 15 10 9 *` | anual, após a divulgação do Ideb (agosto) |
+| mobilidade | `0 15 10 6 *` | anual, após o fechamento do SIM |
 | populacao | `0 15 5 9,10 *` | anual, após a estimativa de agosto |
 | homicidios | `0 15 15 7,8,12 *` | anual, com o Atlas |
 | meio-ambiente | `0 15 15 10 *` | anual, após a consolidação do PRODES |
 | pnad | `0 15 5,28 * *` | mensal, após a divulgação |
 
+- As famílias `saude`, `saneamento`, `educacao` e `mobilidade` entraram em 2026-11-05 com uma
+  série anual cada — mortalidade infantil, esgoto com rede coletora, Ideb dos anos iniciais
+  e mortes no trânsito. Cada uma tem o seu caller e a sua linha na tabela acima.
 - Toda execução recalcula a série inteira e roda `scripts/validar.py` + `pytest` antes de
   publicar.
 - Qualquer mudança nos JSONs — inclusive acréscimo — abre ou atualiza um PR na branch

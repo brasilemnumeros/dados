@@ -155,6 +155,42 @@
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pnad/RendaDomiciliar.ipynb"
     },
     {
+      "id": "mortalidade-infantil-anual",
+      "nome": "Mortalidade Infantil (por mil nascidos vivos)",
+      "grupo": "saude",
+      "arquivo": "saude/mortalidade-infantil-anual.json",
+      "escala": "numero",
+      "descricao": "Óbitos de menores de 1 ano por mil nascidos vivos no ano, no Brasil — taxa calculada pelo site a partir das contagens diretas do SIM e do SINASC (MS/DATASUS), sem correção de sub-registro, por isso fica abaixo da estimativa indireta do IBGE. Depende da captação de óbitos e nascidos vivos: onde a cobertura é pior, o número é menor que o real.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/saude/MortalidadeInfantil.ipynb"
+    },
+    {
+      "id": "esgoto-rede-coletora-total",
+      "nome": "Esgoto — população atendida com rede coletora (%)",
+      "grupo": "saneamento",
+      "arquivo": "saneamento/esgoto-rede-coletora-total.json",
+      "escala": "percentual",
+      "descricao": "Percentual da população residente do Brasil atendida por rede coletora de esgoto, urbana e rural. Não é esgoto tratado: o município pode coletar e lançar sem tratamento. Quem não reporta entra como não atendido, então a série é um piso. A alta de 1995 a 1999 reflete a entrada de municípios na amostra do SNIS, não só obras. Desde 2023 a fonte é o Sinisa: a queda de 2022 para 2023 vem da troca de fonte e de amostra, não de uma queda real do atendimento.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/saneamento/Esgoto.ipynb"
+    },
+    {
+      "id": "ideb-anos-iniciais",
+      "nome": "Ideb — anos iniciais do ensino fundamental (0–10)",
+      "grupo": "educacao",
+      "arquivo": "educacao/ideb-anos-iniciais.json",
+      "escala": "numero",
+      "descricao": "Índice de Desenvolvimento da Educação Básica (Ideb) do Brasil nos anos iniciais do ensino fundamental (1º ao 5º ano), rede total, numa escala de 0 a 10 — combina a nota do Saeb com a taxa de aprovação do Censo Escolar. É bienal e não é percentual de aprendizado nem nota de escola, e não é anos finais nem ensino médio.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/educacao/IDEB.ipynb"
+    },
+    {
+      "id": "mortes-transito-anual",
+      "nome": "Mortes no Trânsito (por 100 mil)",
+      "grupo": "mobilidade",
+      "arquivo": "mobilidade/mortes-transito-anual.json",
+      "escala": "numero",
+      "descricao": "Taxa de mortes por acidentes de transporte por 100 mil habitantes no Brasil, calculada pelo site a partir dos óbitos com causa básica CID-10 V01–V99 no SIM/Datasus e da população residente. Inclui todos os modos e vias; não é contagem de sinistros nem de feridos.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/mobilidade/Transito.ipynb"
+    },
+    {
       "id": "populacao-total-anual",
       "nome": "População Total",
       "grupo": "demografia",
@@ -227,6 +263,18 @@
     },
     "trabalho": {
       "nome": "💼 Mercado de Trabalho"
+    },
+    "saude": {
+      "nome": "🩺 Saúde"
+    },
+    "saneamento": {
+      "nome": "🚰 Saneamento"
+    },
+    "educacao": {
+      "nome": "🎓 Educação"
+    },
+    "mobilidade": {
+      "nome": "🚗 Mobilidade"
     },
     "demografia": {
       "nome": "👥 Demografia"

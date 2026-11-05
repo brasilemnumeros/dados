@@ -1,0 +1,24 @@
+# Workflow da família educacao; o notebook e os dados vivem em indicadores/educacao/.
+name: atualizar educacao
+on:
+  schedule:
+    - cron: '0 15 10 9 *'
+  workflow_dispatch:
+    inputs:
+      seco:
+        description: Executar sem publicar
+        type: boolean
+        default: true
+permissions:
+  contents: read
+concurrency:
+  group: atualizar-educacao
+  cancel-in-progress: false
+jobs:
+  atualizar:
+    uses: ./.github/workflows/atualizar-familia.yml
+    with:
+      familia: educacao
+      seco: ${{ inputs.seco == true }}
+    secrets:
+      token: ${{ secrets.DADOS_BOT_TOKEN }}
