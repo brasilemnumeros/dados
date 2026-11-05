@@ -55,13 +55,19 @@
   o DComércio cita o mesmo valor
   (`https://dcomercio.com.br/publicacao/s/pib-cresce-3-2-em-2023-e-soma-r-10-9-tri-mostram-dados-definitivos-do-ibge`);
   o Valor de 07/03/2025 publica R$ 55.247,45 para 2024
-  (`https://valor.globo.com/brasil/noticia/2025/03/07/pib-per-capita-de-2024-foi-recorde-diz-ibge.ghtml`)
-  e a Agência Brasil de 03/03/2026 publica R$ 59.687,49 para 2025
+  (`https://valor.globo.com/brasil/noticia/2025/03/07/pib-per-capita-de-2024-foi-recorde-diz-ibge.ghtml`);
+  a Agência Brasil de 03/03/2026
+  (`https://agenciabrasil.ebc.com.br/educacao/noticia/2026-03/economia-brasileira-cresce-23-em-2025-revela-ibge`)
+  publica R$ 59.687 (arredondado) e 1,9% para 2025, e o valor exato de R$ 59.687,49 está no
+  caderno do IBGE
   (`https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/45969-pib-cresce-2-3-em-2025`).
   Todas citam o IBGE; **não há segunda medição**. Busca feita em 05/11/2026.
 - **Limitações:** é nominal — o crescimento ao longo do tempo mistura inflação e não mede poder
   de compra; é anual; a tabela 6784 para em 2023 e 2024–2025 são lidos do fechamento anual das
   Contas Trimestrais.
+- **Revisão:** reexecutar o notebook não muda valor. Mudança de valor é revisão da fonte, e a
+  revisão é registrada neste arquivo antes de publicar. O nível de 2024–2025 é a primeira
+  estimativa anual do caderno do 4º tri; uma revisão entra quando a 6784 publicar o ano.
 
 ## pib-per-capita-real
 
@@ -83,8 +89,9 @@
   independentes da mesma tabela — a variação em volume oficial (9814), o deflator implícito
   encadeado (9811) e o PIB per capita a preços do ano anterior encadeado (9813) —; o desvio
   máximo entre elas é de **0,30%** (R$ 140 em 2008), compatível com o arredondamento de 1–2
-  casas da fonte. A tolerância do notebook é 0,5%; 2024–2025 são conferidos contra a variação
-  real do caderno trimestral (3,0% e 1,9%).
+  casas da fonte. A tolerância do notebook é 0,5%. Para 2024–2025 não há segunda rota: o nível
+  corrente e a variação real (3,0% e 1,9%) são lidos do caderno trimestral e encadeados ao
+  nível de 2023; a checagem do notebook é só de consistência do encadeamento.
 - **Verificação independente:** não há publicação de terceiro com esta série em reais de 2023 —
   a busca encontrou apenas o nível nominal e séries internacionais de PIB per capita em US$
   (Banco Mundial/FMI), que usam outra moeda, outra base e, às vezes, PPP. A conferência é
@@ -94,4 +101,5 @@
   não a variável 9814 (que ainda para em 2023); não deve ser comparada numericamente com PIB
   per capita em US$ de organismos internacionais.
 - **Revisão:** reexecutar o notebook não muda valor. Mudança de valor é revisão da fonte, e a
-  revisão é registrada neste arquivo antes de publicar.
+  revisão é registrada neste arquivo antes de publicar. O nível de 2024–2025 é a primeira
+  estimativa anual do caderno do 4º tri; uma revisão entra quando a 6784 publicar o ano.

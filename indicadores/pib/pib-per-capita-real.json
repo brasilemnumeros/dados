@@ -9,7 +9,7 @@
   "eixo": "reais",
   "medida": "nivel",
   "granularidade": "anual",
-  "fonte": "IBGE (Contas Nacionais Anuais, SIDRA 6784, até 2023; Contas Nacionais Trimestrais, 4º tri, para 2024–2025); cálculo do site (R$ de 2023)",
+  "fonte": "IBGE (Contas Nacionais Anuais, SIDRA 6784, até 2023; Contas Nacionais Trimestrais, 4º tri, para os anos seguintes); cálculo do site (R$ de 2023)",
   "urlFonte": "https://apisidra.ibge.gov.br/values/t/6784/n1/all/v/all/p/all?formato=json",
   "dados": [
     {

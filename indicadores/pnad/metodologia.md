@@ -30,7 +30,7 @@
   repetem 5,2%; o informativo da SPE/Fazenda
   (`https://www.gov.br/fazenda/pt-br/central-de-conteudo/publicacoes/conjuntura-economica/emprego-e-renda/2026/informativo-pnad-set2026.html`)
   também. As publicações citam o IBGE; **não há segunda medição**. A divulgação do próprio IBGE
-  de 30/10/2026 traz 5,2% para jul–set/2026 e a de 29/09/2026 traz 5,3% para jun–ago/2026
+  de 30/10/2026 traz 5,2% para jul–set/2026
   (`https://biblioteca.ibge.gov.br/visualizacao/periodicos/3086/pnacm_2026_set.pdf`), mas é o
   produtor e não conta como publicação externa. Busca feita em 05/11/2026.
 - **Limitações:** o trimestre móvel é lido como mês de encerramento; não deve ser comparado com a
@@ -60,10 +60,9 @@
 - **Verificação independente:** o Dadobruto (17/10/2026,
   `https://dadobruto.com/analises/mercado-de-trabalho`) traz 62,2% para jun–ago/2026 (ponto
   `2026-08`) e a série da tabela bate em 62,3% (mar/2012), 62,4% (dez/2013), 63,4% (dez/2019),
-  56,8% (ago/2020) e 62,3% (ago/2025); o informativo do Ministério da Fazenda (ago/2026) também
-  traz 62,2% para agosto. A divulgação do IBGE de 30/10/2026 traz 62,2% para jul–set/2026, mas
-  é o produtor e não conta como publicação externa. As publicações citam o IBGE; **não há
-  segunda medição**. Busca feita em 05/11/2026.
+  56,8% (ago/2020) e 62,3% (ago/2025). A divulgação do IBGE de 30/10/2026 traz 62,2% para
+  jul–set/2026, mas é o produtor e não conta como publicação externa. As publicações citam o
+  IBGE; **não há segunda medição**. Busca feita em 05/11/2026.
 - **Limitações:** é o denominador que explica por que a taxa de desocupação pode cair sem
   aumento de emprego; herda o recorte de 14 anos ou mais, Brasil, sem ajuste sazonal e a
   reponderação de 31/07/2025.

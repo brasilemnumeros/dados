@@ -18,14 +18,16 @@
   BCB divulga com ~90 dias corridos após o mês de referência; por isso a série termina em M−3.
 - **Conferência:** 2009-03 R$ 78.500; out/2020 R$ 198.000; 2025-07 R$ 260.000; 2026-08
   R$ 290.000.
-- **Verificação independente:** o Poder360 de 01/06/2017 publica mediana de R$ 160 mil no
-  1º trimestre de 2017, igual ao ponto de 2017-03; a UOL Economia, reproduzida pelo
-  Seconci-Rio em 29/10/2021
+- **Verificação independente:** o Poder360 de 01/06/2017
+  (`https://www.poder360.com.br/economia/bc-corrige-falsa-queda-de-precos-de-imoveis-induzido-pelo-mcmv`)
+  publica mediana de R$ 160 mil no 1º trimestre de 2017, igual ao ponto de 2017-03; a ABECIP
+  de 28/10/2021
   (`https://www.abecip.org.br/imprensa/noticias/na-pandemia-brasileiro-paga-20-a-mais-para-financiar-casa-propria`),
-  lista fev/2020 R$ 185 mil, mai/2020 R$ 180 mil, ago/2020 R$ 185 mil, nov/2020 R$ 200 mil,
-  fev/2021 R$ 213 mil, mai/2021 R$ 217 mil e ago/2021 R$ 220 mil; os três primeiros e nov/2020
-  coincidem, e a divergência cresce até 2,3% em ago/2021 por revisão do SCR. As duas
-  publicações citam o BCB; **não há segunda medição**. Busca feita em 05/11/2026.
+  com dados da UOL Economia, lista fev/2020 R$ 185 mil, mai/2020 R$ 180 mil, ago/2020
+  R$ 185 mil, nov/2020 R$ 200 mil, fev/2021 R$ 213 mil, mai/2021 R$ 217 mil e ago/2021
+  R$ 220 mil; os três primeiros e nov/2020 coincidem, e a divergência cresce até 2,3% em
+  ago/2021 por revisão do SCR. As duas publicações citam o BCB; **não há segunda medição**.
+  Busca feita em 05/11/2026.
 - **Limitações:** o valor é o de avaliação para garantia, não o preço de venda; a composição da
   amostra muda ao longo do tempo, então a série não mede a valorização de um mesmo imóvel nem é
   um índice de preços constante-quality. O piso de 13,3 salários mínimos é baixo e não é um

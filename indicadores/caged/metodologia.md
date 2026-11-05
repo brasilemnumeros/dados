@@ -24,9 +24,11 @@
   (`https://cnabrasil.org.br/storage/arquivos/files/Ed.17-CT-CNA-CAGED-01.OUT.2026.pdf`):
   48,2 milhões de vínculos em agosto, +0,34% sobre julho, saldo de 165.827 (2.294.563 admissões
   e 2.128.736 desligamentos); Diário do Comércio/Agência Estadão, 29/09/2026
-  (`https://diariodocomercio.com.br/economia/caged-emprego-agosto-vagas`): 48.244.696 vínculos e
-  o mesmo saldo. As duas citam o MTE; **não há segunda medição**. Busca feita em 05/11/2026 em
-  veículos, associações e institutos; a IPEADATA é espelho da mesma fonte.
+  (`https://diariodocomercio.com.br/economia/caged-emprego-agosto-vagas`): o mesmo saldo de
+  165.827 e as mesmas admissões e desligamentos. O nível exato de 48.244.696 é a leitura da SGS
+  28763, não um número da publicação externa. As duas citam o MTE; **não há segunda medição**.
+  Busca feita em 05/11/2026 em veículos, associações e institutos; a IPEADATA é espelho da
+  mesma fonte.
 - **Limitações:** é estoque de vínculos formais, não taxa de emprego; não cobre informalidade nem
   estatutários. A emenda Caged → Novo Caged (jan/2020) é invisível no nível (2019-12 =
   38.152.770 → 2020-01 = 38.267.044), mas o BCB registra “diferenças metodológicas relevantes”

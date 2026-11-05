@@ -20,10 +20,11 @@
   209,2 milhões). 2003 28,53; 2017 31,72; 2022 21,81; 2023 21,52; 2024 20,04.
 - **Verificação independente:** o G1 de 26/05/2026
   (`https://g1.globo.com/politica/noticia/2026/05/26/sete-em-cada-dez-homicidios-no-brasil-foram-cometidos-com-arma-de-fogo-em-2024-diz-atlas-da-violencia.ghtml`)
-  publica 42.590 homicídios em 2024 e 45.747 em 2023, taxa de 20,1 por 100 mil e queda de 6,9%
-  em relação a 2023. Os totais são exatamente os da série; a taxa de 20,04 difere de 20,1 pelo
-  denominador (`AVIOL12_VIOLPOP` contra o do Atlas). A publicação cita o Atlas, não é segunda
-  medição; a conferência da série 20 é do próprio produtor. Busca feita em 05/11/2026.
+  publica 42.590 homicídios em 2024 e 29.870 por arma de fogo, 70,1% do total e queda de 8,8%
+  nas armas. O total de 42.590 é exatamente o da série; a taxa de 20,04 por 100 mil é cálculo
+  do site com a `AVIOL12_VIOLPOP`, não um número publicado pelo G1. A publicação cita o Atlas,
+  não é segunda medição; a conferência da série 20 é do próprio produtor. Busca feita em
+  05/11/2026.
 - **Limitações:** 2022 e 2023 usam interpolação exponencial entre 2021 e 2024 na
   `AVIOL12_VIOLPOP`. O erro do denominador é de 0,9% em dois anos (a projeção 2024 do IBGE dá
   210,9 milhões para 2022 contra 212,8 milhões da VIOLPOP), sem gerar degrau na série. Trocar a
@@ -67,9 +68,10 @@
   A Tabela 11.3 do Atlas registra 70,1% de participação em 2024, compatível com a contagem.
 - **Verificação independente:** o G1 de 26/05/2026
   (`https://g1.globo.com/politica/noticia/2026/05/26/sete-em-cada-dez-homicidios-no-brasil-foram-cometidos-com-arma-de-fogo-em-2024-diz-atlas-da-violencia.ghtml`)
-  publica 29.870 homicídios por arma de fogo em 2024, 70,1% dos 42.590 homicídios, queda de
-  8,8% sobre 2023 e 14,1 por 100 mil — compatível com os 14,05 calculados aqui. A publicação
-  cita o Atlas, não é segunda medição. Para 1995–2013 não há segunda medição localizada; a
+  publica 29.870 homicídios por arma de fogo em 2024, 70,1% dos 42.590 homicídios e queda de
+  8,8% sobre 2023; a contagem é a mesma da série. A taxa de 14,05 por 100 mil é cálculo do site
+  com a `AVIOL12_VIOLPOP`, não um número publicado pelo G1. A publicação cita o Atlas, não é
+  segunda medição. Para 1995–2013 não há segunda medição localizada; a
   conferência de 2014–2024 contra a Tabela 11.3 é do próprio produtor. Busca feita em
   05/11/2026.
 - **Limitações:** a série é mista por necessidade: 1995–2013 vêm da série 31 e 2014–2024 do Atlas
