@@ -38,3 +38,4 @@
   entre os trechos.
 - **Revisão:** reexecutar o notebook não muda valor. Mudança de valor é revisão da fonte, e a
   revisão é registrada neste arquivo antes de publicar.
+- **Licença e atribuição:** Dados públicos do MTE via SGS/BCB; atribuição ao MTE e ao Banco Central do Brasil. Uso sujeito aos termos de uso do SGS.

@@ -1,5 +1,8 @@
 # Metodologia — Homicídios
 
+As três séries gravam 2 casas, a mesma precisão das taxas publicadas; `unidade.casas` é só
+exibição.
+
 ## homicidios-anual
 
 - **Definição:** taxa anual de homicídios por 100 mil habitantes, por local de residência.

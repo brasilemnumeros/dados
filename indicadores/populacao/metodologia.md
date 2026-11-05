@@ -1,5 +1,7 @@
 # Metodologia — População
 
+O total grava 0 casas e a variação grava 2 casas; `unidade.casas` é só exibição.
+
 ## populacao-total-anual
 
 - **Definição:** população residente total do Brasil, em habitantes, estimada para 1º de julho de
@@ -40,6 +42,7 @@
   ano, como C9 manda) e o valor é de 1º de julho; a revisão do IBGE reescreve o histórico.
 - **Revisão:** reexecutar o notebook não muda valor. Mudança de valor é revisão da fonte, e a
   revisão é registrada neste arquivo antes de publicar.
+- **Licença e atribuição:** Dados abertos do IBGE (Projeções da População — Revisão 2024); atribuição ao IBGE. Uso sujeito aos termos de uso do IBGE.
 
 ## populacao-variacao-anual
 
@@ -68,3 +71,5 @@
   2024; não é a taxa de crescimento entre Censos.
 - **Revisão:** reexecutar o notebook não muda valor. Mudança de valor é revisão da fonte, e a
   revisão é registrada neste arquivo antes de publicar.
+- **Licença e atribuição:** Dados abertos do IBGE (Projeções da População — Revisão 2024);
+  atribuição ao IBGE. Uso sujeito aos termos de uso do IBGE.

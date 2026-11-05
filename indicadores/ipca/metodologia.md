@@ -1,5 +1,7 @@
 # Metodologia — IPCA
 
+A série grava 2 casas, a mesma precisão da SGS 13522; `unidade.casas` é só exibição.
+
 ## ipca-acum-12m
 
 - **Definição:** variação percentual do IPCA acumulada nos últimos 12 meses — taxa efetiva do
@@ -26,3 +28,4 @@
   ano-calendário; o mês em curso fica de fora.
 - **Revisão:** reexecutar o notebook não muda valor. Mudança de valor é revisão da fonte, e a
   revisão é registrada neste arquivo antes de publicar.
+- **Licença e atribuição:** Dados abertos do IBGE, lidos na SGS/BCB; atribuição ao IBGE e ao Banco Central do Brasil. Uso sujeito aos termos de uso do IBGE.

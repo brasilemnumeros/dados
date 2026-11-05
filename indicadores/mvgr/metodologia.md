@@ -1,5 +1,8 @@
 # Metodologia — MVG-R
 
+O nominal grava 0 casas (a fonte publica reais inteiros) e o real grava 2 casas; `unidade.casas`
+é só exibição.
+
 ## mvgr-nominal
 
 - **Definição:** **MVG-R** (Mediana dos Valores de Garantia de Imóveis Residenciais Financiados):

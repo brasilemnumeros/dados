@@ -89,7 +89,8 @@ execução local que você esqueceu de limpar.
 
 - Deixe a fórmula visível em célula própria.
 - Prefira série oficial já calculada; se calcular, documente a fórmula e os insumos.
-- Não arredonde o valor publicado; `unidade.casas` é só exibição.
+- Grave o valor com a precisão da fonte quando ela é fixa (ex.: 2 casas do BCB/IBGE); `unidade.casas`
+  é só exibição. Se arredondar, declare na metodologia da família.
 - Filtre períodos abertos antes de montar os pontos.
 
 ## Dependências

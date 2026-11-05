@@ -1,5 +1,8 @@
 # Metodologia — PNAD Contínua
 
+As taxas gravam 1 casa e os valores em reais gravam 0 casas, a precisão da fonte; `unidade.casas`
+é só exibição.
+
 ## pnad-desocupacao
 
 - **Definição:** percentual das pessoas de 14 anos ou mais **na força de trabalho** que estavam
@@ -41,6 +44,7 @@
   diretamente comparáveis com publicações da base antiga.
 - **Revisão:** reexecutar o notebook não muda valor. Mudança de valor é revisão da fonte, e a
   revisão é registrada neste arquivo antes de publicar.
+- **Licença e atribuição:** Dados abertos do IBGE (PNAD Contínua); atribuição ao IBGE. Uso sujeito aos termos de uso do IBGE.
 
 ## pnad-participacao
 
@@ -71,6 +75,7 @@
   reponderação de 31/07/2025.
 - **Revisão:** reexecutar o notebook não muda valor. Mudança de valor é revisão da fonte, e a
   revisão é registrada neste arquivo antes de publicar.
+- **Licença e atribuição:** Dados abertos do IBGE (PNAD Contínua); atribuição ao IBGE. Uso sujeito aos termos de uso do IBGE.
 
 ## pnad-nivel-ocupacao
 
@@ -99,6 +104,8 @@
   reponderação de 31/07/2025.
 - **Revisão:** reexecutar o notebook não muda valor. Mudança de valor é revisão da fonte, e a
   revisão é registrada neste arquivo antes de publicar.
+- **Licença e atribuição:** Dados abertos do IBGE (PNAD Contínua); atribuição ao IBGE. Uso
+  sujeito aos termos de uso do IBGE.
 
 ## pnad-rendimento-real
 
@@ -138,6 +145,8 @@
   edições; a reponderação de 31/07/2025 também alcança esta série.
 - **Revisão:** reexecutar o notebook não muda valor. Mudança de valor é revisão da fonte, e a
   revisão é registrada neste arquivo antes de publicar.
+- **Licença e atribuição:** Dados abertos do IBGE (PNAD Contínua); atribuição ao IBGE. Uso
+  sujeito aos termos de uso do IBGE.
 
 ## pnad-renda-domiciliar-per-capita-real
 
@@ -172,3 +181,5 @@
   (pandemia) e a edição de 2025 trouxe reponderação — quebras de comparabilidade declaradas.
 - **Revisão:** reexecutar o notebook não muda valor. Mudança de valor é revisão da fonte, e a
   revisão é registrada neste arquivo antes de publicar.
+- **Licença e atribuição:** Dados abertos do IBGE (PNAD Contínua); atribuição ao IBGE. Uso
+  sujeito aos termos de uso do IBGE.
