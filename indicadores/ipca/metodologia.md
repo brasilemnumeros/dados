@@ -16,6 +16,12 @@
   a 1995; o recorte em 1995-01 alinha a série à janela das demais séries de preços.
 - **Conferência:** em inflação alta a diferença entre somar e capitalizar cresce: dez/2002,
   11,90% (soma das mensais) contra 12,53% (13522); fev/2003, 14,84% contra 15,85%.
+- **Verificação independente:** a Agência Brasil de 09/10/2026
+  (`https://agenciabrasil.ebc.com.br/economia/noticia/2026-10/inflacao-oficial-de-setembro-fica-em-082-mostra-ibge`)
+  registra 4,58% em 12 meses em setembro/2026 e 4,22% em agosto/2026, exatamente os dois
+  últimos pontos; o G1 de 09/10/2026 repete 4,58%
+  (`https://g1.globo.com/economia/noticia/2026/10/09/ipca-setembro.ghtml`). As duas citam o
+  IBGE; **não há segunda medição**. Busca feita em 05/11/2026.
 - **Limitações:** é o acumulado de 12 meses, não a variação do mês nem a inflação do
   ano-calendário; o mês em curso fica de fora.
 - **Revisão:** reexecutar o notebook não muda valor. Mudança de valor é revisão da fonte, e a
