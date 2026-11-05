@@ -41,7 +41,9 @@
   caderno das Contas Nacionais Trimestrais, 4º trimestre
   (`https://ftp.ibge.gov.br/Contas_Nacionais/Contas_Nacionais_Trimestrais/Fasciculo_Indicadores_IBGE/{ano}/pib-vol-val_{ano}04caderno.pdf`),
   que publica o nível corrente do PIB per capita no fechamento anual. O notebook lê a 6784
-  inteira (variáveis 9811, 9812, 9813 e 9814) e extrai 2024–2025 do PDF.
+  inteira (variáveis 9811, 9812, 9813 e 9814) e extrai 2024–2025 do PDF. A série **não tem
+  `urlFonte` único** — nenhuma das duas publicações cobre o período inteiro —, por isso o campo
+  é omitido e as duas URLs ficam aqui.
 - **Fórmula:** nenhuma — o IBGE publica o nível. A emenda 2023/2024 é declarada: a 6784 para em
   2023 e o caderno trimestral publica 2024 = R$ 55.247,45 e 2025 = R$ 59.687,49.
 - **Cobertura:** 1996–2025, **30 pontos**. 2024–2025 vêm do fechamento anual das Contas
@@ -77,7 +79,9 @@
 - **Fonte e código:** IBGE. 1996–2023: Contas Nacionais Anuais, tabela SIDRA **6784**,
   variáveis **9812** (PIB per capita corrente) e **9814** (PIB per capita — variação em
   volume); 2024–2025: caderno das Contas Nacionais Trimestrais, 4º trimestre, que publica o
-  nível corrente e a variação real do ano. Cálculo do site.
+  nível corrente e a variação real do ano. Cálculo do site. A série **não tem `urlFonte` único**
+  — a 6784 cobre 1996–2023 e o caderno cobre os anos seguintes —, por isso o campo é omitido e
+  as duas URLs ficam aqui.
 - **Fórmula:** `L_2023 = 9812_2023`; para cada ano anterior,
   `L_t = L_{t+1} / (1 + 9814_{t+1}/100)`; para cada ano posterior,
   `L_{t+1} = L_t × (1 + variação_real_{t+1}/100)`. O ano-base 2023 é fixo e não é rebaseado
