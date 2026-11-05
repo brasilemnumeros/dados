@@ -22,11 +22,13 @@
   diferença: jul/1989, 35,9051% contra 35,90%). A composição da 28655 reproduz os 14 valores
   da tabela de 12 meses publicada pela FGV de nov/2024 a dez/2025; a da 0189 reproduz 8. Em
   out/2026, a composição dá 5,2369% (arredonda para 5,24%), igual ao publicado pela FGV.
-- **Verificação independente:** o Valor de 29/10/2026 publica 5,24% em 12 meses para out/2026
-  (`https://valor.globo.com/brasil/noticia/2026/10/29/igp-m.ghtml`); a Gazeta Mercantil e o UOL
-  repetem o valor, e a tabela mensal de 12 meses de 2026 do ToemCasa reproduz a série. A janela
-  sobreposta também confere: out/2025 = 0,92% e set/2026 = 3,34%. Todas as publicações citam a
-  FGV, portanto **não há segunda medição**. Busca feita em 05/11/2026.
+- **Verificação independente:** a Agência Brasil de 29/09/2026
+  (`https://agenciabrasil.ebc.com.br/economia/noticia/2026-09/igp-m-volta-subir-em-setembro-e-acumula-alta-de-334-em-12-meses`)
+  publica 3,34% em 12 meses em setembro/2026; o Quinto Andar
+  (`https://www.quintoandar.com.br/guias/dados-indices/igp-m-reajuste-de-aluguel-2026/`) e o
+  Brasil Indicadores (`https://brasilindicadores.com.br/igpm/`) publicam 5,24% em outubro/2026,
+  e a tabela mensal de 2026 reproduz os pontos. Todas as publicações citam a FGV, portanto
+  **não há segunda medição**. Busca feita em 05/11/2026.
 - **Limitações:** o IGP-M é índice de atacado e de reajuste contratual, não custo de vida; o
   acumulado de 12 meses não é a inflação do ano-calendário. De 1995-01 a 1995-07 o acumulado
   embute jul/ago-1994 na conversão URV da ADPF 77, com 4,33% e 3,94% na 28655, e não a variação

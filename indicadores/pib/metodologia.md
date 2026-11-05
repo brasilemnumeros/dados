@@ -18,10 +18,13 @@
   anos e fica a ≤0,05 p.p. da 5932 em 30 de 30. Choques: 2003 1,14; 2009 −0,13; 2015 −3,55;
   2016 −3,28; 2020 −3,28; 2021 4,76; 2024 3,42; 2025 2,29.
 - **Verificação independente:** o G1 de 03/03/2026
-  (`https://g1.globo.com/economia/noticia/2026/03/03/pib-2025.ghtml`) e a Agência Brasil da
-  mesma data publicam 2,3% para 2025 e 3,4% para 2024; a Folha de 07/03/2025
-  (`https://www1.folha.uol.com.br/mercado/2025/03/pib-cresce-3-4-em-2024.shtml`) publica 3,4%
-  para 2024. As três citam o IBGE; **não há segunda medição**. Busca feita em 05/11/2026.
+  (`https://g1.globo.com/economia/noticia/2026/03/03/pib-do-brasil-cresce-23percent-em-2025-diz-ibge.ghtml`)
+  e a Agência Brasil da mesma data
+  (`https://agenciabrasil.ebc.com.br/educacao/noticia/2026-03/economia-brasileira-cresce-23-em-2025-revela-ibge`)
+  publicam 2,3% para 2025; a Folha de 07/03/2025
+  (`https://www1.folha.uol.com.br/mercado/2025/03/pib-fecha-2024-com-alta-de-34-no-brasil.shtml`)
+  publica 3,4% para 2024. As três citam o IBGE; **não há segunda medição**. Busca feita em
+  05/11/2026.
 - **Limitações:** é a variação real do volume, não o nível do PIB nem o PIB per capita; anos
   sujeitos a revisão das Contas Nacionais.
 - **Revisão:** reexecutar o notebook não muda valor. Mudança de valor é revisão da fonte, e a
