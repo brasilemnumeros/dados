@@ -9,7 +9,7 @@
   "eixo": "por-100-mil",
   "medida": "nivel",
   "granularidade": "anual",
-  "fonte": "IPEA/Atlas da Violência (SIM/DATASUS); taxa por 100 mil calculada pelo site",
+  "fonte": "MS/SVS/CGIAE — SIM, compilado pelo Ipea/Atlas da Violência; população residente IBGE/Ipeadata (AVIOL12_VIOLPOP); taxa por 100 mil calculada pelo site",
   "urlFonte": "https://www.ipea.gov.br/atlasviolencia/dados-series/328/",
   "dados": [
     {

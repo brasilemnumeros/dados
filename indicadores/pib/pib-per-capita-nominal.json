@@ -9,8 +9,7 @@
   "eixo": "reais",
   "medida": "nivel",
   "granularidade": "anual",
-  "fonte": "IBGE (Contas Nacionais Anuais, SIDRA 6784)",
-  "urlFonte": "https://apisidra.ibge.gov.br/values/t/6784/n1/all/v/all/p/all?formato=json",
+  "fonte": "IBGE (Contas Nacionais Anuais, SIDRA 6784, até 2023; Contas Nacionais Trimestrais, 4º tri, para os anos seguintes)",
   "dados": [
     {
       "data": "1996-01-01",
@@ -123,6 +122,14 @@
     {
       "data": "2023-01-01",
       "valor": 51693.92
+    },
+    {
+      "data": "2024-01-01",
+      "valor": 55247.45
+    },
+    {
+      "data": "2025-01-01",
+      "valor": 59687.49
     }
   ]
 }

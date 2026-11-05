@@ -9,7 +9,7 @@
   "eixo": "percentual",
   "medida": "participacao",
   "granularidade": "anual",
-  "fonte": "IPEA/Atlas da Violência (SIM/DATASUS); 2014–2024: Atlas da Violência 2026 (FBSP/Ipea), Tabela 11.1 (PDF); proporção calculada pelo site",
+  "fonte": "MS/SVS/CGIAE — SIM, compilado pelo Ipea/Atlas da Violência; população residente IBGE/Ipeadata (AVIOL12_VIOLPOP); 2014 em diante: Atlas da Violência 2026 (FBSP/Ipea), Tabela 11.1 (PDF); proporção calculada pelo site",
   "urlFonte": "https://forumseguranca.org.br/wp-content/uploads/2026/05/atlas-violencia-2026-relatorio-completo.pdf",
   "dados": [
     {

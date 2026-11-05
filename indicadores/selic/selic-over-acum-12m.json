@@ -10,7 +10,7 @@
   "medida": "acumulado-12m",
   "granularidade": "mensal",
   "fonte": "Banco Central do Brasil (SGS 11); acumulado 12m calculado pelo site",
-  "urlFonte": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.11/dados?formato=json",
+  "urlFonte": "https://www.bcb.gov.br/estatisticas/txjuros",
   "dados": [
     {
       "data": "1995-12-01",

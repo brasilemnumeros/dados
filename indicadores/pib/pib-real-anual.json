@@ -9,7 +9,7 @@
   "eixo": "percentual",
   "medida": "variacao-anual",
   "granularidade": "anual",
-  "fonte": "IBGE",
+  "fonte": "IBGE (Contas Nacionais; leitura na SGS 7326 do BCB)",
   "urlFonte": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.7326/dados?formato=json",
   "dados": [
     {

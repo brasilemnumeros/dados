@@ -36,6 +36,9 @@ documento vale e a divergência é defeito a corrigir no mesmo commit.
   `participacao`) — não confundir com `granularidade`, que é o espaçamento das datas.
 - Cada ponto tem **exatamente** `{ "data": "YYYY-MM-DD", "valor": número finito }`;
   campo desconhecido é erro.
+- **Precisão:** o valor é gravado com a precisão da fonte quando ela é fixa (por exemplo, 2 casas
+  do BCB/IBGE); `unidade.casas` é só exibição. O arredondamento é declarado na metodologia da
+  família.
 - Datas ascendentes, um ponto por período (dia/mês/ano conforme a granularidade), data de
   calendário válida. Lacuna é **ausência de ponto** — nunca `null`, nunca zero.
 - **Corpus de conformidade:** `tests/contrato/` (`validos/` e `invalidos/`, o código da regra
@@ -93,7 +96,8 @@ uma família nunca conflita com o de outra no mesmo arquivo.
   sem reconstruir a linha do tempo.
 - Cada seção começa com **Definição**, **Fonte e código**, **Fórmula** e **Cobertura**; quando
   houver, acrescenta **Conferência**, **Verificação independente**, **Limitações**, **Licença e
-  atribuição** e **Condição de revisão**.
+  atribuição** e **Condição de revisão** (gatilho específico da fonte) ou **Revisão** (política
+  de reexecução). Os dois rótulos são válidos; a família deve usar o mesmo em todas as seções.
 - `tests/test_metodologia.py` reprova família sem `metodologia.md`, série sem seção, seção órfã,
   seção sem os quatro rótulos obrigatórios e reaparecimento dos rótulos históricos
   (`Fórmula atual`, `Fórmula proposta`, `Veredito`, `Impacto esperado`, `Decisão pendente`).
@@ -180,7 +184,7 @@ reutilizável `atualizar-familia.yml`. A cadência segue a fonte (UTC):
 | populacao | `0 15 5 9,10 *` | anual, após a estimativa de agosto |
 | homicidios | `0 15 15 7,8,12 *` | anual, com o Atlas |
 | meio-ambiente | `0 15 15 10 *` | anual, após a consolidação do PRODES |
-| pnad | `0 15 5,28 * *` | mensal, após a divulgação |
+| pnad | `0 15 5,30 * *` | mensal, após a divulgação |
 
 - As famílias `saude`, `saneamento`, `educacao` e `mobilidade` entraram em 2026-11-05 com uma
   série anual cada — mortalidade infantil, esgoto com rede coletora, Ideb dos anos iniciais

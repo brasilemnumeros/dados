@@ -9,8 +9,8 @@
   "eixo": "percentual",
   "medida": "acumulado-12m",
   "granularidade": "mensal",
-  "fonte": "IBGE",
-  "urlFonte": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.13522/dados?formato=json",
+  "fonte": "IBGE (SGS 13522)",
+  "urlFonte": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.13522/dados?formato=json&dataInicial=01/01/1995",
   "dados": [
     {
       "data": "1995-01-01",
