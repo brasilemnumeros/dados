@@ -10,7 +10,7 @@
   "medida": "nivel",
   "granularidade": "mensal",
   "fonte": "Banco Central do Brasil",
-  "urlFonte": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.432/dados?formato=json",
+  "urlFonte": "https://www.bcb.gov.br/controleinflacao/historicotaxasjuros",
   "dados": [
     {
       "data": "1999-03-01",
