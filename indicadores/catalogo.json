@@ -70,7 +70,7 @@
       "grupo": "crescimento",
       "arquivo": "pib/pib-per-capita-real.json",
       "escala": "moeda",
-      "descricao": "PIB por habitante em reais constantes de 2023, calculado pelo site a partir do PIB per capita corrente (SIDRA 6784, variável 9812) e da variação em volume oficial do PIB per capita (9814), com ano-base fixo em 2023. Mede a evolução do poder de compra médio; não é o valor nominal divulgado pelo IBGE.",
+      "descricao": "PIB por habitante em reais constantes de 2023, calculado pelo site a partir do PIB per capita corrente (SIDRA 6784 até 2023; Contas Nacionais Trimestrais para 2024–2025) e da variação real oficial, com ano-base fixo em 2023. Mede a evolução do poder de compra médio; não é o valor nominal divulgado pelo IBGE.",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pib/PIB.ipynb"
     },
     {

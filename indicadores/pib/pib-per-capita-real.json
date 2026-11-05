@@ -9,7 +9,7 @@
   "eixo": "reais",
   "medida": "nivel",
   "granularidade": "anual",
-  "fonte": "IBGE (Contas Nacionais Anuais, SIDRA 6784, PIB per capita corrente e variação em volume); cálculo do site (R$ de 2023)",
+  "fonte": "IBGE (Contas Nacionais Anuais, SIDRA 6784, até 2023; Contas Nacionais Trimestrais, 4º tri, para 2024–2025); cálculo do site (R$ de 2023)",
   "urlFonte": "https://apisidra.ibge.gov.br/values/t/6784/n1/all/v/all/p/all?formato=json",
   "dados": [
     {
@@ -123,6 +123,14 @@
     {
       "data": "2023-01-01",
       "valor": 51693.92
+    },
+    {
+      "data": "2024-01-01",
+      "valor": 53244.74
+    },
+    {
+      "data": "2025-01-01",
+      "valor": 54256.39
     }
   ]
 }
