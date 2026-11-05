@@ -156,6 +156,43 @@ def test_recusa_anual_fora_do_primeiro_dia():
     assert any(e.split(": ")[1] == "C15" for e in erros(s))
 
 
+def test_aceita_eixo_por_mil():
+    s = serie(eixo="por-mil", unidade={"tipo": "numero", "simbolo": "por mil", "casas": 1})
+    assert erros(s) == []
+
+
+def test_recusa_por_mil_com_unidade_percentual():
+    s = serie(eixo="por-mil", unidade={"tipo": "percentual", "simbolo": "%", "casas": 1})
+    assert any(e.split(": ")[1] == "C4" for e in erros(s))
+
+
+def test_aceita_bienal_com_lacuna():
+    s = serie(
+        granularidade="bienal",
+        dados=[
+            {"data": "2005-01-01", "valor": 3.8},
+            {"data": "2009-01-01", "valor": 4.6},
+        ],
+    )
+    assert erros(s) == []
+
+
+def test_recusa_bienal_fora_de_paridade():
+    s = serie(
+        granularidade="bienal",
+        dados=[
+            {"data": "2005-01-01", "valor": 3.8},
+            {"data": "2006-01-01", "valor": 4.2},
+        ],
+    )
+    assert any("paridade" in e for e in erros(s))
+
+
+def test_recusa_bienal_fora_do_inicio_do_ano():
+    s = serie(granularidade="bienal", dados=[{"data": "2006-02-01", "valor": 4.2}])
+    assert any(e.split(": ")[1] == "C15" for e in erros(s))
+
+
 def test_recusa_data_com_quebra_de_linha():
     s = serie(dados=[{"data": "2026-09-01\n", "valor": 5.0}])
     assert any(e.split(": ")[1] == "C9" for e in erros(s))

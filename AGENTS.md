@@ -28,10 +28,10 @@ documento vale e a divergência é defeito a corrigir no mesmo commit.
 - Os arquivos moram em `indicadores/<familia>/<id>.json`; o `id` é igual ao nome do arquivo
   sem `.json` e casa com `[a-z0-9-]+`.
 - Nível superior: `versao: 1` (única), `id`, `unidade` (`tipo`, `simbolo`, `casas`, opcional
-  `idioma`), `eixo`, `medida`, `granularidade` (`diaria` | `mensal` | `anual`), `fonte`,
+  `idioma`), `eixo`, `medida`, `granularidade` (`diaria` | `mensal` | `anual` | `bienal`), `fonte`,
   opcional `urlFonte`, `dados`.
-- `eixo` é a **comparabilidade declarada** (`percentual`, `reais`, `contagem`, `por-100-mil`);
-  obriga o `unidade.tipo` correspondente (`percentual`, `moeda`, `numero`).
+- `eixo` é a **comparabilidade declarada** (`percentual`, `reais`, `contagem`, `por-100-mil`,
+  `por-mil`); obriga o `unidade.tipo` correspondente (`percentual`, `moeda`, `numero`).
 - `medida` diz **o que o número é** (`nivel`, `acumulado-12m`, `variacao-anual`, `estoque`,
   `participacao`) — não confundir com `granularidade`, que é o espaçamento das datas.
 - Cada ponto tem **exatamente** `{ "data": "YYYY-MM-DD", "valor": número finito }`;

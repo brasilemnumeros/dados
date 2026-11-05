@@ -19,9 +19,9 @@ indicadores/<familia>/<id>.json
 | `versao` | sim | inteiro `1` |
 | `id` | sim | texto, `[a-z0-9-]+`, igual ao arquivo |
 | `unidade` | sim | objeto (abaixo) |
-| `eixo` | sim | `percentual` \| `reais` \| `contagem` \| `por-100-mil` |
+| `eixo` | sim | `percentual` \| `reais` \| `contagem` \| `por-100-mil` \| `por-mil` |
 | `medida` | sim | `nivel` \| `acumulado-12m` \| `variacao-anual` \| `estoque` \| `participacao` |
-| `granularidade` | sim | `diaria` \| `mensal` \| `anual` |
+| `granularidade` | sim | `diaria` \| `mensal` \| `anual` \| `bienal` |
 | `fonte` | sim | texto não vazio; instituição/fonte |
 | `urlFonte` | não | URL `https://` do recorte exato |
 | `dados` | sim | lista não vazia de `{data, valor}` |
@@ -47,6 +47,7 @@ Campo desconhecido no topo, no ponto ou na unidade é erro (C8.1).
 | `reais` | `moeda` |
 | `contagem` | `numero` |
 | `por-100-mil` | `numero` |
+| `por-mil` | `numero` |
 
 `eixo` é comparabilidade **declarada**: duas séries só dividem o mesmo eixo y se o `eixo` for
 igual. Não inferir por magnitude.
@@ -63,7 +64,9 @@ igual. Não inferir por magnitude.
 
 ## Granularidade
 
-`diaria` | `mensal` | `anual` — é o espaçamento das datas, não a frequência de publicação.
+`diaria` | `mensal` | `anual` | `bienal` — é o espaçamento das datas, não a frequência de
+publicação. `bienal` exige paridade de ano: todos os pontos em anos pares ou todos em anos
+ímpares (lacuna de 4 anos é permitida).
 
 ## Pontos
 
@@ -82,7 +85,7 @@ igual. Não inferir por magnitude.
 ## C15 — início do período
 
 - `mensal`: dia `01`, qualquer mês (`AAAA-MM-01`).
-- `anual`: `01-01` (`AAAA-01-01`).
+- `anual` e `bienal`: `01-01` (`AAAA-01-01`).
 - `diaria`: a data real do dia.
 
 ## Catálogo

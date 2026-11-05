@@ -37,13 +37,14 @@ PREFIXO_NOTEBOOK = "https://github.com/brasilemnumeros/dados/blob/main/indicador
 REGRA_NOTEBOOK = re.compile(r"[a-z0-9-]+/[^/]+\.ipynb")
 
 TIPOS_UNIDADE = ("percentual", "numero", "moeda")
-GRANULARIDADES = ("diaria", "mensal", "anual")
-EIXOS = ("percentual", "reais", "contagem", "por-100-mil")
+GRANULARIDADES = ("diaria", "mensal", "anual", "bienal")
+EIXOS = ("percentual", "reais", "contagem", "por-100-mil", "por-mil")
 TIPO_DO_EIXO = {
     "percentual": "percentual",
     "reais": "moeda",
     "contagem": "numero",
     "por-100-mil": "numero",
+    "por-mil": "numero",
 }
 MEDIDAS = ("nivel", "acumulado-12m", "variacao-anual", "estoque", "participacao")
 
@@ -77,7 +78,7 @@ def _data_valida(texto: str) -> bool:
 
 def _chave_periodo(data: str, granularidade: str) -> str:
     """C11 — dia, mês ou ano conforme a granularidade."""
-    if granularidade == "anual":
+    if granularidade in ("anual", "bienal"):
         return data[:4]
     if granularidade == "mensal":
         return data[:7]
@@ -85,8 +86,8 @@ def _chave_periodo(data: str, granularidade: str) -> str:
 
 
 def _inicio_do_periodo(data: str, granularidade: str) -> bool:
-    """C15 — a data é o primeiro dia do período (mensal: dia 01; anual: 01-01)."""
-    if granularidade == "anual":
+    """C15 — a data é o primeiro dia do período (mensal: dia 01; anual/bienal: 01-01)."""
+    if granularidade in ("anual", "bienal"):
         return data[5:] == "01-01"
     if granularidade == "mensal":
         return data[8:] == "01"
@@ -149,7 +150,7 @@ def validar_serie(serie: object, caminho: Path, checar_nome: bool = True) -> lis
 
     eixo = serie.get("eixo")
     if eixo not in EIXOS:
-        erro("C4", f"eixo {eixo!r} desconhecido (percentual|reais|contagem|por-100-mil)")
+        erro("C4", f"eixo {eixo!r} desconhecido (percentual|reais|contagem|por-100-mil|por-mil)")
     elif TIPO_DO_EIXO[eixo] != unidade.get("tipo"):
         erro(
             "C4",
@@ -167,7 +168,7 @@ def validar_serie(serie: object, caminho: Path, checar_nome: bool = True) -> lis
 
     granularidade = serie.get("granularidade")
     if granularidade not in GRANULARIDADES:
-        erro("C6", f"granularidade {granularidade!r} inválida (diaria|mensal|anual)")
+        erro("C6", f"granularidade {granularidade!r} inválida (diaria|mensal|anual|bienal)")
 
     fonte = serie.get("fonte")
     if not isinstance(fonte, str) or not fonte:
@@ -187,6 +188,7 @@ def validar_serie(serie: object, caminho: Path, checar_nome: bool = True) -> lis
 
     vistos: dict[str, int] = {}
     anterior: str | None = None
+    paridade_bienal: int | None = None
     for indice, ponto in enumerate(dados):
         if not isinstance(ponto, dict):
             erro("C8", f"ponto {indice}: não é um objeto")
@@ -212,12 +214,25 @@ def validar_serie(serie: object, caminho: Path, checar_nome: bool = True) -> lis
             continue
 
         if not _inicio_do_periodo(data, granularidade):
-            esperado = "YYYY-01-01" if granularidade == "anual" else "YYYY-MM-01"
+            esperado = (
+                "YYYY-01-01" if granularidade in ("anual", "bienal") else "YYYY-MM-01"
+            )
             erro(
                 "C15",
                 f"ponto {indice}: data {data!r} não é o início do período "
                 f"{granularidade} (esperado {esperado})",
             )
+
+        if granularidade == "bienal":
+            paridade = int(data[:4]) % 2
+            if paridade_bienal is None:
+                paridade_bienal = paridade
+            elif paridade != paridade_bienal:
+                erro(
+                    "C6",
+                    f"ponto {indice}: ano {data[:4]!r} quebra a paridade bienal "
+                    f"(esperado ano {'par' if paridade_bienal == 0 else 'ímpar'})",
+                )
 
         chave = _chave_periodo(data, granularidade)
         if chave in vistos:

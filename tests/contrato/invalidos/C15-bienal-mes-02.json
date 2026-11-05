@@ -1,0 +1,19 @@
+{
+  "versao": 1,
+  "id": "caso-invalido",
+  "unidade": {
+    "tipo": "numero",
+    "simbolo": "índice",
+    "casas": 1
+  },
+  "eixo": "contagem",
+  "medida": "nivel",
+  "granularidade": "bienal",
+  "fonte": "Instituto de Teste",
+  "dados": [
+    {
+      "data": "2006-02-01",
+      "valor": 4.2
+    }
+  ]
+}

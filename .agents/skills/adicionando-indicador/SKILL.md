@@ -168,10 +168,12 @@ achados `Critical`/`Important`/`Minor`. O prompt e o checklist estão em
 | `reais` | `moeda` |
 | `contagem` | `numero` |
 | `por-100-mil` | `numero` |
+| `por-mil` | `numero` |
 
 - `medida`: `nivel`, `acumulado-12m`, `variacao-anual`, `estoque`, `participacao`.
-- `granularidade`: `diaria`, `mensal`, `anual`.
-- C15: mensal `AAAA-MM-01`; anual `AAAA-01-01`; diária com a data real.
+- `granularidade`: `diaria`, `mensal`, `anual`, `bienal` (esta exige paridade de ano: todos os
+  pontos em anos pares ou todos em anos ímpares).
+- C15: mensal `AAAA-MM-01`; anual e bienal `AAAA-01-01`; diária com a data real.
 
 ## Catálogo
 
@@ -210,6 +212,7 @@ achados `Critical`/`Important`/`Minor`. O prompt e o checklist estão em
 - `mensal`: normalize para o primeiro dia do **mês de referência** (`AAAA-MM-01`); não use a
   data de publicação.
 - `anual`: `AAAA-01-01`.
+- `bienal`: `AAAA-01-01`, com paridade de ano obrigatória (todos pares ou todos ímpares).
 - `diaria`: a data real do dia.
 - Em pandas, `Timestamp(ano, mes, 1)` ou `Period(...).start_time`; para trimestre móvel, o
   primeiro dia do mês de encerramento.

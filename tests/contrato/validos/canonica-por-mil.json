@@ -1,0 +1,23 @@
+{
+  "versao": 1,
+  "id": "canonica-por-mil",
+  "unidade": {
+    "tipo": "numero",
+    "simbolo": "por mil",
+    "casas": 1
+  },
+  "eixo": "por-mil",
+  "medida": "nivel",
+  "granularidade": "anual",
+  "fonte": "Instituto de Teste",
+  "dados": [
+    {
+      "data": "1996-01-01",
+      "valor": 3.8
+    },
+    {
+      "data": "1997-01-01",
+      "valor": 4.1
+    }
+  ]
+}

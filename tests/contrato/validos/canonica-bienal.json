@@ -1,0 +1,27 @@
+{
+  "versao": 1,
+  "id": "canonica-bienal",
+  "unidade": {
+    "tipo": "numero",
+    "simbolo": "índice",
+    "casas": 1
+  },
+  "eixo": "contagem",
+  "medida": "nivel",
+  "granularidade": "bienal",
+  "fonte": "Instituto de Teste",
+  "dados": [
+    {
+      "data": "2005-01-01",
+      "valor": 3.8
+    },
+    {
+      "data": "2007-01-01",
+      "valor": 4.6
+    },
+    {
+      "data": "2011-01-01",
+      "valor": 5.2
+    }
+  ]
+}
