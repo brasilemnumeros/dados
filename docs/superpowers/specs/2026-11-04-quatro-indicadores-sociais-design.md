@@ -24,7 +24,7 @@ declaração atual mentir sobre o número**.
 | # | Série | Grupo | Família | Fonte | Cobertura | Unidade / eixo / medida | Granularidade |
 |---|---|---|---|---|---|---|---|
 | 1 | `mortalidade-infantil-anual` | `saude` (novo) | `saude` (nova) | MS/SIM + Sinasc, taxa por mil nascidos vivos | 1996–último ano fechado | `numero` / `por-mil` (**novo**) / `nivel` | anual |
-| 2 | `esgoto-rede-coletora-total` | `saneamento` (novo) | `saneamento` (nova) | SNIS/SINISA, população atendida com rede coletora | 1995–2024 | `percentual` / `percentual` / `nivel` | anual |
+| 2 | `esgoto-rede-coletora-total` | `saneamento` (novo) | `saneamento` (nova) | SNIS/SINISA, população atendida com rede coletora | 1995–2023 | `percentual` / `percentual` / `nivel` | anual |
 | 3 | `ideb-anos-iniciais` | `educacao` (novo) | `educacao` (nova) | Inep/Ideb, anos iniciais, rede total | 2005–2025 | `numero` / `contagem` / `nivel` | `bienal` (**novo**) |
 | 4 | `mortes-transito-anual` | `mobilidade` (novo) | `mobilidade` (nova) | MS/SIM, CID-10 V01–V99, taxa por 100 mil calculada pelo site | 1996–último ano fechado | `numero` / `por-100-mil` / `nivel` | anual |
 
@@ -58,7 +58,7 @@ corrigida por métodos demográficos — esta série não é essa.
 ### 2. Esgotamento sanitário — rede, não tratamento
 
 **Recomendação:** percentual da população total atendida com rede coletora de esgoto, Brasil,
-anual, de 1995 a 2024 (SNIS até 2023; Sinisa em 2024). É o indicador de saneamento com a
+anual, de 1995 a 2023 (SNIS até 2022; Sinisa em 2023). É o indicador de saneamento com a
 série mais longa e o que o cidadão entende sem glossário.
 
 **O que o número é:** população atendida por rede coletora dividida pela **população total
@@ -78,20 +78,28 @@ na metodologia como conferência, não no catálogo. Critério: duas séries qua
 entre elas **é o fenômeno** (nominal × real, meta × over); uma quando a diferença é o
 instrumento de medida.
 
-**Emenda SNIS → Sinisa:** o SNIS encerrou a coleta em 2023 e o Sinisa assumiu em 2024 com
-código novo (IES0001) e metodologia declarada equivalente. A série emenda os dois com a
-quebra documentada na metodologia e na descrição, e o notebook confere a sobreposição
-sempre que o Sinisa republicar um ano antigo.
+**Emenda SNIS → Sinisa:** o SNIS encerrou a coleta em 2023 com dados de **2022**; o Sinisa
+assumiu em **2023** com código novo (IES0001). Não há ano de sobreposição — a condição do
+critério abaixo não se aplica. A série emenda os dois com a quebra documentada na metodologia
+e na descrição; o degrau de 2022→2023 (−0,71 p.p.) é artefato de amostra e de troca de
+sistema, não queda real, e o notebook o registra como diagnóstico.
 
-**Critério de aceite da emenda:** comparar o ano de sobreposição (2023) calculado pelas duas
-fontes com o mesmo denominador. Se a diferença absoluta for **≤ 0,1 ponto percentual** —
-a unidade de arredondamento da série —, a emenda entra e a diferença medida vai para a
-metodologia. Acima disso, a série para no último ano do SNIS e a metodologia declara o
-motivo; não se ajusta o número para colar.
+**Critério de aceite da emenda:** quando houver ano de sobreposição, comparar o mesmo ano
+calculado pelas duas fontes com o mesmo denominador. Se a diferença absoluta for **≤ 0,1
+ponto percentual** — a unidade de arredondamento da série —, a emenda entra e a diferença
+medida vai para a metodologia. Acima disso, a série para no último ano da fonte antiga e a
+metodologia declara o motivo; não se ajusta o número para colar. Sem sobreposição, a emenda
+entra com a quebra declarada e o teste vira diagnóstico.
 
 **Caveat:** a amostra de municípios muda de ano para ano (o SNIS cobre ~5.3 mil dos 5.570
 municípios); a série mede o país, não um conjunto fixo de cidades. Crescimento do
-atendimento pode refletir entrada de município na amostra, não só obra.
+atendimento pode refletir entrada de município na amostra, não só obra. A rampa de
+1995–1999 é dominada pela entrada de municípios na amostra (1995→1996 sobe 13,85 p.p.);
+o começo da série não é uma "explosão" de obras.
+
+**2024 fica fora:** o IBGE muda a base populacional em 2024 (212,58 milhões contra 203,08
+milhões), o que criaria um degrau de denominador de ~4,6%. A série entra em 2024 quando
+houver população nacional comparável; até lá, o último ponto é 2023.
 
 ### 3. Ideb — o índice que exige `bienal`
 
