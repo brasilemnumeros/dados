@@ -1,0 +1,132 @@
+{
+  "versao": 1,
+  "id": "mortalidade-infantil-anual",
+  "unidade": {
+    "tipo": "numero",
+    "simbolo": "por mil",
+    "casas": 1
+  },
+  "eixo": "por-mil",
+  "medida": "nivel",
+  "granularidade": "anual",
+  "fonte": "MS/SVSA — SIM (óbitos de menores de 1 ano) e SINASC (nascidos vivos), microdados do DATASUS; taxa por mil nascidos vivos calculada pelo site: 1000 × óbitos ÷ nascidos vivos",
+  "urlFonte": "https://datasus.saude.gov.br/transferencia-de-arquivos/",
+  "dados": [
+    {
+      "data": "1996-01-01",
+      "valor": 25.47
+    },
+    {
+      "data": "1997-01-01",
+      "valor": 23.59
+    },
+    {
+      "data": "1998-01-01",
+      "valor": 22.77
+    },
+    {
+      "data": "1999-01-01",
+      "valor": 21.29
+    },
+    {
+      "data": "2000-01-01",
+      "valor": 21.27
+    },
+    {
+      "data": "2001-01-01",
+      "valor": 19.88
+    },
+    {
+      "data": "2002-01-01",
+      "valor": 19.26
+    },
+    {
+      "data": "2003-01-01",
+      "valor": 18.94
+    },
+    {
+      "data": "2004-01-01",
+      "valor": 17.9
+    },
+    {
+      "data": "2005-01-01",
+      "valor": 16.98
+    },
+    {
+      "data": "2006-01-01",
+      "valor": 16.41
+    },
+    {
+      "data": "2007-01-01",
+      "valor": 15.69
+    },
+    {
+      "data": "2008-01-01",
+      "valor": 15.03
+    },
+    {
+      "data": "2009-01-01",
+      "valor": 14.8
+    },
+    {
+      "data": "2010-01-01",
+      "valor": 13.93
+    },
+    {
+      "data": "2011-01-01",
+      "valor": 13.63
+    },
+    {
+      "data": "2012-01-01",
+      "valor": 13.46
+    },
+    {
+      "data": "2013-01-01",
+      "valor": 13.42
+    },
+    {
+      "data": "2014-01-01",
+      "valor": 12.9
+    },
+    {
+      "data": "2015-01-01",
+      "valor": 12.43
+    },
+    {
+      "data": "2016-01-01",
+      "valor": 12.72
+    },
+    {
+      "data": "2017-01-01",
+      "valor": 12.39
+    },
+    {
+      "data": "2018-01-01",
+      "valor": 12.18
+    },
+    {
+      "data": "2019-01-01",
+      "valor": 12.39
+    },
+    {
+      "data": "2020-01-01",
+      "valor": 11.52
+    },
+    {
+      "data": "2021-01-01",
+      "valor": 11.9
+    },
+    {
+      "data": "2022-01-01",
+      "valor": 12.59
+    },
+    {
+      "data": "2023-01-01",
+      "valor": 12.62
+    },
+    {
+      "data": "2024-01-01",
+      "valor": 12.56
+    }
+  ]
+}
