@@ -9,7 +9,7 @@
   "eixo": "percentual",
   "medida": "nivel",
   "granularidade": "anual",
-  "fonte": "SNIS - Série Histórica (ES001, 1995-2022) e Sinisa (2023): população total atendida com rede coletora de esgoto; percentual calculado pelo site sobre a população residente do Brasil do IBGE",
+  "fonte": "SNIS - Série Histórica (ES001, 1995-2022) e Sinisa (2023): população total atendida com rede coletora de esgoto; cálculo próprio do BrasilemNúmeros a partir da população residente do Brasil do IBGE",
   "urlFonte": "https://app4.cidades.gov.br/serieHistorica/",
   "dados": [
     {
