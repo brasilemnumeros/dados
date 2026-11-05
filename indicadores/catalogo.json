@@ -43,7 +43,7 @@
       "grupo": "inflacao",
       "arquivo": "igp-m/igpm-acum-12m.json",
       "escala": "percentual",
-      "descricao": "Variação acumulada do Índice Geral de Preços do Mercado (IGP-M) em 12 meses",
+      "descricao": "Variação acumulada em 12 meses do IGP-M, índice de preços ao atacado usado em reajuste de contratos — não é a inflação ao consumidor (IPCA).",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/igp-m/IGP-M.ipynb"
     },
     {
@@ -52,7 +52,7 @@
       "grupo": "crescimento",
       "arquivo": "pib/pib-real-anual.json",
       "escala": "percentual",
-      "descricao": "Variação anual do PIB em volume (PIB real), em relação ao ano anterior",
+      "descricao": "Variação anual do PIB total (não per capita) em volume, em relação ao ano anterior.",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pib/PIB.ipynb"
     },
     {
@@ -61,7 +61,7 @@
       "grupo": "crescimento",
       "arquivo": "pib/pib-per-capita-nominal.json",
       "escala": "moeda",
-      "descricao": "PIB por habitante a preços correntes, em reais do próprio ano, de 1996 a 2023 — o número oficial das Contas Nacionais Anuais (IBGE). É nominal: o crescimento ao longo do tempo mistura inflação e não mede poder de compra.",
+      "descricao": "PIB por habitante a preços correntes, em reais do próprio ano — o número oficial das Contas Nacionais (IBGE). É nominal: o crescimento ao longo do tempo mistura inflação e não mede poder de compra.",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pib/PIB.ipynb"
     },
     {
@@ -115,7 +115,7 @@
       "grupo": "trabalho",
       "arquivo": "pnad/pnad-desocupacao.json",
       "escala": "percentual",
-      "descricao": "Percentual da força de trabalho (pessoas de 14 anos ou mais) que estava desocupada no trimestre móvel encerrado no mês, segundo a PNAD Contínua (IBGE). Cada ponto é o trimestre móvel, não o mês isolado.",
+      "descricao": "Percentual das pessoas de 14 anos ou mais na força de trabalho que estavam desocupadas no trimestre móvel encerrado no mês, segundo a PNAD Contínua (IBGE). Cada ponto é o trimestre móvel, não o mês isolado.",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pnad/PNAD.ipynb"
     },
     {
