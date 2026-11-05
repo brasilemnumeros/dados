@@ -180,7 +180,7 @@ reutilizável `atualizar-familia.yml`. A cadência segue a fonte (UTC):
 | populacao | `0 15 5 9,10 *` | anual, após a estimativa de agosto |
 | homicidios | `0 15 15 7,8,12 *` | anual, com o Atlas |
 | meio-ambiente | `0 15 15 10 *` | anual, após a consolidação do PRODES |
-| pnad | `0 15 5,28 * *` | mensal, após a divulgação |
+| pnad | `0 15 5,30 * *` | mensal, após a divulgação |
 
 - As famílias `saude`, `saneamento`, `educacao` e `mobilidade` entraram em 2026-11-05 com uma
   série anual cada — mortalidade infantil, esgoto com rede coletora, Ideb dos anos iniciais

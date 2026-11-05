@@ -2,7 +2,7 @@
 name: atualizar pnad
 on:
   schedule:
-    - cron: '0 15 5,28 * *'
+    - cron: '0 15 5,30 * *'
   workflow_dispatch:
     inputs:
       seco:

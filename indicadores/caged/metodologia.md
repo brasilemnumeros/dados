@@ -13,7 +13,10 @@
 - **Fórmula:** nenhuma. A série oficial de estoque é buscada, recortada nos meses fechados e
   formatada. O saldo mensal não é calculado nem publicado: o número é o nível de vínculos.
 - **Cobertura:** 1995-01 a 2026-08, **380 pontos**, sem lacuna. A fonte começa em 1992; o recorte
-  em 1995-01 é mantido porque o gráfico só exibe a partir de 1995.
+  em 1995-01 é mantido porque o gráfico só exibe a partir de 1995. A cobertura é a vintage da
+  SGS 28763: o MTE divulga o mês seguinte alguns dias antes de o SGS incorporar. Em 05/11/2026 a
+  SGS termina em 2026-08, enquanto o MTE já publicou 2026-09 em 04/11/2026; o cron de dia 3/10
+  recolhe no ciclo seguinte.
 - **Conferência:** o nível anda entre 19,6 e 48,2 milhões; o maior movimento mensal da série é
   −981.331 (2020-04, 2,6% do nível). A variação mensal do estoque é o saldo líquido de admissões
   e desligamentos da mesma vintage — a identidade vale dentro de cada divulgação, e revisões

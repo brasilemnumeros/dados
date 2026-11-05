@@ -6,7 +6,8 @@
   mediana dos valores de **avaliação** dos imóveis residenciais dados em garantia a
   financiamentos imobiliários de pessoas físicas (alienação fiduciária e hipoteca residencial),
   informados ao SCR — janela móvel de 3 meses, cobertura nacional, operações com valor
-  contratado acima de 13,3 salários mínimos mensais. É nível de **valor de garantia** mediano em
+  contratado superior a um salário mínimo anual, dado como 13,3 vezes o salário mínimo mensal
+  vigente no ano. É nível de **valor de garantia** mediano em
   reais, não preço de mercado, índice de preços ou massa agregada. `moeda` (`R$`, 0 casas),
   `eixo: reais`, `medida: nivel`, `mensal`.
 - **Fonte e código:** Banco Central do Brasil (SCR), SGS **25419**. Endpoint:
@@ -66,7 +67,9 @@
   insumo nominal; **não há segunda medição do MVG-R real**, que é derivação do site. Busca
   feita em 05/11/2026.
 - **Limitações:** é um nível deflacionado, não um índice de preços constante-quality nem a
-  valorização do mesmo imóvel; a composição da amostra do MVG-R muda. O número em reais de
-  mar/2004 não é preço de hoje.
+  valorização do mesmo imóvel; a composição da amostra do MVG-R muda. O deflator é o nível de
+  preço do centro da janela de 3 meses, não o IPCA do próprio mês: a diferença chega a +0,89%
+  (mar/2022), −0,98% (ago/2022) e −0,70% (ago/2026), justamente quando a inflação corre. O
+  número em reais de mar/2004 não é preço de hoje.
 - **Revisão:** reexecutar o notebook não muda valor além da revisão das fontes (SCR e IPCA).
   Mudança de valor é revisão da fonte, e a revisão é registrada neste arquivo antes de publicar.

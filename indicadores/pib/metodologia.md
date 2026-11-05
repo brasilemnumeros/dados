@@ -11,11 +11,13 @@
   formata e confere cada ponto contra duas publicações do IBGE. A tabela 6784 não é usada: em
   2018 e 2019 traz 1,7 e 1,3 contra 1,8 e 1,2 das tabelas de nível (inconsistência interna do
   IBGE; a soma dos dois anos é a mesma), enquanto a 7326 mantém 2 casas e a série completa.
-- **Cobertura:** 1995–2025, **31 pontos**. O corte em 1995 é editorial: a SGS vai a 1963, mas
+- **Cobertura:** desde 1995 até o último ano fechado — **31 pontos na edição atual**. O corte em
+  1995 é editorial: a SGS vai a 1963, mas
   antes de 1995 os números vêm da base de volume anterior. 1995 é o único ponto sem conferência
   possível, porque o IBGE só publica taxa a partir de 1996.
-- **Conferência:** a 7326 é idêntica ao centésimo à taxa recomposta do índice 1620 em 29 de 29
-  anos e fica a ≤0,05 p.p. da 5932 em 30 de 30. Choques: 2003 1,14; 2009 −0,13; 2015 −3,55;
+- **Conferência:** a 7326 fica a menos de 0,01 p.p. (máximo 0,006) da taxa recomposta do índice
+  1620 em 29 de 29 anos e a ≤0,05 p.p. da 5932 em 30 de 30. Choques: 2003 1,14; 2009 −0,13;
+  2015 −3,55;
   2016 −3,28; 2020 −3,28; 2021 4,76; 2024 3,42; 2025 2,29.
 - **Verificação independente:** o G1 de 03/03/2026
   (`https://g1.globo.com/economia/noticia/2026/03/03/pib-do-brasil-cresce-23percent-em-2025-diz-ibge.ghtml`)
@@ -47,10 +49,11 @@
 - **Fórmula:** nenhuma — o IBGE publica o nível. A emenda 2023/2024 é declarada: a 6784 para em
   2023 e o caderno trimestral publica 2024 = R$ 55.247,45 e 2025 = R$ 59.687,49.
 - **Cobertura:** 1996–2025, **30 pontos**. 2024–2025 vêm do fechamento anual das Contas
-  Trimestrais porque a tabela anual 6784 ainda não os publicou.
-- **Conferência:** 1996 R$ 5.219,36; 2023 R$ 51.693,92; 2024 R$ 55.247,45; 2025 R$ 59.687,49
-  (máximo); mínimo R$ 5.219,36 (1996); crescimento nominal de **1.043,6%** no período 1996–2025
-  (890,4% no recorte 1996–2023).
+  Trimestrais porque a tabela anual 6784 ainda não os publicou. A tabela anual tem defasagem de
+  ~2 anos; o caderno trimestral fecha o ano seguinte e é a fonte dos pontos novos.
+- **Conferência:** 1996 R$ 5.219,36; 2023 R$ 51.693,92; 2024 R$ 55.247,45; 2025 R$ 59.687,49;
+  mínimo R$ 5.219,36 (1996); crescimento nominal de **1.043,6%** no período 1996–2025 (890,4%
+  no recorte 1996–2023).
 - **Verificação independente:** a Carta Capital de 06/11/2025 cita “PIB per capita de 2023 foi
   equivalente a 51.693,92 reais”
   (`https://www.cartacapital.com.br/economia/ibge-confirma-crescimento-de-32-da-economia-em-2023/`);
@@ -66,7 +69,7 @@
   Todas citam o IBGE; **não há segunda medição**. Busca feita em 05/11/2026.
 - **Limitações:** é nominal — o crescimento ao longo do tempo mistura inflação e não mede poder
   de compra; é anual; a tabela 6784 para em 2023 e 2024–2025 são lidos do fechamento anual das
-  Contas Trimestrais.
+  Contas Trimestrais. O valor é arredondado a 2 casas, a mesma precisão da fonte.
 - **Revisão:** reexecutar o notebook não muda valor. Mudança de valor é revisão da fonte, e a
   revisão é registrada neste arquivo antes de publicar. O nível de 2024–2025 é a primeira
   estimativa anual do caderno do 4º tri; uma revisão entra quando a 6784 publicar o ano.
@@ -98,12 +101,23 @@
   nível de 2023; a checagem do notebook é só de consistência do encadeamento.
 - **Verificação independente:** não há publicação de terceiro com esta série em reais de 2023 —
   a busca encontrou apenas o nível nominal e séries internacionais de PIB per capita em US$
-  (Banco Mundial/FMI), que usam outra moeda, outra base e, às vezes, PPP. A conferência é
-  interna, contra as três variáveis oficiais da 6784.
+  (Banco Mundial/FMI), que usam outra moeda, outra base e, às vezes, PPP. A **variação** de
+  +38,7% no recorte 1996–2023 é corroborada pela Fundação Perseu Abramo, *29 anos de economia
+  brasileira 1995/2023* (nov/2025, p. 70,
+  `https://fpabramo.org.br/editora/wp-content/uploads/sites/17/2025/11/29-anos-anos-de-economia-brasileira-1995-2023.pdf`):
+  o índice do PIB a preços de 2010 (1994=100) vai de 106,53 em 1996 a 190,96 em 2023 (1,7925×),
+  e dividido pelo crescimento populacional da 6784 dá 1,3867 → +38,7%. Não há segunda medição
+  nem nível de terceiro em R$ de 2023. A conferência interna é contra as três variáveis
+  oficiais da 6784. Busca feita em 05/11/2026.
 - **Limitações:** é uma série **derivada** (o número em R$ de 2023 não é o que o IBGE divulga);
   o ano-base é escolha de apresentação; 2024–2025 usam a variação real do caderno trimestral,
-  não a variável 9814 (que ainda para em 2023); não deve ser comparada numericamente com PIB
-  per capita em US$ de organismos internacionais.
+  não a variável 9814 (que ainda para em 2023); o nível é o per capita oficial da 6784, com o
+  denominador da projeção do IBGE (211,70 milhões em 2023), não o do Censo 2022 (203,08
+  milhões) — por isso pode diferir de publicações de contas regionais. O deflator citado como
+  7,12× é a cadeia da 9811; a razão entre as duas séries publicadas dá ≈7,1×. O valor é
+  arredondado a 2 casas, a mesma precisão da fonte. Não deve ser comparada numericamente com PIB
+  per capita em US$ de organismos internacionais. A próxima edição das Contas Nacionais vem na
+  base 2021 e reescreve a série inteira.
 - **Revisão:** reexecutar o notebook não muda valor. Mudança de valor é revisão da fonte, e a
   revisão é registrada neste arquivo antes de publicar. O nível de 2024–2025 é a primeira
   estimativa anual do caderno do 4º tri; uma revisão entra quando a 6784 publicar o ano.

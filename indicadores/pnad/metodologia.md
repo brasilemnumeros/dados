@@ -19,8 +19,8 @@
 - **Cobertura:** 2012-03 a 2026-09, **175 trimestres móveis**, sem lacuna. 2012-03 é o primeiro
   trimestre móvel da PNAD Contínua mensal.
 - **Conferência:** primeiro `8,0%` (jan–fev–mar/2012); último `5,2%` (jul–ago–set/2026); máximo
-  `14,9%` (jul–ago–set/2020); mínimo `5,1%` (out–dez/2025). Contra o mesmo trimestre do ano
-  anterior, `5,6% → 5,2%` em set/2026.
+  `14,9%`, empatado em jul–ago–set/2020 e jan–fev–mar/2021; mínimo `5,1%` (out–dez/2025).
+  Contra o mesmo trimestre do ano anterior, `5,6% → 5,2%` em set/2026.
 - **Verificação independente:** o Estadão de 30/10/2026
   (`https://www.estadao.com.br/economia/ibge-pnad-desemprego-setembro-2026/`) publica 5,2%
   para jul–set/2026, 5,4% para abr–jun e 5,6% para jul–set/2025; a Folha
@@ -49,7 +49,10 @@
   `eixo: percentual`, `medida: nivel`, `granularidade: mensal`.
 - **Fonte e código:** IBGE, PNAD Contínua mensal, tabela SIDRA **5944**, variável **4096**,
   Brasil (N1). Endpoint:
-  `https://apisidra.ibge.gov.br/values/t/5944/n1/all/v/4096/p/all?formato=json`.
+  `https://apisidra.ibge.gov.br/values/t/5944/n1/all/v/4096/p/all?formato=json`. O trimestre
+  móvel é divulgado cerca de um mês após o encerramento; a pesquisa é republicada por inteiro a
+  cada divulgação, e a reponderação de 31/07/2025 reexpressou as estimativas na nova base
+  populacional.
 - **Fórmula:** nenhuma — série oficial. Cobertura e recorte iguais aos da desocupação.
 - **Cobertura:** 2012-03 a 2026-09, **175 pontos**, sem lacuna.
 - **Conferência:** primeiro `62,3%`; último `62,2%`; máximo `63,6%` (abr–jun/2019); mínimo
@@ -78,14 +81,17 @@
   Brasil (N1). Endpoint:
   `https://apisidra.ibge.gov.br/values/t/6379/n1/all/v/4097/p/all?formato=json`.
 - **Fórmula:** nenhuma — série oficial. Cobertura e recorte iguais aos da desocupação.
-- **Cobertura:** 2012-03 a 2026-09, **175 pontos**, sem lacuna.
+- **Cobertura:** 2012-03 a 2026-09, **175 pontos**, sem lacuna. O trimestre móvel é divulgado
+  cerca de um mês após o encerramento; a série publicada está sempre ~1 mês atrás do calendário.
 - **Conferência:** primeiro `57,3%`; último `59,0%`; mínimo `48,4%` (jun–ago/2020); máximo
   `59,0%` (set–out–nov/2025 e jul–ago–set/2026). É o produto da participação pela fração de
-  ocupados na força de trabalho; a identidade usa a mesma tolerância de 0,15 p.p.
+  ocupados na força de trabalho; a identidade usa a mesma tolerância de 0,15 p.p.; o resíduo
+  máximo medido é 0,1125 p.p. em 2019-02.
 - **Verificação independente:** o Dadobruto (out/2026,
   `https://dadobruto.com/analises/mercado-de-trabalho`) cita `59,0%` em nov/2025 e `58,9%` em
   jun–ago/2026, iguais aos pontos `2025-11` e `2026-08`; o informativo da SPE/Fazenda de
-  out/2026 traz o mesmo 59,0%. A divulgação do IBGE de 30/10/2026 também traz `59,0%`, mas é o
+  out/2026 traz o mesmo 59,0%. A divulgação do IBGE de 30/10/2026 também traz `59,0%`
+  (`https://biblioteca.ibge.gov.br/visualizacao/periodicos/3086/pnacm_2026_set.pdf`), mas é o
   produtor e não conta como publicação externa. As publicações citam o IBGE; **não há segunda
   medição**. Busca feita em 05/11/2026.
 - **Limitações:** não substitui a leitura das três séries do mercado de trabalho, porque cada uma
@@ -114,14 +120,17 @@
   cerca de um mês após o encerramento; a série publicada está sempre ~1 mês atrás do calendário.
 - **Conferência:** primeiro `3.179`; último `3.790`; mínimo `3.074` (out–nov–dez/2021); máximo
   `3.811` (jan–fev–mar/2026), leitura da edição de 30/10/2026. No último trimestre, `3.790` está
-  abaixo do pico de 2026-03, e o piso da série é a pandemia.
+  abaixo do pico de 2026-03; o piso é out–nov–dez/2021, no auge da perda de poder de compra,
+  não o pico da pandemia.
 - **Verificação independente:** a Folha de S.Paulo de 30/10/2026 cita “renda média do trabalho em
   R$ 3.790 por mês no trimestre até setembro”
   (`https://www1.folha.uol.com.br/mercado/2026/10/desemprego-fica-em-52-e-tem-menor-taxa-ate-setembro-na-serie-historica.shtml`);
   o UOL
   (`https://economia.uol.com.br/noticias/estadao-conteudo/2026/10/30/taxa-de-desemprego-no-brasil-cai-para-52-no-trimestre-ate-setembro-mostra-ibge.htm`)
-  e O Globo citam o mesmo `R$ 3.790` para jul–ago–set/2026, igual ao ponto `2026-09`. As três
-  citam o IBGE; **não há segunda medição**. Busca feita em 05/11/2026.
+  e o G1/O Globo
+  (`https://g1.globo.com/jornal-nacional/noticia/2026/10/30/terceiro-trimestre-de-2026-tem-o-menor-numero-de-desempregados-para-o-periodo-desde-2012.ghtml`)
+  citam o mesmo `R$ 3.790` para jul–ago–set/2026, igual ao ponto `2026-09`. As três citam o
+  IBGE; **não há segunda medição**. Busca feita em 05/11/2026.
 - **Limitações:** é rendimento do trabalho das pessoas ocupadas **com rendimento**, não renda
   domiciliar per capita; é habitual, não efetivamente recebido; é média (não mediana) e não tem
   recorte regional nem ajuste sazonal; o trimestre móvel é lido como mês de encerramento. A base

@@ -13,7 +13,9 @@
   usada porque mistura populações de vintages diferentes (Contagem em 1996, Estimativas TCU em
   1997–2003 e 2016, IBGE/Diretoria de Pesquisas em 2004–2015), o que produz um patchwork de
   denominadores.
-- **Cobertura:** 1995–2024, **30 pontos**, sem lacuna.
+- **Cobertura:** 1995–2024, **30 pontos**, sem lacuna. O corte em 1995 é editorial: alinha a
+  série às demais famílias; a série 328 tem 1989–1994, mas esse trecho usa a definição CID-9/SIM
+  da década de 1990 e não é emendado ao bloco CID-10.
 - **Conferência:** 2007 `48.219 ÷ 189.462.739 × 100.000 = 25,45`, igual à taxa pronta atual;
   2012 `57.045 ÷ 199.239.473 = 28,63` contra 28,86 da taxa pronta (denominador implícito de
   197,7 milhões); 2020 23,55 contra 23,84 da taxa pronta (−0,29; denominador implícito de
@@ -49,7 +51,7 @@
   do Atlas devolve 404 e trazia a data de publicação (`YYYY-01-15`) como referência.
 - **Cobertura:** 1995–2024, **30 pontos**, sem lacuna.
 - **Conferência:** 2007 `34.147 ÷ 189.462.739 = 18,02`; 2012 `40.077 ÷ 199.239.473 = 20,11`;
-  2013 `40.369 ÷ 201.032.714 = 20,08`; 2019 `32.091 ÷ 210.131.314 = 15,27`. Bloco 2014–2024:
+  2013 `40.369 ÷ 201.029.717 = 20,08`; 2019 `32.091 ÷ 210.131.314 = 15,27`. Bloco 2014–2024:
 
   | ano | homicídios por arma | taxa |
   |---:|---:|---:|
@@ -92,7 +94,9 @@
 - **Definição:** participação percentual dos homicídios por armas de fogo no total de homicídios.
   `percentual` (`%`, 2 casas), `eixo: percentual`, `medida: participacao`, `anual`.
 - **Fonte e código:** derivada das contagens de armas (série 31 até 2013; Atlas da Violência 2026,
-  Tabela 11.1, em 2014–2024) e do total (série 328).
+  Tabela 11.1, em 2014–2024) e do total (série 328). O `urlFonte` do JSON aponta para o PDF do
+  Atlas, que cobre o bloco de armas a partir de 2014; os pontos de 1995–2013 vêm da API do Ipea
+  (séries 31 e 328), cujos endpoints estão na seção `homicidios-armas-fogo-anual`.
 - **Fórmula:** `100 × homicídios_armas ÷ homicídios_total`, direto das contagens, nos anos em que
   ambas existem. A razão entre as duas taxas só é igual a isso quando as duas usam o mesmo
   denominador — o que não acontece em vários anos.

@@ -18,10 +18,11 @@
   demografia. A SIDRA 6579 como série contínua também é descartada: 2001–2021 misturam safras
   de anos diferentes (degrau de 2013: 193,9 → 201,0 milhões num ano) e faltam 2007, 2010, 2022 e
   2023.
-- **Cobertura:** 2000–2026, **27 pontos**. A revisão não tem série conciliada antes de 2000, por
-  isso o começo é 2000. O fim é a última estimativa anual publicada no DOU (SIDRA 6579,
-  divulgação de agosto); os anos seguintes da planilha (até 2070) são projeção, não estimativa
-  publicada, e ficam fora. A defasagem é de agosto: a série é atualizada na execução seguinte.
+- **Cobertura:** desde 2000 até a última estimativa publicada no DOU — **27 pontos na revisão
+  atual**. A revisão não tem série conciliada antes de 2000, por isso o começo é 2000. O fim é a
+  última estimativa anual publicada no DOU (SIDRA 6579, divulgação de agosto); os anos seguintes
+  da planilha (até 2070) são projeção, não estimativa publicada, e ficam fora. A defasagem é de
+  agosto: a série é atualizada na execução seguinte.
 - **Conferência:** 2000 = 174.695.935; 2010 = 194.749.329; 2020 = 209.164.889; 2022 =
   210.862.983; 2024 = 212.583.750; 2026 = 214.211.951. O Censo 2022 (203.080.756 em 1º/8) não é
   revisado; a revisão 2024 trabalha com população **conciliada** (210.862.983 em 1º/7, ajuste
@@ -50,9 +51,10 @@
 - **Fórmula:** nenhuma. `TCG_T` é exatamente `(P_t/P_{t−1} − 1) × 100`; a identidade é conferida
   nos 26 pontos, com resíduo máximo de 4,2×10⁻¹⁵ p.p. O primeiro ponto é 2001, porque 2000 é
   denominador.
-- **Cobertura:** 2001–2026, **26 pontos**, todos positivos. Herda a regra de corte da população
-  total: termina na última estimativa publicada no DOU (SIDRA 6579, divulgação de agosto); os
-  anos seguintes da projeção ficam fora.
+- **Cobertura:** desde 2001 até a última estimativa publicada no DOU — **26 pontos na revisão
+  atual**, todos positivos. Herda a regra de corte da população total: termina na última
+  estimativa publicada (SIDRA 6579, divulgação de agosto); os anos seguintes da projeção ficam
+  fora.
 - **Conferência:** 2001 1,3210; 2010 0,8155; 2020 0,6084; 2022 0,3614; 2024 0,4198; 2026
   0,3706.
 - **Verificação independente:** a Agência Brasil de 28/08/2026
