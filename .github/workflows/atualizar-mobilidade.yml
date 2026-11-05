@@ -2,7 +2,7 @@
 name: atualizar mobilidade
 on:
   schedule:
-    - cron: '0 15 10 6 *'
+    - cron: '0 15 10 1,9 *'
   workflow_dispatch:
     inputs:
       seco:

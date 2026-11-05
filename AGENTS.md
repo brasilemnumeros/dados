@@ -151,7 +151,7 @@ reutilizável `atualizar-familia.yml`. A cadência segue a fonte (UTC):
 | saude | `0 15 10 6 *` | anual, após o fechamento do SIM e do SINASC |
 | saneamento | `0 15 10 4 *` | anual, após a publicação do Sinisa |
 | educacao | `0 15 10 9 *` | anual, após a divulgação do Ideb (agosto) |
-| mobilidade | `0 15 10 6 *` | anual, após o fechamento do SIM |
+| mobilidade | `0 15 10 1,9 *` | anual, após o fechamento do SIM (janeiro e setembro) |
 | populacao | `0 15 5 9,10 *` | anual, após a estimativa de agosto |
 | homicidios | `0 15 15 7,8,12 *` | anual, com o Atlas |
 | meio-ambiente | `0 15 15 10 *` | anual, após a consolidação do PRODES |

@@ -81,8 +81,9 @@ instrumento de medida.
 **Emenda SNIS → Sinisa:** o SNIS encerrou a coleta em 2023 com dados de **2022**; o Sinisa
 assumiu em **2023** com código novo (IES0001). Não há ano de sobreposição — a condição do
 critério abaixo não se aplica. A série emenda os dois com a quebra documentada na metodologia
-e na descrição; o degrau de 2022→2023 (−0,71 p.p.) é artefato de amostra e de troca de
-sistema, não queda real, e o notebook o registra como diagnóstico.
+e na descrição; o degrau de 2022→2023 (−0,71 p.p.) vem sobretudo de amostra e de troca de
+sistema — não é comparável a uma queda de cobertura do mesmo sistema — e o notebook o registra
+como diagnóstico.
 
 **Critério de aceite da emenda:** quando houver ano de sobreposição, comparar o mesmo ano
 calculado pelas duas fontes com o mesmo denominador. Se a diferença absoluta for **≤ 0,1
@@ -237,8 +238,10 @@ natural de leitura (economia → condições de vida → população → seguran
 - **Datasus (mortalidade e trânsito):** TabNet não é API estável; o plano prevê o caminho
   de microdados (SIM/Sinasc) com fórmula declarada e conferência contra a taxa publicada.
   Se o download oficial mudar, o notebook falha alto — não cai para número de terceiro.
-- **SNIS → Sinisa:** quebra de sistema em 2024. A emenda é documentada e conferida; se a
-  sobreposição divergir, a série para em 2023 e a metodologia declara o motivo.
+- **SNIS → Sinisa:** quebra de sistema em 2023, sem ano de sobreposição. A emenda é
+  documentada e o degrau de 2022→2023 é diagnóstico. Se um dia houver sobreposição e a
+  diferença passar de 0,1 p.p., a série para no último ano da fonte antiga (2022) e a
+  metodologia declara o motivo.
 - **Ideb:** XLSX do Inep muda de nome a cada edição; o notebook resolve o arquivo do ano e
   falha se não achar, em vez de reaproveitar safra velha.
 - **Contrato em dois repos:** o `sitio` precisa da emenda antes da publicação das séries

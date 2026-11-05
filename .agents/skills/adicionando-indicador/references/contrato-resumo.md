@@ -77,7 +77,7 @@ publicação. `bienal` exige paridade de ano: todos os pontos em anos pares ou t
 - Exatamente `data` e `valor`.
 - `data`: `YYYY-MM-DD`, calendário válido.
 - `valor`: número finito; nunca booleano, `null` ou texto.
-- Um ponto por período: dia (diária), `AAAA-MM` (mensal), `AAAA` (anual).
+- Um ponto por período: dia (diária), `AAAA-MM` (mensal), `AAAA` (anual e bienal).
 - Datas estritamente ascendentes.
 - Lacuna = ausência de ponto; não usar `null` nem zero de preenchimento.
 - A última data pode ser período aberto; nenhum consumidor extrapola.
