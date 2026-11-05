@@ -1,0 +1,37 @@
+# Metodologia — Fiscal
+
+## divida-liquida-pib
+
+- **Definição:** razão entre a dívida líquida do setor público consolidado no fim do mês —
+  dívida do setor público (União, INSS, estados, municípios, estatais, exceto Petrobras e
+  Eletrobras, e Banco Central) descontados os ativos financeiros, inclusive as reservas
+  internacionais — e o PIB nominal acumulado nos 12 meses encerrados naquele mês, em %.
+  `percentual` (`%`, 1 casa), `eixo: percentual`, `medida: nivel`, granularidade `mensal`.
+- **Fonte e código:** Banco Central do Brasil — Estatísticas Fiscais, SGS **4513** (“Dívida
+  líquida do setor público consolidado, % do PIB”). Endpoint:
+  `https://api.bcb.gov.br/dados/serie/bcdata.sgs.4513/dados?formato=json`. O SGS entrega `data`
+  em `DD/MM/AAAA` e `valor` como texto; o notebook converte para `float` e não arredonda. O mês
+  corrente é descartado.
+- **Fórmula:** nenhuma. A série é oficial e já calculada; o notebook busca, corta o mês aberto e
+  normaliza a data para o primeiro dia do mês (C15). Não é emendada com o IPEADATA
+  (`PAN12_DTSPY12`, desde 1991), que é a mesma série transcrita por outro canal e exigiria uma
+  emenda de safra.
+- **Cobertura:** 2001-12 a 2026-09, **298 pontos**, sem lacuna. A série começa em dez/2001 no
+  SGS.
+- **Conferência:** primeiro ponto `2001-12 = 51,49%`; último `2026-09 = 69,98%`. Os valores
+  conferem com a Tabela 4 das Estatísticas Fiscais do BCB. O denominador é o PIB corrente de 12
+  meses estimado pelo BCB; quando o IBGE revisa as Contas Nacionais, a série inteira pode mudar
+  — é revisão da fonte, não erro de fórmula. Meses recentes são preliminares.
+- **Verificação independente:** a Agência Brasil publicou em 29/10/2026 que a dívida líquida
+  ficou em **70% do PIB** em setembro, alta de **0,7 p.p.** no mês e de **4,7 p.p.** no ano
+  (`https://agenciabrasil.ebc.com.br/economia/noticia/2026-10/divida-publica-fica-em-829-do-pib-e-deficit-soma-r-55-bilhoes`);
+  a série dá 69,98%, +0,71 p.p. e +4,74 p.p. — diferença de arredondamento. O Poder360
+  (`https://www.poder360.com.br/poder-economia/divida-bruta-fica-em-829-do-pib-diz-banco-central/`)
+  e a UOL conferem agosto/setembro. Não há segunda medição: a imprensa cita o BCB.
+- **Limitações:** a DLSP inclui o Banco Central e as estatais (exceto Petrobras e Eletrobras) e
+  desconta ativos; não é a dívida bruta do governo geral (DBGG), que tem outro universo, nem a
+  dívida pública federal do Tesouro. A variação mensal é dominada por juros, câmbio e PIB
+  nominal, não só pelo resultado primário; uma queda pode refletir valorização cambial ou
+  crescimento nominal, não austeridade.
+- **Revisão:** reexecutar o notebook não muda valor além de revisão da fonte. Mudança de valor é
+  revisão da fonte, e a revisão é registrada neste arquivo antes de publicar.

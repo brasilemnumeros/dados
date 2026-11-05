@@ -112,7 +112,7 @@ O contrato tem **um** `fonte` (texto) e **um** `urlFonte` (URL). Para múltiplas
   `IPEA/Atlas da Violência (SIM/DATASUS); 2014–2024: Atlas da Violência 2026 (FBSP/Ipea), Tabela 11.1`.
 - `urlFonte` é a URL principal/mais completa do recorte. Nunca invente URL: sem recorte
   estável, omita e registre o motivo na metodologia. Todas as URLs, códigos e tabelas vão para
-  `docs/metodologia.md`.
+  `indicadores/<familia>/metodologia.md`.
 - Não trate agregador como produtor.
 - Se o indicador é calculado pelo site (por 100 mil, deflacionado, proporção), diga isso e
   mostre a fórmula/insumos na metodologia.

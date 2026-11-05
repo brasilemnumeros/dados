@@ -153,8 +153,11 @@ achados `Critical`/`Important`/`Minor`. O prompt e o checklist estão em
 6. Entre no catálogo com `id`, `nome`, `grupo`, `escala` (= `unidade.tipo`), `descricao`,
    `arquivo` e `urlNotebook` (o link de auditoria da ficha; K9 confere que o `.ipynb` existe).
 7. Acrescente o workflow conforme `references/workflow-recorrente.md`.
-8. Documente a metodologia com todas as fontes, URLs, fórmula, evidência, caveats e verificação,
-   e confira que a `descricao` do catálogo conta a mesma história que a metodologia.
+8. Documente a metodologia em `indicadores/<familia>/metodologia.md`, com todas as fontes,
+   URLs, fórmula, cobertura, conferência, limitações e verificação **em vigor**. Não narre a
+   história da própria metodologia (o que era publicado antes, qual fórmula foi corrigida);
+   descreva, sim, vintages, revisões e descontinuidades da fonte que afetam o número atual.
+   Confira que a `descricao` do catálogo conta a mesma história.
 9. Rode o gate de verificação (busca por publicação externa incluída) e registre a evidência.
 10. Rode o gate de revisão independente (`references/revisor.md`): implementador e revisor
     separados; corrija o que for `Critical`/`Important` e faça a re-revisão focada.
@@ -236,7 +239,8 @@ complementa, não substitui.
 - `fonte` é a linha legível da ficha: nomeie todas as fontes com papel/período e diga o que é
   cálculo próprio. Não trate agregador como produtor.
 - `urlFonte` é a URL exata do recorte; nunca invente URL. Sem recorte estável, omita e registre
-  o motivo na metodologia. Todas as URLs/códigos vão para `docs/metodologia.md`.
+  o motivo na metodologia. Todas as URLs/códigos vão para
+  `indicadores/<familia>/metodologia.md`.
 - A atribuição canônica mora na série e na metodologia; não crie campo paralelo no catálogo.
 - **Confira se a ficha exibe a fonte.** Se a linha estiver vazia, o app pode estar usando
   `estado.series.source` em vez de `fonte`; abra um PR separado no `sitio`.

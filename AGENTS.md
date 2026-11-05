@@ -2,7 +2,7 @@
 
 ## Visão geral
 
-Arquivos públicos de dados (`*.json`) do **brasilemnumeros**, consumidos pelo app do repo `sitio`. O JSON é o produto. Cada pasta de indicador contém o notebook Colab usado para extrair, calcular e publicar aqueles dados. O validador (`scripts/validar.py`) e os testes (`pytest`) rodam no CI em todo pull request e em push para `main` — ver seção **CI**.
+Arquivos públicos de dados (`*.json`) do **brasilemnumeros**, consumidos pelo app do repo `sitio`. O JSON é o produto. Cada pasta de indicador contém o notebook Colab usado para extrair, calcular e publicar aqueles dados e a `metodologia.md` da família. O validador (`scripts/validar.py`) e os testes (`pytest`) rodam no CI em todo pull request e em push para `main` — ver seção **CI**.
 
 ## Ao encontrar um problema
 
@@ -23,7 +23,7 @@ Este repositório só o **implementa e referencia** — se a prosa e o código d
 documento vale e a divergência é defeito a corrigir no mesmo commit.
 
 - **Indicador novo:** siga `.agents/skills/adicionando-indicador/SKILL.md` — gates de definição,
-  fonte e verificação; série + catálogo no mesmo PR.
+  fonte e verificação; série + catálogo + seção de metodologia no mesmo PR.
 
 - Os arquivos moram em `indicadores/<familia>/<id>.json`; o `id` é igual ao nome do arquivo
   sem `.json` e casa com `[a-z0-9-]+`.
@@ -73,9 +73,34 @@ runtime (`${__BASE_DADOS__}/catalogo.json`, ao lado das séries).
   descrição ou mudar de grupo é uma linha do catálogo, sem tocar no dado — renomear o `id` quebra
   `?series=`, presets e posts.
 
+### Metodologia da família (`indicadores/<familia>/metodologia.md`)
+
+Cada pasta de família tem **uma** `metodologia.md`, com uma seção `## <id>` por série da pasta.
+Ela mora ao lado do notebook e da série, e acompanha o PR da família — o workflow agendado de
+uma família nunca conflita com o de outra no mesmo arquivo.
+
+- **Só a regra em vigor — não a história da metodologia.** A metodologia descreve o que a série
+  mede, de onde vem, como é calculada, a cobertura, a conferência e as limitações **atuais**. Não
+  narra o que o site publicava antes, qual fórmula foi usada, quanto uma correção mudou nem o
+  impacto de revisões passadas; esse histórico fica no Git e na mensagem do commit.
+- **História dos dados é metodologia.** Descrever vintages, revisões, emendas e descontinuidades
+  da fonte que mudam a leitura do número atual — Caged → Novo Caged, SNIS → Sinisa, PRODES com
+  radar desde 2024, a interpolação de 2022–2023, a safra revisada de 2013 — é parte da regra em
+  vigor, não narrativa proibida. A distinção é o sujeito: a história da **nossa** metodologia sai;
+  a história da **fonte e do dado** fica.
+- **Justificativa de escolha é bem-vinda.** Explicar por que a série usa a fonte A e não a B, ou
+  por que calcula em vez de ler pronto, é metodologia — desde que no presente do indicativo e
+  sem reconstruir a linha do tempo.
+- Cada seção começa com **Definição**, **Fonte e código**, **Fórmula** e **Cobertura**; quando
+  houver, acrescenta **Conferência**, **Verificação independente**, **Limitações**, **Licença e
+  atribuição** e **Condição de revisão**.
+- `tests/test_metodologia.py` reprova família sem `metodologia.md`, série sem seção, seção órfã,
+  seção sem os quatro rótulos obrigatórios e reaparecimento dos rótulos históricos
+  (`Fórmula atual`, `Fórmula proposta`, `Veredito`, `Impacto esperado`, `Decisão pendente`).
+
 ## Editar ou regenerar dados
 
-- **Nunca altere valores ao mudar a forma.** Correção de fórmula é revisão histórica: registre definição, fonte e impacto em `docs/metodologia.md` e peça aval antes.
+- **Nunca altere valores ao mudar a forma.** Correção de fórmula é revisão histórica: registre definição, fonte e revisão em `indicadores/<familia>/metodologia.md` e peça aval antes.
 - Os notebooks escrevem o **formato inteiro** (`versao`, `id`, `unidade`, `eixo`, `medida`, `granularidade`, `fonte`, `urlFonte`, `dados`) direto em `indicadores/<familia>/` — campos de apresentação não entram. Cada um aceita uma variável de ambiente (`IPCA_SAIDA`, `IGPM_SAIDA`, `SELIC_SAIDA`, `PIB_SAIDA`, `MVGR_SAIDA`, `CAGED_SAIDA`, `POPULACAO_SAIDA`, `HOMICIDIOS_SAIDA`, `PNAD_SAIDA`, `FISCAL_SAIDA`, `MEIO_AMBIENTE_SAIDA`, `CAMBIO_SAIDA`, `SAUDE_SAIDA`, `SANEAMENTO_SAIDA`, `EDUCACAO_SAIDA`, `MOBILIDADE_SAIDA`) para gravar num diretório de ensaio em vez do arquivo publicado.
 - Toda execução deve recalcular a série inteira; não há modo incremental.
 - O endpoint de metadados do SIDRA (`servicodados.ibge.gov.br/api/v3/agregados/6579/periodos`)
@@ -103,8 +128,8 @@ custaram execução perdida e não aparecem na documentação:
   erro HTTP: um 200-com-HTML ainda estoura `JSONDecodeError` e derruba a célula. Se acontecer,
   é só rodar de novo — o resultado é determinístico.
 - **Consequência:** os notebooks que buscam na fonte precisam de rede para rodar, e reexecutar
-  não deve mudar valor nenhum. Se mudar, é revisão da fonte: registre em `docs/metodologia.md`
-  antes de publicar.
+  não deve mudar valor nenhum. Se mudar, é revisão da fonte: registre em
+  `indicadores/<familia>/metodologia.md` antes de publicar.
 
 ## `governos/` saiu daqui (2026-11-01)
 
@@ -192,5 +217,6 @@ reutilizável `atualizar-familia.yml`. A cadência segue a fonte (UTC):
 - Instale o hook uma vez por clone: `git config core.hooksPath .githooks`. Ele roda `scripts/validar.py` e `pytest` quando o commit toca `indicadores/`, `scripts/`, `tests/`, `pyproject.toml` ou `uv.lock`. Foi assim que o IPCA voltou a escrever o formato antigo sem ninguém notar: o validador existia, mas não era executado.
 - Rode `uv run --frozen --group ci pytest -q` (é o mesmo comando do hook e o mesmo Python 3.12 do CI).
 - Valide o parse de todos os arquivos — as séries em `indicadores/<familia>/` **e** o catálogo editado à mão em `indicadores/`: `python3 -c "import json,glob; [json.load(open(f)) for f in glob.glob('indicadores/*.json')+glob.glob('indicadores/*/*.json')]"`.
+- `tests/test_metodologia.py` confere que toda família tem `metodologia.md`, que toda série tem a sua seção com os quatro rótulos obrigatórios e que o texto não voltou a narrar histórico.
 - Revise o `git diff` em busca de mudanças numéricas acidentais; alterações de data e ordenação se escondem facilmente em diffs grandes de JSON.
 - As mensagens de commit seguem Conventional Commits em português com escopo `dados` (ex.: `fix(dados): ...`), e o corpo explica o impacto nos dados.
