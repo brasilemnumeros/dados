@@ -14,7 +14,6 @@ dependencies = [
     "ipykernel==7.4.0",
     "nbconvert==7.17.2",
     "pandas==3.1.0",
-    "pyreaddbc==2.0.4",
     "requests==2.34.2",
 ]
 

@@ -10,7 +10,6 @@
   "medida": "nivel",
   "granularidade": "anual",
   "fonte": "MS/SVSA — SIM (óbitos de menores de 1 ano) e SINASC (nascidos vivos), microdados do DATASUS; taxa por mil nascidos vivos calculada pelo site: 1000 × óbitos ÷ nascidos vivos",
-  "urlFonte": "https://datasus.saude.gov.br/transferencia-de-arquivos/",
   "dados": [
     {
       "data": "1996-01-01",
