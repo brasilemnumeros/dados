@@ -15,10 +15,18 @@
 - **Cobertura:** 1995-01 a 2026-08, **380 pontos**, sem lacuna. A fonte começa em 1992; o recorte
   em 1995-01 é mantido porque o gráfico só exibe a partir de 1995.
 - **Conferência:** o nível anda entre 19,6 e 48,2 milhões; o maior movimento mensal da série é
-  −981.331 (2020-04, 2,6% do nível). Δestoque de ago/2026 = 165.827, exatamente o saldo oficial
-  do mês (2.294.563 admissões − 2.128.736 desligamentos). Choques: 2008-12 −695.361; 2015-12
-  −614.393; 2020-04 −981.331; 2020-02→06 −1,79 milhão. 2025-12 = 47.110.663 é o “estoque RAIS
-  2025” usado como base pelo MTE.
+  −981.331 (2020-04, 2,6% do nível). A variação mensal do estoque é o saldo líquido de admissões
+  e desligamentos da mesma vintage — a identidade vale dentro de cada divulgação, e revisões
+  posteriores deslocam o nível e o saldo juntos. Choques: 2008-12 −695.361; 2015-12 −614.393;
+  2020-04 −981.331; 2020-02→06 −1,79 milhão. 2025-12 = 47.110.663 é o “estoque RAIS 2025” usado
+  como base pelo MTE.
+- **Verificação independente:** CNA Brasil, Comunicado Técnico Ed. 17/2026, 01/10/2026
+  (`https://cnabrasil.org.br/storage/arquivos/files/Ed.17-CT-CNA-CAGED-01.OUT.2026.pdf`):
+  48,2 milhões de vínculos em agosto, +0,34% sobre julho, saldo de 165.827 (2.294.563 admissões
+  e 2.128.736 desligamentos); Diário do Comércio/Agência Estadão, 29/09/2026
+  (`https://diariodocomercio.com.br/economia/caged-emprego-agosto-vagas`): 48.244.696 vínculos e
+  o mesmo saldo. As duas citam o MTE; **não há segunda medição**. Busca feita em 05/11/2026 em
+  veículos, associações e institutos; a IPEADATA é espelho da mesma fonte.
 - **Limitações:** é estoque de vínculos formais, não taxa de emprego; não cobre informalidade nem
   estatutários. A emenda Caged → Novo Caged (jan/2020) é invisível no nível (2019-12 =
   38.152.770 → 2020-01 = 38.267.044), mas o BCB registra “diferenças metodológicas relevantes”
