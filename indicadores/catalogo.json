@@ -169,7 +169,7 @@
       "grupo": "saneamento",
       "arquivo": "saneamento/esgoto-rede-coletora-total.json",
       "escala": "percentual",
-      "descricao": "Percentual da população residente do Brasil atendida por rede coletora de esgoto, urbana e rural. Não é esgoto tratado: o município pode coletar e lançar sem tratamento. Quem não reporta entra como não atendido, então a série é um piso. A alta de 1995 a 1999 reflete a entrada de municípios na amostra do SNIS, não só obras. Desde 2023 a fonte é o Sinisa: a queda de 2022 para 2023 vem sobretudo da troca de fonte e de amostra; não é comparável a uma queda de cobertura do mesmo sistema.",
+      "descricao": "Percentual da população residente do Brasil atendida por rede coletora de esgoto, urbana e rural. Não é esgoto tratado: o município pode coletar e lançar sem tratamento. Quem não reporta entra como não atendido, então a série é um piso. A alta de 1995 a 1999 reflete a entrada de municípios na amostra do SNIS, não só obras. Desde 2023 a fonte é o Sinisa: a queda de 2022 para 2023 vem sobretudo da troca de fonte e de amostra; não é comparável a uma queda de cobertura do mesmo sistema. Em 2023 o denominador é a população de 2022, o que superestima o ponto em cerca de 0,3 p.p. — o piso vale para a série, mas o último ponto fica um pouco acima do que a população de 2023 daria.",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/saneamento/Esgoto.ipynb"
     },
     {
@@ -187,7 +187,7 @@
       "grupo": "mobilidade",
       "arquivo": "mobilidade/mortes-transito-anual.json",
       "escala": "numero",
-      "descricao": "Taxa de mortes por acidentes de transporte por 100 mil habitantes no Brasil, calculada pelo site a partir dos óbitos com causa básica CID-10 V01–V99 no SIM/Datasus e da população residente. Inclui todos os modos e vias; não é contagem de sinistros nem de feridos.",
+      "descricao": "Taxa de mortes por acidentes de transporte por 100 mil habitantes no Brasil, calculada pelo site a partir dos óbitos com causa básica CID-10 V01–V99 no SIM/Datasus e da população residente. Inclui todos os modos e vias; não é contagem de sinistros nem de feridos. O denominador de 2022 e 2023 é interpolação entre as estimativas de 2021 e 2024, o que afeta os dois últimos pontos.",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/mobilidade/Transito.ipynb"
     },
     {
