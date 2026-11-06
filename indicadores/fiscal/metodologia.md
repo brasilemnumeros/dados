@@ -35,3 +35,41 @@
   crescimento nominal, não austeridade.
 - **Revisão:** reexecutar o notebook não muda valor além de revisão da fonte. Mudança de valor é
   revisão da fonte, e a revisão é registrada neste arquivo antes de publicar.
+
+## divida-bruta-pib
+
+- **Definição:** razão entre a Dívida Bruta do Governo Geral (DBGG) no fim do mês — governo
+  federal, INSS, governos estaduais e municipais — e o PIB nominal acumulado nos 12 meses
+  encerrados naquele mês, em %. `percentual` (`%`, 1 casa), `eixo: percentual`, `medida: nivel`,
+  granularidade `mensal`. É dívida bruta: não desconta ativos financeiros.
+- **Fonte e código:** Banco Central do Brasil — Estatísticas Fiscais, SGS **13762** (“Dívida
+  bruta do governo geral (% PIB) — metodologia utilizada a partir de 2008”). Endpoint:
+  `https://api.bcb.gov.br/dados/serie/bcdata.sgs.13762/dados?formato=json`. O SGS entrega `data`
+  em `DD/MM/AAAA` e `valor` como texto; o notebook converte para `float` e não arredonda. O mês
+  corrente é descartado.
+- **Fórmula:** nenhuma. A série é oficial e já calculada; o notebook busca, corta o mês aberto e
+  normaliza a data para o primeiro dia do mês (C15).
+- **Cobertura:** 2006-12 a 2026-09, **238 pontos**, sem lacuna. A diretriz de cobrir desde 1995
+  foi verificada: a série oficial da DBGG no SGS começa em dez/2006, início do recálculo
+  retroativo da metodologia atual (rotulada pelo SGS como “metodologia utilizada a partir de
+  2008”); a DLSP, que começa em 2001, é outra medida e não substitui a bruta.
+- **Conferência:** primeiro ponto `2006-12 = 55,48%`; último `2026-09 = 82,93%`; mínimo
+  `51,27%` (2011-12); máximo `87,66%` (2020-10). Em dez/2022 a série dá `71,68%`, e o acumulado
+  de 2026 até setembro é `+4,29 p.p.` (78,64% em dez/2025). Agosto/2026 = `82,87%`; setembro
+  ficou estável. O denominador é o PIB corrente de 12 meses estimado pelo BCB; quando o IBGE
+  revisa as Contas Nacionais, a série inteira pode mudar.
+- **Verificação independente:** a Agência Brasil de 29/10/2026
+  (`https://agenciabrasil.ebc.com.br/economia/noticia/2026-10/divida-publica-fica-em-829-do-pib-e-deficit-soma-r-55-bilhoes`)
+  publica **82,9% do PIB** em setembro de 2026, estável em relação a agosto, **+4,3 p.p.** no ano
+  e **71,7%** no fim de 2022; a série dá 82,93%, 82,87% em agosto, +4,29 p.p. e 71,68% — a
+  diferença é de arredondamento. O Poder360
+  (`https://www.poder360.com.br/poder-economia/divida-bruta-fica-em-829-do-pib-diz-banco-central/`)
+  publica o mesmo 82,9%. Não há segunda medição: a imprensa cita o BCB. Busca feita em 06/11/2026.
+- **Limitações:** a DBGG cobre o governo geral (federal, INSS, estados e municípios) e não
+  inclui o Banco Central nem as estatais; não desconta ativos, então não é a DLSP; não é a
+  dívida pública federal do Tesouro. A variação mensal é dominada por juros nominais, câmbio e
+  PIB nominal, não só pelo resultado primário. Meses recentes são preliminares e revisões do
+  PIB podem alterar o denominador e o histórico.
+- **Revisão:** reexecutar o notebook não muda valor além de revisão da fonte. Mudança de valor é
+  revisão da fonte, e a revisão é registrada neste arquivo antes de publicar.
+- **Licença e atribuição:** Dados abertos do Banco Central do Brasil (SGS); atribuição ao BCB.
