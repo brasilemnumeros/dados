@@ -1,0 +1,139 @@
+{
+  "versao": 1,
+  "id": "taxa-investimento-pib",
+  "unidade": {
+    "tipo": "percentual",
+    "simbolo": "%",
+    "casas": 1
+  },
+  "eixo": "percentual",
+  "medida": "participacao",
+  "granularidade": "anual",
+  "fonte": "IBGE (Contas Nacionais, via IPEADATA); taxa calculada pelo site (FBCF / PIB a preços correntes)",
+  "dados": [
+    {
+      "data": "1995-01-01",
+      "valor": 20.3
+    },
+    {
+      "data": "1996-01-01",
+      "valor": 18.6
+    },
+    {
+      "data": "1997-01-01",
+      "valor": 19.1
+    },
+    {
+      "data": "1998-01-01",
+      "valor": 18.5
+    },
+    {
+      "data": "1999-01-01",
+      "valor": 17.0
+    },
+    {
+      "data": "2000-01-01",
+      "valor": 18.3
+    },
+    {
+      "data": "2001-01-01",
+      "valor": 18.4
+    },
+    {
+      "data": "2002-01-01",
+      "valor": 17.9
+    },
+    {
+      "data": "2003-01-01",
+      "valor": 16.6
+    },
+    {
+      "data": "2004-01-01",
+      "valor": 17.3
+    },
+    {
+      "data": "2005-01-01",
+      "valor": 17.1
+    },
+    {
+      "data": "2006-01-01",
+      "valor": 17.2
+    },
+    {
+      "data": "2007-01-01",
+      "valor": 18.0
+    },
+    {
+      "data": "2008-01-01",
+      "valor": 19.4
+    },
+    {
+      "data": "2009-01-01",
+      "valor": 19.1
+    },
+    {
+      "data": "2010-01-01",
+      "valor": 20.5
+    },
+    {
+      "data": "2011-01-01",
+      "valor": 20.6
+    },
+    {
+      "data": "2012-01-01",
+      "valor": 20.7
+    },
+    {
+      "data": "2013-01-01",
+      "valor": 20.9
+    },
+    {
+      "data": "2014-01-01",
+      "valor": 19.9
+    },
+    {
+      "data": "2015-01-01",
+      "valor": 17.8
+    },
+    {
+      "data": "2016-01-01",
+      "valor": 15.5
+    },
+    {
+      "data": "2017-01-01",
+      "valor": 14.6
+    },
+    {
+      "data": "2018-01-01",
+      "valor": 15.1
+    },
+    {
+      "data": "2019-01-01",
+      "valor": 15.5
+    },
+    {
+      "data": "2020-01-01",
+      "valor": 16.6
+    },
+    {
+      "data": "2021-01-01",
+      "valor": 17.9
+    },
+    {
+      "data": "2022-01-01",
+      "valor": 17.8
+    },
+    {
+      "data": "2023-01-01",
+      "valor": 16.4
+    },
+    {
+      "data": "2024-01-01",
+      "valor": 16.9
+    },
+    {
+      "data": "2025-01-01",
+      "valor": 16.8
+    }
+  ]
+}

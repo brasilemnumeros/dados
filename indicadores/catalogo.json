@@ -74,6 +74,15 @@
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pib/PIB.ipynb"
     },
     {
+      "id": "taxa-investimento-pib",
+      "nome": "Taxa de Investimento (% do PIB)",
+      "grupo": "crescimento",
+      "arquivo": "pib/taxa-investimento-pib.json",
+      "escala": "percentual",
+      "descricao": "Formação bruta de capital fixo como proporção do PIB a preços correntes: quanto da produção do ano foi investido em máquinas, equipamentos e construção. É um fluxo anual, não o estoque de capital; a taxa é calculada pelo site e o denominador muda quando o IBGE revisa as Contas Nacionais.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pib/Investimento.ipynb"
+    },
+    {
       "id": "divida-liquida-pib",
       "nome": "Dívida Líquida do Setor Público (% do PIB)",
       "grupo": "fiscal",
