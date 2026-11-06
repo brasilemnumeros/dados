@@ -83,6 +83,15 @@
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/fiscal/Divida-Liquida.ipynb"
     },
     {
+      "id": "divida-bruta-pib",
+      "nome": "Dívida Bruta do Governo Geral (% do PIB)",
+      "grupo": "fiscal",
+      "arquivo": "fiscal/divida-bruta-pib.json",
+      "escala": "percentual",
+      "descricao": "Razão entre a Dívida Bruta do Governo Geral (DBGG) no fim do mês — governo federal, INSS, estados e municípios — e o PIB nominal acumulado em 12 meses, em %. É dívida bruta: não desconta ativos e não inclui Banco Central nem estatais; a dívida líquida do setor público (DLSP) é outra medida, com universo e desconto diferentes. Meses recentes são preliminares e o histórico muda quando o IBGE revisa o PIB.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/fiscal/Divida-Bruta.ipynb"
+    },
+    {
       "id": "mvgr-nominal",
       "nome": "MVG-R — valor mediano de garantia (R$ correntes)",
       "grupo": "imobiliario",
