@@ -1,0 +1,72 @@
+{
+  "versao": 1,
+  "id": "pnad-gini-renda-domiciliar-per-capita",
+  "unidade": {
+    "tipo": "numero",
+    "simbolo": "índice",
+    "casas": 3
+  },
+  "eixo": "contagem",
+  "medida": "nivel",
+  "granularidade": "anual",
+  "fonte": "IBGE (PNAD Contínua — Rendimento de todas as fontes, SIDRA 7435, variável 10681; a preços médios de 2025)",
+  "urlFonte": "https://apisidra.ibge.gov.br/values/t/7435/n1/all/v/10681/p/all?formato=json",
+  "dados": [
+    {
+      "data": "2012-01-01",
+      "valor": 0.54
+    },
+    {
+      "data": "2013-01-01",
+      "valor": 0.532
+    },
+    {
+      "data": "2014-01-01",
+      "valor": 0.526
+    },
+    {
+      "data": "2015-01-01",
+      "valor": 0.524
+    },
+    {
+      "data": "2016-01-01",
+      "valor": 0.537
+    },
+    {
+      "data": "2017-01-01",
+      "valor": 0.539
+    },
+    {
+      "data": "2018-01-01",
+      "valor": 0.545
+    },
+    {
+      "data": "2019-01-01",
+      "valor": 0.543
+    },
+    {
+      "data": "2020-01-01",
+      "valor": 0.523
+    },
+    {
+      "data": "2021-01-01",
+      "valor": 0.543
+    },
+    {
+      "data": "2022-01-01",
+      "valor": 0.517
+    },
+    {
+      "data": "2023-01-01",
+      "valor": 0.517
+    },
+    {
+      "data": "2024-01-01",
+      "valor": 0.504
+    },
+    {
+      "data": "2025-01-01",
+      "valor": 0.511
+    }
+  ]
+}

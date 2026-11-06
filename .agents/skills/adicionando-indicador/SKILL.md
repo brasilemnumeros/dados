@@ -42,6 +42,8 @@ Antes de escrever notebook, JSON ou workflow, responda com o usuário:
 - O que o número mede (`medida`), em que unidade e com que período de referência?
 - É nominal ou real, total ou per capita, ajustado sazonalmente ou não?
 - Qual a geografia e a cobertura (Brasil, região, idade, vínculo)?
+- **Qual o início da cobertura?** O alvo é **1995-01-01**; começar depois exige justificativa
+  registrada (fonte sem dado anterior e sem predecessor compatível).
 - É estoque ou fluxo? Qual a comparação natural (mês anterior, mesmo mês do ano anterior,
   12 meses, % do PIB, por 100 mil)?
 - **A frequência pedida existe na fonte?** Exemplo: a PNAD Contínua “mensal” é trimestre móvel
@@ -66,11 +68,15 @@ Registre no mapa de fontes:
 - produtor vs agregador: o SGS é canal das séries de terceiros; o BCB é produtor das séries
   próprias (Selic, câmbio, crédito, MVG-R);
 - código da série/tabela, endpoint e `urlFonte` exato;
-- cobertura de 1995-01-01 até o **último período fechado**, não “hoje”;
+- **cobertura desde 1995-01-01 até o último período fechado**, não “hoje”. É diretriz do
+  produto: a série começa em 1995 sempre que a fonte — ou uma fonte predecessora compatível —
+  permitir;
+- se a fonte principal começa depois de 1995, procure a predecessora (ex.: PNAD antiga antes da
+  PNAD Contínua, Caged antes do Novo Caged, SNIS antes do Sinisa) e emende, documentando a
+  sobreposição, a compatibilidade e a quebra. Só comece depois de 1995 sem predecessor
+  compatível, com a busca registrada no mapa de fontes e na metodologia;
 - frequência, defasagem de publicação, política de revisão, ajuste sazonal, base/deflator;
-- estabilidade da API, termos de uso e licença;
-- se a fonte começa depois de 1995, começar depois é melhor que emendar; se emendar, documente
-  a sobreposição e a quebra.
+- estabilidade da API, termos de uso e licença.
 
 Para BCB SGS: série diária exige `dataInicial` e aceita no máximo 10 anos por requisição;
 espere 502/ReadTimeout e 200 com HTML; repita.
@@ -264,6 +270,8 @@ gerado com o publicado, revise o diff numérico e confirme K1/K2.
 ## Erros comuns / red flags
 
 - Começar o notebook antes do brief de definição.
+- Publicar série que começa depois de 1995 sem procurar a fonte predecessora e sem registrar
+  por que não há dado anterior.
 - Chamar o agregador de produtor ou omitir a segunda fonte de uma emenda.
 - Chamar outro endpoint do mesmo produtor de “verificação independente”.
 - Usar release/nota do próprio produtor como verificação independente.
@@ -289,6 +297,7 @@ gerado com o publicado, revise o diff numérico e confirme K1/K2.
 
 | Racionalização | Realidade |
 |---|---|
+| “A fonte principal só começa em 2012; então a série começa em 2012.” | Fonte principal não é o começo da história: procure a predecessora e emende com a quebra declarada. Só comece depois de 1995 sem predecessor compatível, com a busca registrada. |
 | “O release do produtor já confere.” | É o mesmo produtor; não é publicação externa. |
 | “Não achei fonte independente.” | Só vale com a busca registrada (o que, onde, quando). |
 | “A verificação é ad hoc.” | Ad hoc é o método; a busca continua obrigatória. |
