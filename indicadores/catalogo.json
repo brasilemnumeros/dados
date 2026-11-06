@@ -101,6 +101,15 @@
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/fiscal/Divida-Bruta.ipynb"
     },
     {
+      "id": "resultado-primario-pib",
+      "nome": "Resultado Primário do Setor Público (% do PIB)",
+      "grupo": "fiscal",
+      "arquivo": "fiscal/resultado-primario-pib.json",
+      "escala": "percentual",
+      "descricao": "Resultado primário do setor público consolidado — governo federal, INSS, estados, municípios, estatais e Banco Central — acumulado em 12 meses, em % do PIB: receitas menos despesas, sem contar os juros da dívida. Positivo é superávit e negativo é déficit; é um fluxo, não a dívida, e não é o resultado nominal, que inclui juros.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/fiscal/Resultado-Primario.ipynb"
+    },
+    {
       "id": "mvgr-nominal",
       "nome": "MVG-R — valor mediano de garantia (R$ correntes)",
       "grupo": "imobiliario",
