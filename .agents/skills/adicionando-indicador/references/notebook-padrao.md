@@ -79,7 +79,8 @@ execução local que você esqueceu de limpar.
 
 ## Coleta
 
-- Busque desde o início da fonte (ou `1995-01-01`, se ela cobrir) até hoje.
+- Busque desde `1995-01-01` — ou desde o início da fonte predecessora, quando a principal
+  começar depois — até o último período fechado.
 - Não leia o JSON publicado para decidir o que buscar.
 - Repita em erro HTTP com espera crescente. Para BCB SGS: série diária exige `dataInicial` e
   no máximo 10 anos por requisição; espere 502, timeout e 200 com HTML.
