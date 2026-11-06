@@ -196,7 +196,25 @@
       "grupo": "educacao",
       "arquivo": "educacao/ideb-anos-iniciais.json",
       "escala": "numero",
-      "descricao": "Índice de Desenvolvimento da Educação Básica (Ideb) do Brasil nos anos iniciais do ensino fundamental (1º ao 5º ano), rede total, numa escala de 0 a 10 — combina a nota do Saeb com a taxa de aprovação do Censo Escolar. É bienal e não é percentual de aprendizado nem nota de escola, e não é anos finais nem ensino médio.",
+      "descricao": "Índice de Desenvolvimento da Educação Básica (Ideb) do Brasil nos anos iniciais do ensino fundamental (1º ao 5º ano), rede total, numa escala de 0 a 10 — combina a nota do Saeb com a taxa de aprovação do Censo Escolar. É bienal e não é percentual de aprendizado nem nota de escola; esta série é só o 1º ao 5º ano.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/educacao/IDEB.ipynb"
+    },
+    {
+      "id": "ideb-anos-finais",
+      "nome": "Ideb — anos finais do ensino fundamental (0–10)",
+      "grupo": "educacao",
+      "arquivo": "educacao/ideb-anos-finais.json",
+      "escala": "numero",
+      "descricao": "Índice de Desenvolvimento da Educação Básica (Ideb) do Brasil nos anos finais do ensino fundamental (6º ao 9º ano), rede total, numa escala de 0 a 10 — combina a nota do Saeb com a taxa de aprovação do Censo Escolar. É bienal e não é percentual de aprendizado nem nota de escola; esta série é só o 6º ao 9º ano e não se compara como escala única com os anos iniciais ou o ensino médio.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/educacao/IDEB.ipynb"
+    },
+    {
+      "id": "ideb-ensino-medio",
+      "nome": "Ideb — ensino médio (0–10)",
+      "grupo": "educacao",
+      "arquivo": "educacao/ideb-ensino-medio.json",
+      "escala": "numero",
+      "descricao": "Índice de Desenvolvimento da Educação Básica (Ideb) do Brasil no ensino médio regular, rede total, numa escala de 0 a 10 — combina a nota do Saeb com a taxa de aprovação do Censo Escolar. É bienal e não é percentual de aprendizado nem nota de escola; esta série é só o ensino médio e não se compara como escala única com o ensino fundamental.",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/educacao/IDEB.ipynb"
     },
     {

@@ -1,0 +1,60 @@
+{
+  "versao": 1,
+  "id": "ideb-anos-finais",
+  "unidade": {
+    "tipo": "numero",
+    "simbolo": "índice",
+    "casas": 1
+  },
+  "eixo": "contagem",
+  "medida": "nivel",
+  "granularidade": "bienal",
+  "fonte": "Inep — Ideb, anos finais do ensino fundamental, rede total (Brasil)",
+  "urlFonte": "https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb/resultados",
+  "dados": [
+    {
+      "data": "2005-01-01",
+      "valor": 3.5
+    },
+    {
+      "data": "2007-01-01",
+      "valor": 3.8
+    },
+    {
+      "data": "2009-01-01",
+      "valor": 4.0
+    },
+    {
+      "data": "2011-01-01",
+      "valor": 4.1
+    },
+    {
+      "data": "2013-01-01",
+      "valor": 4.2
+    },
+    {
+      "data": "2015-01-01",
+      "valor": 4.5
+    },
+    {
+      "data": "2017-01-01",
+      "valor": 4.7
+    },
+    {
+      "data": "2019-01-01",
+      "valor": 4.9
+    },
+    {
+      "data": "2021-01-01",
+      "valor": 5.1
+    },
+    {
+      "data": "2023-01-01",
+      "valor": 5.0
+    },
+    {
+      "data": "2025-01-01",
+      "valor": 5.3
+    }
+  ]
+}
