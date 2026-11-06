@@ -121,3 +121,61 @@
 - **Revisão:** reexecutar o notebook não muda valor. Mudança de valor é revisão da fonte, e a
   revisão é registrada neste arquivo antes de publicar. O nível de 2024–2025 é a primeira
   estimativa anual do caderno do 4º tri; uma revisão entra quando a 6784 publicar o ano.
+
+## taxa-investimento-pib
+
+- **Definição:** formação bruta de capital fixo (FBCF) — máquinas, equipamentos, construção e
+  outros bens de capital — como proporção do PIB a preços correntes do mesmo ano. É a “taxa de
+  investimento”. `percentual` (`%`, 1 casa), `eixo: percentual`, `medida: participacao`,
+  granularidade `anual`, data em `AAAA-01-01` (C15).
+- **Fonte e código:** IBGE — Sistema de Contas Nacionais, referência 2010, lido na API OData do
+  IPEADATA, que transcreve as séries do IBGE. Numerador: **FBCF a preços correntes**
+  (`SCN10_FBKFN10`, R$ milhões),
+  `https://www.ipeadata.gov.br/api/odata4/ValoresSerie(SERCODIGO='SCN10_FBKFN10')`;
+  denominador: **PIB a preços de mercado** (`SCN10_PIBN10`, R$ milhões),
+  `https://www.ipeadata.gov.br/api/odata4/ValoresSerie(SERCODIGO='SCN10_PIBN10')`. O
+  denominador é conferido contra o canal oficial do IBGE, tabela SIDRA **6784**, variável
+  **9808** (“PIB - valores correntes”), Brasil (N1),
+  `https://apisidra.ibge.gov.br/values/t/6784/n1/all/v/9808/p/all?formato=json`. A série **não
+  tem `urlFonte` único** — a taxa é a razão de duas séries e a cobertura das duas pontas muda
+  de canal —, por isso o campo é omitido e as três URLs ficam aqui.
+- **Fórmula:** `taxa = 100 × FBCF / PIB`, arredondada a 1 casa com meio para cima. Os dois
+  valores são do mesmo ano e a preços correntes; não há deflação, encadeamento nem ajuste
+  sazonal. O arredondamento a 1 casa é a mesma precisão com que o IBGE publica a taxa.
+- **Cobertura:** 1995–2025, **31 pontos**, sem lacuna. A série concatena compilações do IBGE,
+  como o metadado do IPEADATA declara: 1995–1999 são resultados estimados a partir das Contas
+  Nacionais Trimestrais (referência 2010); 2000–2021 vêm do Sistema de Contas Nacionais
+  (referência 2010); 2022–2023 são resultados preliminares estimados a partir das Trimestrais;
+  2024 está na tabela anual; 2025 é a primeira estimativa anual do fechamento do 4º trimestre,
+  publicada em 03/03/2026. A definição é idêntica em todos os trechos; muda a compilação. A
+  diretriz de 1995 foi verificada: a compilação trimestral começa em 1995T1 e não há série
+  oficial com a mesma definição antes disso. Busca feita em 06/11/2026.
+- **Conferência:** 1995 **20,3%**; máximo **20,9%** em 2013; mínimo **14,6%** em 2017;
+  2020 **16,6%**; 2024 **16,9%**; 2025 **16,8%**. O PIB do IPEADATA é igual ao do SIDRA 6784
+  dentro de R$ 1 milhão em **29 anos** (1996–2024; 1995 e 2025 não estão na tabela anual). A
+  taxa reproduz a série derivada do próprio IPEADATA `SCN10_FBKFPIBV10` (1995–2022) e a série
+  ativa `PAN_FBKFPIBV` (1996–2025) dentro do arredondamento. A taxa de 2024 foi publicada como
+  **17,0%** na divulgação trimestral de março/2025 e revista para **16,9%** nas Contas
+  Nacionais Anuais — a série usa a vintage mais recente.
+- **Verificação independente:** a CNN Brasil de 03/03/2026 publica **16,8% em 2025 e 16,9% em
+  2024**, citando o IBGE
+  (`https://www.cnnbrasil.com.br/blogs/debora-oliveira/economia/money/macroeconomia/taxa-de-investimento-de-168-mantem-brasil-travado-em-crescimento-de-2/`);
+  o ICL Notícias de 07/03/2025 publica **17,0% em 2024 e 16,4% em 2023**
+  (`https://iclnoticias.com.br/economia/pib-2024-registra-maior-taxa/`), o que documenta a
+  revisão de 2024. O Banco Mundial publica a mesma razão em `NE.GDI.FTOT.ZS`
+  (`https://api.worldbank.org/v2/country/BRA/indicator/NE.GDI.FTOT.ZS?format=json`), com
+  **20,29% em 1995**, **16,91% em 2024** e **16,84% em 2025** — os mesmos valores desta série
+  antes do arredondamento. As três citam ou recompilam o IBGE; **não há segunda medição** no
+  sentido de outra pesquisa. Busca feita em 06/11/2026.
+- **Limitações:** é um fluxo do ano, não o estoque de capital; é FBCF, não “investimento”
+  financeiro nem taxa de poupança. É a preços correntes: a comparação entre anos embute preços
+  relativos. O denominador muda quando o IBGE revisa as Contas Nacionais. 1995–1999 e 2022–2023
+  vêm das Contas Trimestrais (os primeiros como estimativa, os segundos como preliminares) e
+  2025 é o fechamento do 4º tri, com vintage diferente do miolo anual; 2020–2021 são atípicos
+  (pandemia e recomposição). A taxa não mede a qualidade do investimento nem a depreciação.
+- **Revisão:** reexecutar o notebook não muda valor além de revisão da fonte. Mudança de valor
+  é revisão da fonte, e a revisão é registrada neste arquivo antes de publicar. O ponto de 2025
+  é a primeira estimativa anual do fechamento trimestral; uma revisão entra quando as Contas
+  Nacionais Anuais publicarem o ano.
+- **Licença e atribuição:** dados abertos do IBGE; transcrição do IPEADATA de acesso livre.
+  Atribuição ao IBGE e ao IPEADATA.

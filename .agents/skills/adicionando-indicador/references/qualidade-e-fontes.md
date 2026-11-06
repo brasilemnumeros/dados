@@ -56,9 +56,14 @@ cobertura menor) e mostre a fórmula.
 
 ### Horizonte e emenda
 
-- Se a fonte começa depois de 1995, **começar depois é preferível a emendar**.
+- **Cobertura alvo: desde 1995.** A série começa em 1995 sempre que a fonte, ou uma fonte
+  predecessora compatível, permitir.
+- Se a fonte principal começa depois de 1995, procure a predecessora (PNAD antiga antes da PNAD
+  Contínua, Caged antes do Novo Caged, SNIS antes do Sinisa). Se existir, emende.
 - Se emendar, documente: quais fontes, qual período cada uma cobre, qual a sobreposição, por que
   são compatíveis e onde está a quebra.
+- Só comece depois de 1995 quando não houver dado anterior nem predecessor compatível; registre
+  a busca e o motivo no mapa de fontes e na metodologia.
 - Não emende níveis sem ajuste; não esconda a quebra na descrição.
 - Lacuna é ausência de ponto; não interpole nem preencha zero.
 

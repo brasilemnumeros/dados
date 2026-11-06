@@ -74,6 +74,15 @@
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pib/PIB.ipynb"
     },
     {
+      "id": "taxa-investimento-pib",
+      "nome": "Taxa de Investimento (% do PIB)",
+      "grupo": "crescimento",
+      "arquivo": "pib/taxa-investimento-pib.json",
+      "escala": "percentual",
+      "descricao": "Formação bruta de capital fixo como proporção do PIB a preços correntes: quanto da produção do ano foi investido em máquinas, equipamentos e construção. É um fluxo anual, não o estoque de capital; a taxa é calculada pelo site e o denominador muda quando o IBGE revisa as Contas Nacionais.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pib/Investimento.ipynb"
+    },
+    {
       "id": "divida-liquida-pib",
       "nome": "Dívida Líquida do Setor Público (% do PIB)",
       "grupo": "fiscal",
@@ -81,6 +90,15 @@
       "escala": "percentual",
       "descricao": "Razão entre a dívida líquida do setor público consolidado no fim do mês — descontados os ativos financeiros, inclusive as reservas internacionais — e o PIB acumulado em 12 meses. A dívida bruta do governo geral (DBGG) é outra medida, com universo diferente; meses recentes são preliminares e o histórico muda quando o IBGE revisa o PIB.",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/fiscal/Divida-Liquida.ipynb"
+    },
+    {
+      "id": "divida-bruta-pib",
+      "nome": "Dívida Bruta do Governo Geral (% do PIB)",
+      "grupo": "fiscal",
+      "arquivo": "fiscal/divida-bruta-pib.json",
+      "escala": "percentual",
+      "descricao": "Razão entre a Dívida Bruta do Governo Geral (DBGG) no fim do mês — governo federal, INSS, estados e municípios — e o PIB nominal acumulado em 12 meses, em %. É dívida bruta: não desconta ativos e não inclui Banco Central nem estatais; a dívida líquida do setor público (DLSP) é outra medida, com universo e desconto diferentes. Meses recentes são preliminares e o histórico muda quando o IBGE revisa o PIB.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/fiscal/Divida-Bruta.ipynb"
     },
     {
       "id": "resultado-primario-pib",
@@ -164,6 +182,15 @@
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pnad/RendaDomiciliar.ipynb"
     },
     {
+      "id": "pnad-gini-renda-domiciliar-per-capita",
+      "nome": "Índice de Gini (renda domiciliar per capita)",
+      "grupo": "trabalho",
+      "arquivo": "pnad/pnad-gini-renda-domiciliar-per-capita.json",
+      "escala": "numero",
+      "descricao": "Índice de Gini da distribuição do rendimento domiciliar per capita, de 0 a 1 (0 = igualdade total, 1 = concentração máxima), calculado sobre os dados acumulados dos quatro trimestres do ano e a preços médios do ano, segundo a PNAD Contínua (IBGE). Mede a desigualdade, não a renda média; um índice de 0,5 não significa 50% da renda. A série começa em 2012, primeiro ano da PNAD Contínua, e não é compatível em nível com a PNAD antiga.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pnad/Gini.ipynb"
+    },
+    {
       "id": "mortalidade-infantil-anual",
       "nome": "Mortalidade Infantil (por mil nascidos vivos)",
       "grupo": "saude",
@@ -187,7 +214,25 @@
       "grupo": "educacao",
       "arquivo": "educacao/ideb-anos-iniciais.json",
       "escala": "numero",
-      "descricao": "Índice de Desenvolvimento da Educação Básica (Ideb) do Brasil nos anos iniciais do ensino fundamental (1º ao 5º ano), rede total, numa escala de 0 a 10 — combina a nota do Saeb com a taxa de aprovação do Censo Escolar. É bienal e não é percentual de aprendizado nem nota de escola, e não é anos finais nem ensino médio.",
+      "descricao": "Índice de Desenvolvimento da Educação Básica (Ideb) do Brasil nos anos iniciais do ensino fundamental (1º ao 5º ano), rede total, numa escala de 0 a 10 — combina a nota do Saeb com a taxa de aprovação do Censo Escolar. É bienal e não é percentual de aprendizado nem nota de escola; esta série é só o 1º ao 5º ano.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/educacao/IDEB.ipynb"
+    },
+    {
+      "id": "ideb-anos-finais",
+      "nome": "Ideb — anos finais do ensino fundamental (0–10)",
+      "grupo": "educacao",
+      "arquivo": "educacao/ideb-anos-finais.json",
+      "escala": "numero",
+      "descricao": "Índice de Desenvolvimento da Educação Básica (Ideb) do Brasil nos anos finais do ensino fundamental (6º ao 9º ano), rede total, numa escala de 0 a 10 — combina a nota do Saeb com a taxa de aprovação do Censo Escolar. É bienal e não é percentual de aprendizado nem nota de escola; esta série é só o 6º ao 9º ano e não se compara como escala única com os anos iniciais ou o ensino médio.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/educacao/IDEB.ipynb"
+    },
+    {
+      "id": "ideb-ensino-medio",
+      "nome": "Ideb — ensino médio (0–10)",
+      "grupo": "educacao",
+      "arquivo": "educacao/ideb-ensino-medio.json",
+      "escala": "numero",
+      "descricao": "Índice de Desenvolvimento da Educação Básica (Ideb) do Brasil no ensino médio regular, rede total, numa escala de 0 a 10 — combina a nota do Saeb com a taxa de aprovação do Censo Escolar. É bienal e não é percentual de aprendizado nem nota de escola; esta série é só o ensino médio e não se compara como escala única com o ensino fundamental.",
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/educacao/IDEB.ipynb"
     },
     {
