@@ -155,6 +155,15 @@
       "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pnad/RendaDomiciliar.ipynb"
     },
     {
+      "id": "pnad-gini-renda-domiciliar-per-capita",
+      "nome": "Índice de Gini (renda domiciliar per capita)",
+      "grupo": "trabalho",
+      "arquivo": "pnad/pnad-gini-renda-domiciliar-per-capita.json",
+      "escala": "numero",
+      "descricao": "Índice de Gini da distribuição do rendimento domiciliar per capita, de 0 a 1 (0 = igualdade total, 1 = concentração máxima), calculado sobre os dados acumulados dos quatro trimestres do ano e a preços médios do ano, segundo a PNAD Contínua (IBGE). Mede a desigualdade, não a renda média; um índice de 0,5 não significa 50% da renda. A série começa em 2012, primeiro ano da PNAD Contínua, e não é compatível em nível com a PNAD antiga.",
+      "urlNotebook": "https://github.com/brasilemnumeros/dados/blob/main/indicadores/pnad/Gini.ipynb"
+    },
+    {
       "id": "mortalidade-infantil-anual",
       "nome": "Mortalidade Infantil (por mil nascidos vivos)",
       "grupo": "saude",

@@ -183,3 +183,52 @@ As taxas gravam 1 casa e os valores em reais gravam 0 casas, a precisão da font
   revisão é registrada neste arquivo antes de publicar.
 - **Licença e atribuição:** Dados abertos do IBGE (PNAD Contínua); atribuição ao IBGE. Uso
   sujeito aos termos de uso do IBGE.
+
+## pnad-gini-renda-domiciliar-per-capita
+
+- **Definição:** índice de Gini da distribuição do rendimento domiciliar per capita — soma dos
+  rendimentos de todas as fontes dos moradores, dividida pelo número de moradores —, calculado
+  sobre os dados acumulados dos quatro trimestres do ano, a preços médios do ano. `numero`
+  (`índice`, 3 casas), `eixo: contagem`, `medida: nivel`, `granularidade: anual` (C15:
+  `AAAA-01-01`). 0 = igualdade total;
+  1 = concentração máxima. É um índice, não percentual nem fração da renda.
+- **Fonte e código:** IBGE, PNAD Contínua — Rendimento de todas as fontes, SIDRA **7435**,
+  variável **10681**, Brasil (N1). Endpoint:
+  `https://apisidra.ibge.gov.br/values/t/7435/n1/all/v/10681/p/all?formato=json`. A cada
+  divulgação a pesquisa é reexpressa a preços médios do último ano; a edição corrente (dados de
+  2025, divulgada em 08/05/2026) usa a base populacional do Censo 2022 e reexpressa os anos
+  anteriores. Revisões da fonte podem mudar o nível entre edições, então a comparação válida é
+  dentro da edição corrente.
+- **Fórmula:** nenhuma — o IBGE publica o índice. O notebook busca, recorta o Brasil, descarta o
+  ano corrente (incompleto) e grava. Não há emenda com a PNAD antiga: a pesquisa anterior tem
+  questionário, período de referência e cobertura diferentes, e converter seus níveis para a
+  escala da PNAD Contínua exigiria um fator de calibração — uma escolha nossa, não da fonte —
+  que fabricaria comparabilidade. A série começa em 2012.
+- **Cobertura:** 2012–2025, **14 pontos**, sem lacuna. A diretriz de cobrir desde 1995 foi
+  verificada: a PNAD antiga é a fonte predecessora, mas não é compatível em nível com a PNAD
+  Contínua; a sobreposição 2012–2015 não foi usada para calibrar a série. Busca pela fonte
+  predecessora feita em 06/11/2026.
+- **Conferência:** primeiro `0,540` (2012); último `0,511` (2025); mínimo `0,504` (2024);
+  máximo `0,545` (2018); 2025 é o segundo menor da série, 1,4% acima de 2024. A trajetória
+  recente é 0,543 (2019), 0,523 (2020), 0,543 (2021), 0,517 (2022), 0,517 (2023), 0,504 (2024).
+- **Verificação independente:** a Folha de S.Paulo de 08/05/2026
+  (`https://www1.folha.uol.com.br/mercado/2026/05/desigualdade-sobe-em-2025-mas-e-a-2a-menor-da-serie-no-brasil-renda-cresce-mais-para-ricos.shtml`)
+  publica `0,511` em 2025 e `0,504` em 2024, aponta `0,545` como o máximo de 2018 e diz que a
+  série começa em 2012; o Jornal da UFG
+  (`https://jornal.ufg.br/n/200968-crescimento-da-renda-expansao-do-emprego-e-aumento-da-desigualdade`)
+  repete `0,504 → 0,511`. O Ipeadata reproduz a mesma série (`0,540` a `0,511`), mas é agregador
+  da PNAD; **não há segunda medição**. A divulgação do IBGE de 08/05/2026
+  (`https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/46579-rendimento-medio-da-populacao-brasileira-atinge-r-3-367-em-2025`)
+  traz os mesmos valores, mas é o produtor e não conta como publicação externa. Busca feita em
+  06/11/2026.
+- **Limitações:** mede a desigualdade da distribuição, não o nível de renda, e não diz onde na
+  distribuição a mudança ocorreu; a captação dos rendimentos do topo é limitada (juros,
+  dividendos e ganhos de capital), o que pode subestimar a concentração; é renda domiciliar per
+  capita, não individual; é o acumulado de quatro trimestres, não um mês isolado; é Brasil, sem
+  recorte regional; não é compatível com a PNAD antiga nem com o Gini do Banco Mundial ou do
+  Ipea sem conferir o conceito de renda; a reponderação na base do Censo 2022 e as visitas da
+  pandemia afetam a comparabilidade ao longo da série.
+- **Revisão:** reexecutar o notebook não muda valor. Mudança de valor é revisão da fonte, e a
+  revisão é registrada neste arquivo antes de publicar.
+- **Licença e atribuição:** Dados abertos do IBGE (PNAD Contínua); atribuição ao IBGE. Uso
+  sujeito aos termos de uso do IBGE.
